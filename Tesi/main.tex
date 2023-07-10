@@ -1,0 +1,54 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[italian]{babel}
+\usepackage{newlfont}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{layout}
+%\usepackage{ulem} crea problemi con l'indentazione dell'indice
+\usepackage{multicol} 
+\usepackage{newlfont}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{subfiles}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage[toc,page]{appendix}
+\usepackage{biblatex}
+
+\bibliography{Bibliography.bib}
+
+\graphicspath{ {./img/} }
+
+\begin{document}
+
+%\subfile{chapter/frontespizio.tex}
+
+\tableofcontents
+
+%\listoffigures
+
+\subfile{chapter/Introduzione.tex}
+
+\chapter{Linguaggio e semantica}
+\section{Grammatica}
+\section{Equazioni di Costo}
+\section{Regole di Inferenza}
+
+\chapter{Interprete}
+\section{Antlr}
+\section{Generazione delle Equazioni di costo}
+
+\chapter{Analisi delle Equazioni di costo}
+\section{PUBS}
+\section{CoFloCo}
+
+\chapter{Conclusioni}
+
+\addcontentsline{toc}{chapter}{Bibliografia}
+
+\printbibliography[title={Bibliografia}]
+
+\end{document}  

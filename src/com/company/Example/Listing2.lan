@@ -1,0 +1,7 @@
+(username , par) => {
+if(call IsPremiumUser(username )){
+    call PremiumService(par)
+}else{
+    call BasicService(par)
+}
+}
