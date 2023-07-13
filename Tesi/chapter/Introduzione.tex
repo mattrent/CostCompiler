@@ -13,7 +13,7 @@ Questi provider gestiscono l'infrastruttura fisica e mettono a disposizione degl
 Possiamo distinguere diverse tipologie di servizi cloud in base al tipo di risorse che vengono fornite:
 \subsection{Infrastructure as a Service}
 L'Infrastructure as a Service (IaaS) è un modello di cloud computing che fornisce risorse informatiche virtualizzate tramite Internet. Con l'IaaS, i provider di cloud mettono a disposizione degli utenti l'infrastruttura fisica necessaria, inclusi server virtuali, storage, reti e altre risorse, consentendo loro di creare e gestire l'ambiente informatico in modo flessibile e scalabile.
-Attraverso l'IaaS, gli utenti possono evitare di dover investire in hardware e infrastrutture costose, riducendo i costi di gestione e manutenzione. I provider di cloud si occupano dell'acquisizione, dell'installazione e della gestione dell'hardware, nonché della fornitura delle risorse virtuali agli utenti. Questo modello consente alle aziende di concentrarsi sullo sviluppo delle proprie applicazioni e servizi, piuttosto che preoccuparsi dell'infrastruttura sottostante.
+Attraverso l'IaaS, gli utenti possono evitare di dover investire in hardware e infrastrutture costose, riducendo i costi di gestione e manutenzione. I provider di cloud si occupano dell'acquisizione, dell'installazione e della gestione dell'hardware, nonchè della fornitura delle risorse virtuali agli utenti. Questo modello consente alle aziende di concentrarsi sullo sviluppo delle proprie applicazioni e servizi, piuttosto che preoccuparsi dell'infrastruttura sottostante.
 La peculiarità sta nel fatto che le risorse vengono istanziate su richiesta o domanda di una piattaforma ha bisogno.
 
 \subsection{Platform as a Service}
@@ -22,12 +22,12 @@ PaaS offre un'ampia gamma di strumenti di sviluppo, come linguaggi di programmaz
 Alcuni esempi di questo modelli li troviamo in Google App Engine, Microsoft Azure App Service e AWS Elastic Beanstalk.
 
 \subsection{Software as a Service}
-Il Software as a Service(SaaS) é modello di cloud computing che fornisce agli utenti applicazioni basate su cloud attraverso Internet. Con il SaaS, i provider di cloud ospitano e gestiscono l'infrastruttura e i software applicativi, consentendo agli utenti di accedere e utilizzare le applicazioni tramite Internet, senza dover installare il software sul proprio computer.
+Il Software as a Service(SaaS) è modello di cloud computing che fornisce agli utenti applicazioni basate su cloud attraverso Internet. Con il SaaS, i provider di cloud ospitano e gestiscono l'infrastruttura e i software applicativi, consentendo agli utenti di accedere e utilizzare le applicazioni tramite Internet, senza dover installare il software sul proprio computer.
 Consiste nell'utilizzo di programmi installati su un server remoto, cioè fuori del computer fisico o dalla LAN locale, spesso attraverso un server web; l'utente può accedere al programma tramite un browser web, come se fosse un programma installato localmente.
 I modelli di pagamento del SaaS sono spesso basati sul consumo effettivo delle risorse, consentendo agli utenti di pagare solo per ciò che effettivamente utilizzano. Questo modello di pricing basato su abbonamento o utilizzo può essere vantaggioso per le aziende, in quanto consentono di evitare costi iniziali elevati e di prevedere meglio i costi operativi.
 Alcuni esempi più comuni di SaaS li troviamo in Google Workspace, Microsoft Office 365, Dropbox.
 \subsection{Function As a  Service}
-Function as a Service(FaaS) é un modello di cloud computing che consente agli sviluppatori di eseguire e gestire le proprie funzioni senza dover gestire l'infrastruttura sottostante.
+Function as a Service(FaaS) è un modello di cloud computing che consente agli sviluppatori di eseguire e gestire le proprie funzioni senza dover gestire l'infrastruttura sottostante.
 In FaaS, gli sviluppatori suddividono le loro applicazioni in funzioni modulari e indipendenti. Ogni funzione esegue un'attività specifica e può essere attivata in risposta a eventi o richieste specifiche. Ad esempio, una funzione può essere scatenata da un evento di caricamento di un file su un sistema di archiviazione cloud, da una richiesta HTTP o da un timer programmato. Quando una funzione viene attivata, il fornitore di servizi cloud gestisce automaticamente la sua esecuzione, inclusa la gestione delle risorse necessarie. Le funzioni vengono eseguite in ambienti isolati e scalati automaticamente in base alle richieste di carico. Una volta completata l'esecuzione della funzione, le risorse vengono deallocate per massimizzare l'efficienza e minimizzare i costi.
 FaaS è diventato un'opzione popolare per lo sviluppo di microservizi, serverless application e scenari di elaborazione event-driven, fornendo un modo flessibile ed efficiente per eseguire singole funzioni di codice.
 Alcuni esempi di FaaS li troviamo in AWS Lambda, Google Cloud Functions, Azure Functions.
@@ -36,23 +36,24 @@ Alcuni esempi di FaaS li troviamo in AWS Lambda, Google Cloud Functions, Azure F
 Serverless computing è un paradigma più ampio del FaaS in cui il fornitore di servizi cloud gestisce completamente l'infrastruttura, mentre FaaS è un sottoinsieme del Serverless computing che si concentra sulla gestione delle funzioni come entità indipendenti. Le funzioni vengono eseguite in modo scalabile e senza la necessità di gestire l'infrastruttura sottostante.
 \autocite{amslaurea24930}
 
-Nel serverless computing, il provider cloud si occuperà di allocare le risorse necessarie per eseguire il codice e di deallocarle una volta terminata l'esecuzione. Questo facilita la distribuzione e la scalabilitá del sistema, cercando di automatizzare quest'ultima fase.
-Focalizzandoci in questa gestione delle risorse, viene introdotto un linguaggio cApp che ci metterá di sincronizzare le risorse attraverso determinate politiche.
+Nel serverless computing, il provider cloud si occuperà di allocare le risorse necessarie per eseguire il codice e di deallocarle una volta terminata l'esecuzione. Questo facilita la distribuzione e la scalabilità del sistema, cercando di automatizzare quest'ultima fase.
+Focalizzandoci in questa gestione delle risorse, viene introdotto un linguaggio cApp che ci permetterà di sincronizzare le risorse attraverso determinate politiche.
 \subsection{cApp}
-cApp é un linguaggio dichiarativo derivata da un estensione dello scheduler di OpenWhisk, che permette la configurazione delle politiche di pianificazione per l'esecuzione delle funzioni.
-cApp nasce con l'idea che le politiche di schedulazione delle funzioni possano dipendendere dai costi associati alle possibili esecuzione delle funzioni sui Worker disponibili.\autocite{de2020allocation}.
+Partiamo da un linguaggio dichiarativo APP(\textit{Allocation Priority Policies}) che ci permette di definire politiche di allocazione delle risorse per le funzioni serverless, derivato da un estensione dello scheduler di OpenWhisk.
+cApp è un estensione di App, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili.
+\autocite{de2020allocation}.
 Vediamo qui di seguito un esempio del funzionamento:
 \begin{figure}[H]
    \centering
     \includegraphics{ServerlessSchedulingPoliciesExample.png}
     \caption{Esempio di funzionamento di un sistema serverless \autocite{deserverless}}
 \end{figure}
-A destra troviamo il codice dichiarativo cAPP che fornisce le regole per allocare le risorse: abbiamo due \textbf{Workers} che sono disponibili, e una strategia che regola come allocare queste risorse nei rispettivi worker; inoltre una \textbf{Strategy} che determina come allocare le risorse e secondo quale prioritá.
-Attualmente peró la strategy ci permette di allocare secondo poche strategie generiche gia consolidate.
-L'obiettivo diventa ora automatizzare questo processo, adottando procedure automatiche per definire politiche di allocazione delle risorse basate sulle informazioni derivate dall'analisi statica delle funzioni che dovranno essere eseguite.
-Osserviamo adesso un'altro esempio andando ancor di piú in profonditá:
-Data una grammatica definitá nel paper\autocite {deserverless}, osserviamo degli esempi di funzioni:
-\begin{lstlisting}[language=Java, caption= La guardia della condizione é un espressione,label={lst:1}]
+A destra troviamo il codice dichiarativo App che fornisce le regole per allocare le risorse: abbiamo due \textbf{Workers} che sono disponibili, e una strategia che regola come allocare queste risorse nei rispettivi worker; inoltre una \textbf{Strategy} che determina come allocare le risorse e secondo quale priorità.
+Attualmente però la strategy ci permette di allocare secondo poche strategie generiche gia consolidate.
+L'obiettivo diventa ora automatizzare questo processo, adottando procedure automatiche per definire le politiche di allocazione delle risorse basate sulle informazioni derivate dall'analisi statica delle funzioni che dovranno essere eseguite.
+Osserviamo adesso un'altro esempio andando ancor di più in profondità:
+Data una grammatica definità nel paper\autocite {deserverless}, osserviamo alcuni esempi di funzioni:
+\begin{lstlisting}[language=Java, caption= La guardia della condizione è un espressione,label={lst:1}]
     (isPremiumUser, par) => {
         if (isPremiumUser) {
            call PremiumService(par)
@@ -62,9 +63,10 @@ Data una grammatica definitá nel paper\autocite {deserverless}, osserviamo degl
     }
 \end{lstlisting}
 
-Il parametro \textit{isPremiumUser} é un valore che indica se l'utente richiede il servizio premium o meno, e in base a questo valore viene eseguita una chiamata o l'altra.
-Di conseguenza dovremmo assumere che il ramo condizionale prenderá il massimo della latenza tra le due chiamate, non avremo certezza che sia uno o l'altro e in questo caso dovremmo cercare di andare a ridurre entrambe.
-\begin{lstlisting}[language=Java, caption= La guardia della condizione é un'invocazione a un servizio esterno,label={lst:2}]
+Il parametro \textit{isPremiumUser} è un valore che indica se l'utente richiede il servizio premium o meno, e in base a questo valore viene eseguita una chiamata o l'altra.
+Di conseguenza dovremmo assumere che il ramo condizionale prenderà il massimo della latenza tra le due chiamate, non avremo certezza che sia uno o l'altro e in questo caso dovremmo cercare di andare a ridurre entrambe.
+
+\begin{lstlisting}[language=Java, caption= La guardia della condizione è un'invocazione a un servizio esterno,label={lst:2}]
     (username, par) => {
         if (call isPremiumUser(username)) {
             call PremiumService(par)
@@ -73,8 +75,9 @@ Di conseguenza dovremmo assumere che il ramo condizionale prenderá il massimo d
         }
     }
 \end{lstlisting}
-Mentre in questo caso se l'utente che scatena l'evento é un membro premium, il tempo di esecuzione previsto dalla funzione é la somma delle latenze delle invocazioni dei servizi \textit{isPremiumUser} e \textit{PremiumService}.
-Quindi possiamo preventivare il ritardo atteso(come tempo di esecuzione peggio), cioé la somma della latenza del servizio \textit{isPremiumUser} piú il massimo tra la latenza dei servizi \textit{PremiumService} e \textit{BasicService}.
+
+Mentre in questo caso se l'utente che scatena l'evento è un membro premium, il tempo di esecuzione previsto dalla funzione è la somma delle latenze delle invocazioni dei servizi \textit{isPremiumUser} e \textit{PremiumService}.
+Quindi possiamo preventivare il ritardo atteso(come tempo di esecuzione peggiore), cioè la somma della latenza del servizio \textit{isPremiumUser} più il massimo tra la latenza dei servizi \textit{PremiumService} e \textit{BasicService}.
 
 \begin{lstlisting}[language=Java, caption=Funzione con logica Map-Reduce,label={lst:3}]
     (jobs, m, r)=>{
@@ -86,12 +89,12 @@ Quindi possiamo preventivare il ritardo atteso(come tempo di esecuzione peggio),
         }
     }
 \end{lstlisting}
-Il parametro jobs descrive una sequenza di lavori map-reduce, dove il numero dei jobs é indicato dal parametro m.
-La fase di \textit{Map} che genera m sottotask ``ridotti'' é implementata da un servizio esterno \textit{Map} che riceve jobs e un indice i che indica il job mappato.
+Il parametro jobs descrive una sequenza di lavori map-reduce, dove il numero dei jobs è indicato dal parametro m.
+La fase di \textit{Map} che genera m sottotask ``ridotti'' è implementata da un servizio esterno \textit{Map} che riceve jobs e un indice i che indica il job mappato.
 Per ogni i, ci sono j sottotask.
-In questo caso ci aspettiamo che la latenza dell'intera funzione é data dalla somma di m volte la latenza di \textit{Map} e m $x$ r volte la latenza di \textit{Reduce}.\\
+In questo caso ci aspettiamo che la latenza dell'intera funzione è data dalla somma di m volte la latenza di \textit{Map} e m $x$ r volte la latenza di \textit{Reduce}.\\
 
-cApp é stato modificato al fine di implementare nuovi costrutti quali \textit{min\_latency} e \textit{max\_latency} che ci permettono di definire un upper bound e un lower bound per la latenza di una funzione.
+cApp è stato modificato al fine di implementare nuovi costrutti quali \textit{min\_latency} e \textit{max\_latency} che ci permettono di definire un upper bound e un lower bound per la latenza di una funzione.
 \begin{multicols}{2}
     \begin{lstlisting}[caption={cAPP for Listing \ref{lst:1} e \ref{lst:2}},label={lst:4}]
 -premUser:
@@ -112,23 +115,24 @@ cApp é stato modificato al fine di implementare nuovi costrutti quali \textit{m
     \end{lstlisting}
 \end{multicols}
 
-Nel Listing \ref{lst:4}, osserviamo come diamo la possibilitá di allocare la funzione \textit{premUser} su due workers, e la strategia di allocazione é quella di minimizzare la latenza, ovvero di dare prioritá al worker su cui la soluzione dell'espressione di costo é minima.
-Illustriamo peró meglio le fasi della tecnica di \textit{min\_latency}:
+Nel Listing \ref{lst:4}, osserviamo come diamo la possibilità di allocare la funzione \textit{premUser} su due workers, e la strategia di allocazione è quella di minimizzare la latenza, ovvero di dare priorità al worker su cui la soluzione dell'espressione di costo è minima.
+Illustriamo però meglio le fasi della tecnica di \textit{min\_latency}:
 Quando viene creato lo script cApp, viene creata l'associazione tra il codice delle funzioni e il loro script etichettando le funzioni con \textit{//tag:premUser}.
 Successivamente abbiamo bisogno del calcolo delle funzioni di costo, il codice delle funzioni viene utilizzato per dedurre i programmi di costo corrispondenti.
 Quando le funzioni vengono invocate, possiamo calcolare la soluzione del programma di costo data la conoscenza dei parametri di invocazione.
 Quando riceviamo una richiesta ad esempio per il Listing \ref{lst:1} prendiamo il suo programma di costo(rappresentato dal punto di intersezione sinistra) e la corrispondente politica cApp per implementare la politica di schedulazione prevista.
 Questa politica puo essere ottenuta in due fasi: Calcolando i programmi di costo dal Solver e eseguendoli in ogni worker, e scegliendo il worker che ha latenza minima per contattare il \textit{PremiumService}.
-Invece nel caso del Listing \ref{lst:5} invece abbiamo una strategia di invalidazione \textit{max\_latency}, nel caso aver selezionato un worker con una determinata strategia, andiamo a verificare se il worker é in grado di eseguire la funzione andando a risolvere l'espressione di costo corrispondente sostituendo i parametri $m$ e $r$ con la latenza dei servizi \textit{Map} e \textit{Reduce} dal worker selezionato e verifichiamo che la latenza sia inferiore a quella definita nello script.\autocite{deserverless}\\
+Invece nel caso del Listing \ref{lst:5} invece abbiamo una strategia di invalidazione \textit{max\_latency}, dopo aver selezionato un worker con una determinata strategia, andiamo a verificare se il worker è in grado di eseguire la funzione andando a risolvere l'espressione di costo corrispondente sostituendo i parametri $m$ e $r$ con la latenza dei servizi \textit{Map} e \textit{Reduce} dal worker selezionato e verifichiamo che la latenza sia inferiore a quella definita nello script.\autocite{deserverless}\\
 \begin{figure}[H]
     \includegraphics[width=.9\textwidth]{SchedulingDeployFlow.png}
     \centering
-    \caption{From Deploy to Scheduling for Listing \ref{lst:1} e \ref{lst:1} }
+    \caption{From Deploy to Scheduling for Listing \ref{lst:1} e \ref{lst:2} }
 \end{figure}
-
+\newpage
 \subsubsection{Obiettivo della tesi}
 
-In questa tesi ci concetreremo sulle tecniche che ci permettono, data una funzione scritta in un linguaggio con una grammatica definita nei capitoli successivi, di analizzarne la semantica e da li estrarre misurazioni quali la complessitá (come upper bound di una funzione) al fine di poter ottimizzare lo scheduling dell'esecuzioni delle funzioni serverless.
-Procederemo andando a definire una grammatica per il linguaggio, in seguito illustreremo un interprete per il linguaggio che analizzando un programma in input, ci restituirá le equazioni di costo per ogni funzione.
+In questa tesi ci concetreremo sulle tecniche che ci permettono, data una funzione scritta in un linguaggio con una grammatica che definiremo nei capitoli successivi, di analizzarne la semantica e andare a generare le equazioni di costo.
+Al fine di trarre informazioni quali la complessità (come upper bound di una funzione) al fine di poter ottimizzare lo scheduling dell'esecuzioni delle funzioni serverless una volta richieste.
+Procederemo andando a definire una grammatica per il linguaggio, in seguito svilupperemo un interprete per il linguaggio che analizza un programma scritto in un linguaggio ad alto livello restituendo le equazioni di costo per ogni funzione.
 In seguito andremo ad analizzare le equazioni di costo per ogni funzione, attraverso tool(PUBS \autocite{albert2008automatic} e CoFloCo\autocite{flores2014resource}) specifici che data un equazione di costo ci definisce l'upper bound della una funzione.
 \end{document}
