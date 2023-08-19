@@ -11,12 +11,12 @@ fund : 'fn'ID'(' formalParams  ')' '->' (ID|type)'{'stm'}' ;
 declarationService: 'service'ID':''('type* | ID(','ID)*')''->'(type | ID)';';
 
 stm :(
-     |'call'ID'('exp(','exp)*')' stm
+     |'call'ID'('exp(','exp)*')' stm?';'
      |'if' '(' cond ')' '{'stm '}' 'else' '{' stm '}'
      |'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /*check for list of exp */
      |'for''('listCount';'exp';'listExp')''{' stm '}'    //for iterator
      | letIn
-     | ID'('listCount')'
+     | ID'('listCount')'';'
      );
 
 letIn: 'let' ((ID':')? assignment)+ 'in' structAssignment* stm;
