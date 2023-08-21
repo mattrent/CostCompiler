@@ -16,15 +16,15 @@ stm :(
      |'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /*check for list of exp */
      |'for''('listCount';'exp';'listExp')''{' stm '}'    //for iterator
      | letIn
-     | ID'('listCount')'';'
+     | ID'('listCount')'';' //perche non puo essre listExp?
      );
 
 letIn: 'let' ((ID':')? assignment)+ 'in' structAssignment* stm;
 
 cond : exp | 'call'ID'('exp  (',' exp)* ')' ;
 
-listCount : ID','  params | ID ;
-listExp : exp','  params | exp ;
+listCount : ID','  (params | ID)* ;
+listExp : exp','  (params | exp)* ;
 
 exp:    NUMBER                                          #valExp
         | ID                                            #derExp

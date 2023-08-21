@@ -1,9 +1,11 @@
 package ast;
 
+import exp.BinExpNode;
 import gen.*;
 import org.antlr.v4.runtime.misc.Pair;
 import typeNode.TypeNode;
 import utilities.Utils;
+
 import java.util.ArrayList;
 import gen.HLCostLanParser.*;
 
@@ -39,7 +41,6 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         }else{
             returnType = new ReturnTypeNode(new IdNode(ctx.ID(1).getText()));
         }
-
         //StmNode stm = visitStm(ctx.stm());
 
         return super.visitFund(ctx);
@@ -60,16 +61,26 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
                 exp.add(visit(expContext));
             }
 
-            //return new CallServiceNode(idCall,exp,ctx.stm(0));
+            return new CallServiceNode(idCall,exp,ctx.stm(0));
         }
 
         if(ctx.cond() != null & ctx.stm().size() == 2){
             // 'if' exp 'then' stm 'else' stm
-            Node exp = visit(ctx.cond());
-            Node stm1 = visit(ctx.stm(0));
-            Node stm2 = visit(ctx.stm(1));
+            if(ctx.cond().ID() != null){
+                ArrayList<Node> actualParams = new ArrayList<>();
+                for (ExpContext expContext : ctx.cond().exp()) {
+                    actualParams.add(visit(expContext));
+                }
+                CallServiceNode callServiceNode = new CallServiceNode(ctx.cond().ID().getText(),actualParams,null);
+                return new IfNode(callServiceNode,visitStm(ctx.stm(0)),visitStm(ctx.stm(1)));
+            }else{
+                Node exp = visitCond(ctx.cond());
 
-            //return new IfNode(exp,stm1,stm2);
+                Node stm1 = visit(ctx.stm(0));
+                Node stm2 = visit(ctx.stm(1));
+
+                return new IfNode(exp,stm1,stm2);
+            }
         }
         //'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /
         if(ctx.ID() != null && ctx.exp() != null && ctx.stm() != null){
@@ -92,30 +103,58 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
         //let in
         if(ctx.letIn() != null){
-            Node letIn = visitLetIn(ctx.letIn());
-            //return new LetInNode(letIn);
+            return visitLetIn(ctx.letIn());
         }
 
         if(ctx.ID() != null && ctx.listCount() != null){
             String id = ctx.ID().getText();
             Node listCount = visitListCount(ctx.listCount());
-            //return new CallNode(id,listCount);
+            return new CallNode(new IdNode(id),listCount);
         }
         return super.visitStm(ctx);
     }
 
     @Override
-    public Node visitLetIn(LetInContext ctx) {
-        return super.visitLetIn(ctx);
+    public LetInNode visitLetIn(LetInContext ctx) {
+        ArrayList<AssignmentNode> listAssignment = new ArrayList<>();
+        ArrayList<AssignmentNode> structAssignment = new ArrayList<>();
+
+
+        for( AssignmentContext assignmentNode: ctx.assignment()){
+            for (int j = 0; j < assignmentNode.ID().size(); j++) {
+                listAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.exp(j))));
+            }
+        }
+
+        for( StructAssignmentContext assignmentNode: ctx.structAssignment()){
+            for (int j = 0; j < assignmentNode.ID().size(); j++) {
+                listAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.exp(j))));
+            }
+        }
+
+        Node stm = visitStm(ctx.stm());
+
+        return new LetInNode(listAssignment,structAssignment,stm);
     }
 
     @Override
     public Node visitCond(CondContext ctx) {
-        return super.visitCond(ctx);
+       if(ctx.ID()!= null){
+           //Call Service
+            ArrayList<Node> actualParams = new ArrayList<>();
+            for (ExpContext expContext : ctx.exp()) {
+                actualParams.add(visit(expContext));
+            }
+            return new CallServiceNode(ctx.ID().getText(),actualParams,null);
+       }else{
+              //BinExp
+              return visit(ctx.exp(0));
+       }
     }
 
     @Override
     public Node visitListCount(ListCountContext ctx) {
+
         return super.visitListCount(ctx);
     }
 
@@ -131,7 +170,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
     @Override
     public Node visitBinExp(BinExpContext ctx) {
-        return super.visitBinExp(ctx);
+        return new BinExpNode(visit(ctx.exp(0)),visit(ctx.exp(1)),ctx.op.getText());
     }
 
     public FormalParams visitFormalParams(FormalParamsContext ctx) {
