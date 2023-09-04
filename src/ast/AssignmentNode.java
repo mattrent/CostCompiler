@@ -11,8 +11,23 @@ public class AssignmentNode implements Node {
     }
 
 
+    public IdNode getId() {
+        return id;
+    }
+
+
     @Override
     public String toPrint(String indent) {
+        return null;
+    }
+
+    @Override
+    public Environment checkSemantics(Environment e) {
+        return null;
+    }
+
+    @Override
+    public String toEquation(Environment e) {
         return null;
     }
 }

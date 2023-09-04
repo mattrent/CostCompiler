@@ -18,4 +18,16 @@ public class CallServiceNode implements Node {
     public String toPrint(String indent) {
         return indent + "CallServiceNode " + idCall + "\n" + indent + "Exp:\n" + exp.toString() + "\n" + indent + "Stm:\n" + stm.toString();
     }
+
+    @Override
+    public Environment checkSemantics(Environment e) {
+        e.add(this);
+        return e;
+    }
+
+    @Override
+    public String toEquation(Environment e) {
+        String thisNode = e.add(this);
+        return " ";
+    }
 }

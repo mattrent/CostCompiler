@@ -15,4 +15,14 @@ public class IdNode implements Node{
     public String toPrint(String indent) {
         return indent + "Id: " + id + "\n";
     }
+
+    @Override
+    public Environment checkSemantics(Environment e) {
+        return null;
+    }
+
+    @Override
+    public String toEquation(Environment e) {
+        return id;
+    }
 }

@@ -1,17 +1,14 @@
 package ast;
 
-import typeNode.TypeNode;
+public class ForNode implements Node {
+    String id;
+    Node exp;
+    Node stm;
 
-public class ReturnTypeNode implements Node{
-    TypeNode type;
-    IdNode id;
-    public ReturnTypeNode(TypeNode type) {
-        this.type = type;
-        id = null;
-    }
-
-    public ReturnTypeNode(IdNode id) {
+    public ForNode(String id, Node exp, Node stm) {
         this.id = id;
+        this.exp = exp;
+        this.stm = stm;
     }
 
     @Override
@@ -21,7 +18,9 @@ public class ReturnTypeNode implements Node{
 
     @Override
     public Environment checkSemantics(Environment e) {
-        return null;
+        e.add(this,id);
+        stm.checkSemantics(e);
+        return e;
     }
 
     @Override

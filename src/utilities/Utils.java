@@ -1,8 +1,13 @@
 package utilities;
 
+import ast.IdNode;
+import ast.Node;
 import gen.HLCostLanParser;
 import typeNode.*;
 import typeNode.TypeNode;
+
+import java.util.Random;
+import java.util.Set;
 
 public class Utils{
     public static TypeNode castType(HLCostLanParser.TypeContext type) {
@@ -27,4 +32,16 @@ public class Utils{
         }
         return null;
     }
+
+    public static char randomChar(){
+        String charList = "abcdefghijklmnopqrstuvwxyz";
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(charList.length());
+
+        char randomChar = charList.charAt(randomIndex);
+        return randomChar;
+    }
+
+
 }

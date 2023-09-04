@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.misc.Pair;
 import typeNode.TypeNode;
 import utilities.Utils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import gen.HLCostLanParser.*;
 
@@ -19,12 +20,13 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         for (DeclarationServiceContext decService : ctx.declarationService()) {
             decServices.add(visitDeclarationService(decService));
         }
-        for (DeclarationServiceContext decService : ctx.declarationService()) {
-            decServices.add(visitDeclarationService(decService));
-        }
+
         for (FundContext fund : ctx.fund()) {
             funDec.add(visitFund(fund));
         }
+
+
+
         return new MainProgramNode(complexType, decServices, funDec);
     }
 
@@ -32,8 +34,9 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     public Node visitFund(FundContext ctx) {
         String id = ctx.ID().get(0).getText();
         FormalParams formalParamsNode;
-        ArrayList<Node> stm = new ArrayList<>();
+
         ReturnTypeNode returnType;
+        
         formalParamsNode = visitFormalParams(ctx.formalParams());
 
         if(ctx.type()!= null){
@@ -41,14 +44,22 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         }else{
             returnType = new ReturnTypeNode(new IdNode(ctx.ID(1).getText()));
         }
-        //StmNode stm = visitStm(ctx.stm());
+        Node stm = visitStm(ctx.stm());
 
-        return super.visitFund(ctx);
+        return new FunDeclarationNode( returnType,new IdNode(id),formalParamsNode,stm);
     }
 
     @Override
     public Node visitDeclarationService(DeclarationServiceContext ctx) {
-        return super.visitDeclarationService(ctx);
+
+        IdNode id = new IdNode(ctx.ID(0).getText());
+        ArrayList<Pair<IdNode,TypeNode>> params = new ArrayList<>();
+        for(int i = 1;i<ctx.ID().size();i++){
+            params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.type(i-1))));
+        }
+
+        ReturnTypeNode returnType = new ReturnTypeNode(Utils.castType(ctx.type(ctx.type().size()-1)));
+        return new DecService(id,params,returnType);
     }
 
     @Override
@@ -60,26 +71,28 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             for (ExpContext expContext : ctx.exp()) {
                 exp.add(visit(expContext));
             }
-
+            //ctx.start.getLine();
             return new CallServiceNode(idCall,exp,ctx.stm(0));
         }
 
-        if(ctx.cond() != null & ctx.stm().size() == 2){
+        if(ctx.cond() != null && ctx.stm().size() == 2){
             // 'if' exp 'then' stm 'else' stm
+            int line = ctx.start.getLine();
+
             if(ctx.cond().ID() != null){
                 ArrayList<Node> actualParams = new ArrayList<>();
                 for (ExpContext expContext : ctx.cond().exp()) {
                     actualParams.add(visit(expContext));
                 }
                 CallServiceNode callServiceNode = new CallServiceNode(ctx.cond().ID().getText(),actualParams,null);
-                return new IfNode(callServiceNode,visitStm(ctx.stm(0)),visitStm(ctx.stm(1)));
+                return new IfNode(callServiceNode,visitStm(ctx.stm(0)),visitStm(ctx.stm(1)),line);
             }else{
                 Node exp = visitCond(ctx.cond());
 
                 Node stm1 = visit(ctx.stm(0));
                 Node stm2 = visit(ctx.stm(1));
 
-                return new IfNode(exp,stm1,stm2);
+                return new IfNode(exp,stm1,stm2,line);
             }
         }
         //'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /
@@ -88,7 +101,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             Node exp = visit(ctx.exp(0));
             Node stm = visitStm(ctx.stm().get(0));
 
-            //return new ForNode(id,exp,stm);
+            return new ForNode(id,exp,stm);
         }
 
         //  'for''('listCount';'exp';'listExp')''{' stm '}'

@@ -5,11 +5,15 @@ import typeNode.TypeNode;
 
 import java.util.ArrayList;
 
-public class FormalParams implements Node {
-    ArrayList<Pair<String, TypeNode>> formalParams;
+public class DecService implements Node{
+    IdNode id;
+    ArrayList<Pair<IdNode,TypeNode>> params;
+    ReturnTypeNode returnType;
 
-    public FormalParams(ArrayList<Pair<String, TypeNode>> formalParams) {
-        this.formalParams= new ArrayList<Pair<String, TypeNode>>(formalParams);
+    public DecService(IdNode id, ArrayList<Pair<IdNode, TypeNode>> params, ReturnTypeNode returnType) {
+        this.id = id;
+        this.params = params;
+        this.returnType = returnType;
     }
 
     @Override
@@ -26,5 +30,4 @@ public class FormalParams implements Node {
     public String toEquation(Environment e) {
         return "";
     }
-
 }

@@ -1,5 +1,6 @@
 package exp;
 
+import ast.Environment;
 import ast.Node;
 
 public class BinExpNode implements Node {
@@ -16,5 +17,15 @@ public class BinExpNode implements Node {
     @Override
     public String toPrint(String indent) {
         return indent + "BinExp: " + op + "\n" + left.toPrint(indent + "\t") + right.toPrint(indent + "\t");
+    }
+
+    @Override
+    public Environment checkSemantics(Environment e) {
+        return null;
+    }
+
+    @Override
+    public String toEquation(Environment e) {
+        return null;
     }
 }

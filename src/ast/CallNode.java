@@ -14,4 +14,14 @@ public class CallNode implements Node{
     public String toPrint(String indent) {
         return null;
     }
+
+    @Override
+    public Environment checkSemantics(Environment e) {
+        return null;
+    }
+
+    @Override
+    public String toEquation(Environment e) {
+        return null;
+    }
 }
