@@ -63,8 +63,13 @@ fragment DIGIT	    : '0'..'9';
 NUMBER      : DIGIT+;
 
 //ESCAPE SEQUENCES
-WS              : (' '|'\t'|'\n'|'\r')-> skip;
+NEWLINE   :  ( '\r\n'   // DOS
+               | '\r'   // MAC
+               | '\n'   // Unix
+             )
+             ->skip;
 LINECOMMENTS 	: '//' (~('\n'|'\r'))* -> skip;
+WS         : (' '|'\t')+ -> skip;
 BLOCKCOMMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMMENTS)* '*/' -> skip;
-
+LINE_NUMBER : [0-9]+;
 
