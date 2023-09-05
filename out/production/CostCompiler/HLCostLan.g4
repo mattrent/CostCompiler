@@ -1,23 +1,24 @@
 grammar HLCostLan;
 
 main : complexType* declarationService* fund*;
-
-fund : 'fn'ID'(' formalParams  ')' '->' (ID|type)'{'stm'}' ;
-
 /* p contains the list of paramters of the function */
 
 //Declaration Services
 //service PremiumService: (Params) -> string;
-declarationService: 'service'ID':''('type* | ID(','ID)*')''->'(type | ID)';';
+declarationService: 'service'ID':''('(type* | ID(','ID)*)')''->'(type | ID)';';
+
+fund : 'fn'ID'(' formalParams  ')' '->' (ID|type)'{'stm'}' ;
 
 stm :(
-     |'call'ID'('exp(','exp)*')' stm?';'
+     | callService
      |'if' '(' cond ')' '{'stm '}' 'else' '{' stm '}'
      |'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /*check for list of exp */
      |'for''('listCount';'exp';'listExp')''{' stm '}'    //for iterator
      | letIn
      | ID'('listCount')'';' //perche non puo essre listExp?
      );
+
+callService : 'call'ID'('exp(','exp)*')' ';' stm?;
 
 letIn: 'let' ((ID':')? assignment)+ 'in' structAssignment* stm;
 

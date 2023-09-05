@@ -7,8 +7,8 @@ import ast.Node;
 public class DerExpNode implements Node {
     private IdNode id;
 
-    public DerExpNode(IdNode id) {
-        this.id = id;
+    public DerExpNode(String id) {
+        this.id = new IdNode(id) ;
     }
 
     @Override
@@ -18,11 +18,12 @@ public class DerExpNode implements Node {
 
     @Override
     public Environment checkSemantics(Environment e) {
-        return null;
+        e.add(this, this.id.getId());
+        return e;
     }
 
     @Override
     public String toEquation(Environment e) {
-        return null;
+        return e.get(this);
     }
 }

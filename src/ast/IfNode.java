@@ -39,15 +39,13 @@ public class IfNode implements Node {
         e.add(stmF);
         String dec =  "if"+line+"(" + e.get(exp)+","+ e.get(stmT)+","+e.get(stmF)+") ";
         if(exp instanceof CallServiceNode){
-            return dec +"; \n"+dec + e.get(exp)+" + " +" max("+ e.get(stmT)+","+e.get(stmF)+" )";
+            return dec +"; \n"+dec +"="+ e.get(exp)+" +" +" max("+ e.get(stmT)+","+e.get(stmF)+" )" ;
         }else{
-            return dec +"; \n" + dec + " = " +e.get(stmT)+ " ["+ e.get(exp)+" = 1] \n"+ dec +" = "+e.get(stmF)+ " ["+ e.get(exp)+" = 0] \n"+
-
-                    stmF.toEquation(e) + "\n" + stmT.toEquation(e);
+            return dec +"; \n" + dec + " = " +e.get(stmT)+ " ["+ e.get(exp)+" = 1] \n"+ dec +" = "+e.get(stmF)+ " ["+ e.get(exp)+" = 0] \n";
 
         }
 
         //una volta fatto le equazioni del nodo andiamo a fare quelle per i nodi sottostanti
-
+        //if a cascata
     }
 }

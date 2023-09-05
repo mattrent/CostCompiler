@@ -30,21 +30,21 @@ public class FunDeclarationNode implements Node{
 
     @Override
     public String toEquation(Environment e) {
-        Set<Node> set = e.getSet();
+        Environment e1 = new Environment();
+        stm.checkSemantics(e1);
+
         String pre = id.getId() + "(" ;
 
-        String post =  ") = " + stm.toEquation(e) + ";\n";
+        String post =  ") = " + stm.toEquation(e1) + ";\n";
 
-        Set<Node> set2 = e.getSet();
-        set.retainAll(set2);
-
-        String par = "";
+        Set<Node> set = e1.getSet();
+        StringBuilder par = new StringBuilder();
         for(Node n : set){
-            par += e.get(n) + ",";
+            par.append(e1.get(n)).append(",");
         }
 
 
-        par = par.substring(0,par.length()-1);
+        par = new StringBuilder(par.substring(0, par.length() - 1));
         return pre + par + post;
 
     }

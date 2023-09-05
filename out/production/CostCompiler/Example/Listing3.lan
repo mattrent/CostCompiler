@@ -1,8 +1,8 @@
-(jobs, m , r) => {
+fn main(jobs:any, m:int , r:int) ->void {
       for(i in (0,m)){
-          call Map(jobs,i)
+          call Map(jobs,i);
           for (j in (0,r)){
-            call Reduce(jobs, i ,j)
+            call Reduce(jobs, i ,j);
           }
       }
  }

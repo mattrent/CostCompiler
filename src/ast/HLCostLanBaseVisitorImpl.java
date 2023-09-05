@@ -1,6 +1,7 @@
 package ast;
 
 import exp.BinExpNode;
+import exp.DerExpNode;
 import gen.*;
 import org.antlr.v4.runtime.misc.Pair;
 import typeNode.TypeNode;
@@ -64,16 +65,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
     @Override
     public Node visitStm(StmContext ctx) {
-        if(ctx.ID() != null && ctx.exp() != null){
-            //'call'ID'('exp(','exp)*')' stm?';'
-            String idCall = ctx.ID().getText();
-            ArrayList<Node> exp = new ArrayList<>();
-            for (ExpContext expContext : ctx.exp()) {
-                exp.add(visit(expContext));
-            }
-            //ctx.start.getLine();
-            return new CallServiceNode(idCall,exp,ctx.stm(0));
-        }
+
 
         if(ctx.cond() != null && ctx.stm().size() == 2){
             // 'if' exp 'then' stm 'else' stm
@@ -98,20 +90,24 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         //'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /
         if(ctx.ID() != null && ctx.exp() != null && ctx.stm() != null){
             String id = ctx.ID().getText();
-            Node exp = visit(ctx.exp(0));
+            Node exp = (Node) visit(ctx.exp());
             Node stm = visitStm(ctx.stm().get(0));
-
-            return new ForNode(id,exp,stm);
+            int line = ctx.start.getLine();
+            return new ForNode(id,exp,stm,line);
         }
 
         //  'for''('listCount';'exp';'listExp')''{' stm '}'
         if(ctx.listCount() != null && ctx.exp() != null && ctx.listExp() != null && ctx.stm() != null){
             Node listCount = visitListCount(ctx.listCount());
-            Node exp = visit(ctx.exp(0));
+            Node exp = visit(ctx.exp());
             Node listExp = visitListExp(ctx.listExp());
             Node stm = visitStm(ctx.stm().get(0));
 
             //return new ForNode(id,exp,stm);
+        }
+
+        if(ctx.callService() != null){
+            return visitCallService(ctx.callService());
         }
 
         //let in
@@ -186,6 +182,25 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         return new BinExpNode(visit(ctx.exp(0)),visit(ctx.exp(1)),ctx.op.getText());
     }
 
+    public Node visitCallService(CallServiceContext ctx) {
+        if(ctx.ID() != null && ctx.exp() != null) {
+            //'call'ID'('exp(','exp)*')' stm?';'
+            String idCall = ctx.ID().getText();
+            ArrayList<Node> exp = new ArrayList<>();
+            for (ExpContext expContext : ctx.exp()) {
+                exp.add(visit(expContext));
+            }
+            if (ctx.stm() != null)
+                return new CallServiceNode(idCall, exp, visit(ctx.stm()));
+
+            return new CallServiceNode(idCall, exp);
+        }
+        return null;
+    }
+
+    public Node visitDerExp(DerExpContext ctx) {
+        return new DerExpNode(ctx.ID().getText());
+    }
     public FormalParams visitFormalParams(FormalParamsContext ctx) {
         ArrayList<Pair<String, TypeNode>> formalParamsList = new ArrayList<>();
 

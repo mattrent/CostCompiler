@@ -18,16 +18,6 @@ public interface HLCostLanListener extends ParseTreeListener {
 	 */
 	void exitMain(HLCostLanParser.MainContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HLCostLanParser#fund}.
-	 * @param ctx the parse tree
-	 */
-	void enterFund(HLCostLanParser.FundContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link HLCostLanParser#fund}.
-	 * @param ctx the parse tree
-	 */
-	void exitFund(HLCostLanParser.FundContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link HLCostLanParser#declarationService}.
 	 * @param ctx the parse tree
 	 */
@@ -38,6 +28,16 @@ public interface HLCostLanListener extends ParseTreeListener {
 	 */
 	void exitDeclarationService(HLCostLanParser.DeclarationServiceContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HLCostLanParser#fund}.
+	 * @param ctx the parse tree
+	 */
+	void enterFund(HLCostLanParser.FundContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HLCostLanParser#fund}.
+	 * @param ctx the parse tree
+	 */
+	void exitFund(HLCostLanParser.FundContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HLCostLanParser#stm}.
 	 * @param ctx the parse tree
 	 */
@@ -47,6 +47,16 @@ public interface HLCostLanListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStm(HLCostLanParser.StmContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HLCostLanParser#callService}.
+	 * @param ctx the parse tree
+	 */
+	void enterCallService(HLCostLanParser.CallServiceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HLCostLanParser#callService}.
+	 * @param ctx the parse tree
+	 */
+	void exitCallService(HLCostLanParser.CallServiceContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HLCostLanParser#letIn}.
 	 * @param ctx the parse tree

@@ -17,23 +17,29 @@ public interface HLCostLanVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMain(HLCostLanParser.MainContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link HLCostLanParser#fund}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFund(HLCostLanParser.FundContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link HLCostLanParser#declarationService}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDeclarationService(HLCostLanParser.DeclarationServiceContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HLCostLanParser#fund}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFund(HLCostLanParser.FundContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HLCostLanParser#stm}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStm(HLCostLanParser.StmContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HLCostLanParser#callService}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCallService(HLCostLanParser.CallServiceContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HLCostLanParser#letIn}.
 	 * @param ctx the parse tree

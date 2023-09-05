@@ -29,18 +29,6 @@ public class HLCostLanBaseListener implements HLCostLanListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFund(HLCostLanParser.FundContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFund(HLCostLanParser.FundContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterDeclarationService(HLCostLanParser.DeclarationServiceContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -53,6 +41,18 @@ public class HLCostLanBaseListener implements HLCostLanListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFund(HLCostLanParser.FundContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFund(HLCostLanParser.FundContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStm(HLCostLanParser.StmContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -60,6 +60,18 @@ public class HLCostLanBaseListener implements HLCostLanListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStm(HLCostLanParser.StmContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCallService(HLCostLanParser.CallServiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCallService(HLCostLanParser.CallServiceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
