@@ -1,7 +1,9 @@
 package ast;
 
-import gen.*;
+import utilities.EnvVar;
+import utilities.Environment;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CallServiceNode implements Node {
@@ -24,16 +26,33 @@ public class CallServiceNode implements Node {
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         e.add(this, String.valueOf(idCall.charAt(0)));
         if(stm != null){
-            e = stm.checkSemantics(e);
+            e = stm.checkVarEQ(e);
         }
         return e;
     }
 
     @Override
-    public String toEquation(Environment e) {
+    public ArrayList<String> checkSemantics(Environment env) {
+        ArrayList<String> errors = new ArrayList<>();
+        if(!env.containsDeclaration(idCall)){
+            errors.add(idCall +" is not declared");
+        }
+        if(exp != null) {
+            for (Node n : exp) {
+                errors.addAll(n.checkSemantics(env));
+            }
+        }
+        if(stm != null){
+            errors.addAll(stm.checkSemantics(env));
+        }
+        return errors;
+    }
+
+    @Override
+    public String toEquation(EnvVar e) {
         if(stm != null) {
             return e.get(this) + "+" + stm.toEquation(e);
         }else

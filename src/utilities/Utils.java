@@ -1,13 +1,10 @@
 package utilities;
 
-import ast.IdNode;
-import ast.Node;
 import gen.HLCostLanParser;
-import typeNode.*;
-import typeNode.TypeNode;
+import ast.typeNode.*;
+import ast.typeNode.TypeNode;
 
 import java.util.Random;
-import java.util.Set;
 
 public class Utils{
     public static TypeNode castType(HLCostLanParser.TypeContext type) {

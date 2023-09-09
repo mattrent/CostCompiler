@@ -188,6 +188,26 @@ public interface HLCostLanListener extends ParseTreeListener {
 	 */
 	void exitComplexType(HLCostLanParser.ComplexTypeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HLCostLanParser#arrayType}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayType(HLCostLanParser.ArrayTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HLCostLanParser#arrayType}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayType(HLCostLanParser.ArrayTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HLCostLanParser#typeArr}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeArr(HLCostLanParser.TypeArrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HLCostLanParser#typeArr}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeArr(HLCostLanParser.TypeArrContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HLCostLanParser#structAssignment}.
 	 * @param ctx the parse tree
 	 */

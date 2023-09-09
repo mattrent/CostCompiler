@@ -1,21 +1,22 @@
 package exp;
 
-import utilities.EnvVar;
 import ast.Node;
+import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
 
-public class ValExpNode implements Node {
+public class ValNode implements Node {
+
     private int val;
 
-    public ValExpNode(int val) {
-        this.val = val;
+    public ValNode(String text) {
+        this.val = Integer.parseInt(text);
     }
 
     @Override
     public String toPrint(String indent) {
-        return indent + "ValExp: " + val + "\n";
+        return null;
     }
 
     @Override
@@ -25,11 +26,13 @@ public class ValExpNode implements Node {
 
     @Override
     public ArrayList<String> checkSemantics(Environment env) {
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
     @Override
     public String toEquation(EnvVar e) {
         return null;
     }
+
+
 }

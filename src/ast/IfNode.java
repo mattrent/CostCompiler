@@ -1,5 +1,10 @@
 package ast;
 
+import utilities.EnvVar;
+import utilities.Environment;
+
+import java.util.ArrayList;
+
 public class IfNode implements Node {
 
     Node exp;
@@ -25,7 +30,7 @@ public class IfNode implements Node {
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         e.add(exp);
         e.add(stmT);
         e.add(stmF);
@@ -33,15 +38,26 @@ public class IfNode implements Node {
     }
 
     @Override
-    public String toEquation(Environment e) {
+    public ArrayList<String> checkSemantics(Environment env) {
+        ArrayList<String> errors = new ArrayList<>();
+
+        errors.addAll(exp.checkSemantics(env));
+        errors.addAll(stmT.checkSemantics(env));
+        errors.addAll(stmF.checkSemantics(env));
+
+        return errors;
+    }
+
+    @Override
+    public String toEquation(EnvVar e) {
         e.add(exp);
         e.add(stmT);
         e.add(stmF);
         String dec =  "if"+line+"(" + e.get(exp)+","+ e.get(stmT)+","+e.get(stmF)+") ";
         if(exp instanceof CallServiceNode){
-            return dec +"; \n"+dec +"="+ e.get(exp)+" +" +" max("+ e.get(stmT)+","+e.get(stmF)+" )" ;
+            return dec +" \n"+dec +"="+ e.get(exp)+" +" +" max("+ e.get(stmT)+","+e.get(stmF)+" )" ;
         }else{
-            return dec +"; \n" + dec + " = " +e.get(stmT)+ " ["+ e.get(exp)+" = 1] \n"+ dec +" = "+e.get(stmF)+ " ["+ e.get(exp)+" = 0] \n";
+            return dec +" \n" + dec + " = " +e.get(stmT)+ " ["+ e.get(exp)+" = 1] \n"+ dec +" = "+e.get(stmF)+ " ["+ e.get(exp)+" = 0] \n";
 
         }
 

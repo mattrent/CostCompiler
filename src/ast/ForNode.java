@@ -1,5 +1,10 @@
 package ast;
 
+import ast.typeNode.IntType;
+import utilities.EnvVar;
+import utilities.Environment;
+
+import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -22,21 +27,32 @@ public class ForNode implements Node {
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         //e.add(this,"for"+line);
-        e = exp.checkSemantics(e);
-        e = stm.checkSemantics(e);
+        e = exp.checkVarEQ(e);
+        e = stm.checkVarEQ(e);
         return e;
     }
 
     @Override
-    public String toEquation(Environment e) {
+    public ArrayList<String> checkSemantics(Environment env) {
+        ArrayList<String> errors = new ArrayList<>();
+        env.openScope();
+        env.addDeclaration(id,new IntType());
+        errors.addAll(exp.checkSemantics(env));
+        errors.addAll(stm.checkSemantics(env));
+        env.closeScope();
+        return errors;
+    }
 
-        Environment e2 = new Environment();
-        e2 = exp.checkSemantics(e2);
+    @Override
+    public String toEquation(EnvVar e) {
+
+        EnvVar e2 = new EnvVar();
+        e2 = exp.checkVarEQ(e2);
         Set<Node> expList = e2.getSet();
-        Environment e1 = new Environment();
-        e1= stm.checkSemantics(e1);
+        EnvVar e1 = new EnvVar();
+        e1= stm.checkVarEQ(e1);
         Set<Node> stmList = e1.getSet();
 
         String linexp = "";

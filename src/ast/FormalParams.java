@@ -1,7 +1,9 @@
 package ast;
 
 import org.antlr.v4.runtime.misc.Pair;
-import typeNode.TypeNode;
+import ast.typeNode.TypeNode;
+import utilities.EnvVar;
+import utilities.Environment;
 
 import java.util.ArrayList;
 
@@ -18,12 +20,27 @@ public class FormalParams implements Node {
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         return null;
     }
 
     @Override
-    public String toEquation(Environment e) {
+    public ArrayList<String> checkSemantics(Environment env) {
+        ArrayList<String> error = new ArrayList<>();
+
+        for(Pair<String, TypeNode> p : formalParams){
+            if(env.checkHeadDeclaration(p.a)){
+                error.add(p.a +" is already declared");
+            }
+            else{
+                env.addDeclaration(p.a, p.b);
+            }
+        }
+        return error;
+    }
+
+    @Override
+    public String toEquation(EnvVar e) {
         return "";
     }
 

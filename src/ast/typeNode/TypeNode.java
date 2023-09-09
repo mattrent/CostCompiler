@@ -1,4 +1,4 @@
-package typeNode;
+package ast.typeNode;
 
 import ast.Node;
 

@@ -1,5 +1,8 @@
 package ast;
 
+import utilities.EnvVar;
+import utilities.Environment;
+
 import java.util.ArrayList;
 
 public class LetInNode implements Node {
@@ -30,16 +33,33 @@ public class LetInNode implements Node {
         }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         e.add(this,"letin");
 
-        statement.checkSemantics(e);
+        statement.checkVarEQ(e);
 
         return e;
     }
 
     @Override
-    public String toEquation(Environment e) {
+    public ArrayList<String> checkSemantics(Environment env) {
+        ArrayList<String> errors = new ArrayList<>();
+
+        for(AssignmentNode n : listAssignment){
+            errors.addAll(n.checkSemantics(env));
+        }
+
+        for(AssignmentNode n : structAssignment){
+            errors.addAll(n.checkSemantics(env));
+        }
+
+        errors.addAll(statement.checkSemantics(env));
+
+        return errors;
+    }
+
+    @Override
+    public String toEquation(EnvVar e) {
         return null;
     }
 }

@@ -1,5 +1,10 @@
 package ast;
 
+import utilities.EnvVar;
+import utilities.Environment;
+
+import java.util.ArrayList;
+
 public class AssignmentNode implements Node {
 //Can be used to AssignmentNode and StructAssignment
     IdNode id;
@@ -22,12 +27,22 @@ public class AssignmentNode implements Node {
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         return null;
     }
 
     @Override
-    public String toEquation(Environment e) {
+    public ArrayList<String> checkSemantics(Environment env) {
+        ArrayList<String> error = new ArrayList<>();
+        if(env.checkHeadDeclaration(id.getId()))
+            error.add(id.getId()+"is already declared");
+        else
+            env.addDeclaration(id.getId(),ass);
+        return error;
+        }
+
+    @Override
+    public String toEquation(EnvVar e) {
         return null;
     }
 }

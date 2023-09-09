@@ -1,8 +1,11 @@
 package exp;
 
-import ast.Environment;
+import utilities.EnvVar;
 import ast.IdNode;
 import ast.Node;
+import utilities.Environment;
+
+import java.util.ArrayList;
 
 public class DerExpNode implements Node {
     private IdNode id;
@@ -17,13 +20,22 @@ public class DerExpNode implements Node {
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         e.add(this, this.id.getId());
         return e;
     }
 
     @Override
-    public String toEquation(Environment e) {
+    public ArrayList<String> checkSemantics(Environment env) {
+        ArrayList<String> error = new ArrayList<String>();
+        if(!env.containsDeclaration(id.getId())){
+            error.add(id.getId() +" is not declared");
+        }
+        return error;
+    }
+
+    @Override
+    public String toEquation(EnvVar e) {
         return e.get(this);
     }
 }

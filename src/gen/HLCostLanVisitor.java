@@ -118,6 +118,18 @@ public interface HLCostLanVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitComplexType(HLCostLanParser.ComplexTypeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HLCostLanParser#arrayType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayType(HLCostLanParser.ArrayTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HLCostLanParser#typeArr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeArr(HLCostLanParser.TypeArrContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HLCostLanParser#structAssignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

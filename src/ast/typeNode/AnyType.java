@@ -1,6 +1,9 @@
-package typeNode;
+package ast.typeNode;
 
-import ast.Environment;
+import utilities.EnvVar;
+import utilities.Environment;
+
+import java.util.ArrayList;
 
 public class AnyType implements TypeNode{
     @Override
@@ -9,12 +12,17 @@ public class AnyType implements TypeNode{
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         return null;
     }
 
     @Override
-    public String toEquation(Environment e) {
+    public ArrayList<String> checkSemantics(Environment env) {
+        return null;
+    }
+
+    @Override
+    public String toEquation(EnvVar e) {
         return null;
     }
 

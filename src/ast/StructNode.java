@@ -1,21 +1,19 @@
 package ast;
 
-import org.antlr.v4.runtime.misc.Pair;
 import ast.typeNode.TypeNode;
+import org.antlr.v4.runtime.misc.Pair;
 import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
 
-public class DecService implements Node{
+public class StructNode implements Node {
     IdNode id;
     ArrayList<Pair<IdNode,TypeNode>> params;
-    ReturnTypeNode returnType;
 
-    public DecService(IdNode id, ArrayList<Pair<IdNode, TypeNode>> params, ReturnTypeNode returnType) {
+    public StructNode(IdNode id, ArrayList<Pair<IdNode, TypeNode>> params) {
         this.id = id;
         this.params = params;
-        this.returnType = returnType;
     }
 
     @Override
@@ -28,14 +26,23 @@ public class DecService implements Node{
         return null;
     }
 
+    public ArrayList<Pair<IdNode, TypeNode>> getParams() {
+        return params;
+    }
+
     @Override
     public ArrayList<String> checkSemantics(Environment env) {
-        env.addDeclaration(id.getId(),this);
-        return new ArrayList<>();
+        ArrayList<String> errors = new ArrayList<>();
+        if(env.checkHeadDeclaration(id.getId())){
+            env.addDeclaration(id.getId(),this);
+        }else{
+            errors.add("Struct "+id.getId()+" is already declared");
+        }
+        return errors;
     }
 
     @Override
     public String toEquation(EnvVar e) {
-        return "";
+        return null;
     }
 }

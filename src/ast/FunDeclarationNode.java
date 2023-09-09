@@ -1,7 +1,9 @@
 package ast;
 
-import typeNode.TypeNode;
+import utilities.EnvVar;
+import utilities.Environment;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class FunDeclarationNode implements Node{
@@ -22,16 +24,32 @@ public class FunDeclarationNode implements Node{
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         e.add(this,id.getId());
-        stm.checkSemantics(e);
+        stm.checkVarEQ(e);
         return e;
     }
 
     @Override
-    public String toEquation(Environment e) {
-        Environment e1 = new Environment();
-        stm.checkSemantics(e1);
+    public ArrayList<String> checkSemantics(Environment env) {
+        ArrayList<String> errors = new ArrayList<>();
+        if(env.containsDeclaration(id.getId()))
+            errors.add(id.getId()+"is already declared");
+        else
+            env.addDeclaration(id.getId(),this);
+        env.openScope();
+        if(formalParams != null) {
+            errors.addAll(formalParams.checkSemantics(env));
+        }
+        errors.addAll(stm.checkSemantics(env));
+        env.closeScope();
+        return errors;
+    }
+
+    @Override
+    public String toEquation(EnvVar e) {
+        EnvVar e1 = new EnvVar();
+        stm.checkVarEQ(e1);
 
         String pre = id.getId() + "(" ;
 

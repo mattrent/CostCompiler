@@ -1,17 +1,20 @@
-package ast;
+package utilities;
+
+import ast.IdNode;
+import ast.Node;
 
 import java.util.HashMap;
 import java.util.Set;
 
 import static utilities.Utils.randomChar;
 
-public class Environment {
+public class EnvVar {
 //TODO: Guardare se invertire String,Node è più efficiente
 
-    HashMap<Node , String> map;
+    HashMap<Node, String> map;
     int counter;
 
-    public Environment(){
+    public EnvVar(){
         map = new HashMap<>();
         counter = 0;
     }

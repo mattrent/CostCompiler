@@ -1,15 +1,20 @@
 package ast;
 
+import ast.typeNode.ArrayType;
 import exp.BinExpNode;
 import exp.DerExpNode;
+import exp.ValNode;
 import gen.*;
 import org.antlr.v4.runtime.misc.Pair;
-import typeNode.TypeNode;
+import ast.typeNode.TypeNode;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import utilities.Utils;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
 import gen.HLCostLanParser.*;
+
 
 public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     @Override
@@ -65,19 +70,17 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
     @Override
     public Node visitStm(StmContext ctx) {
-
-
         if(ctx.cond() != null && ctx.stm().size() == 2){
             // 'if' exp 'then' stm 'else' stm
             int line = ctx.start.getLine();
 
-            if(ctx.cond().ID() != null){
+            if(ctx.cond()!= null && ctx.cond().ID() != null){
                 ArrayList<Node> actualParams = new ArrayList<>();
                 for (ExpContext expContext : ctx.cond().exp()) {
                     actualParams.add(visit(expContext));
                 }
                 CallServiceNode callServiceNode = new CallServiceNode(ctx.cond().ID().getText(),actualParams,null);
-                return new IfNode(callServiceNode,visitStm(ctx.stm(0)),visitStm(ctx.stm(1)),line);
+                return new IfNode(visitCond(ctx.cond()),visitStm(ctx.stm(0)),visitStm(ctx.stm(1)),line);
             }else{
                 Node exp = visitCond(ctx.cond());
 
@@ -94,16 +97,6 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             Node stm = visitStm(ctx.stm().get(0));
             int line = ctx.start.getLine();
             return new ForNode(id,exp,stm,line);
-        }
-
-        //  'for''('listCount';'exp';'listExp')''{' stm '}'
-        if(ctx.listCount() != null && ctx.exp() != null && ctx.listExp() != null && ctx.stm() != null){
-            Node listCount = visitListCount(ctx.listCount());
-            Node exp = visit(ctx.exp());
-            Node listExp = visitListExp(ctx.listExp());
-            Node stm = visitStm(ctx.stm().get(0));
-
-            //return new ForNode(id,exp,stm);
         }
 
         if(ctx.callService() != null){
@@ -147,6 +140,12 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     }
 
     @Override
+    public Node visitStringExp(StringExpContext ctx) {
+        return new StringNode(ctx.getText());
+    }
+
+
+    @Override
     public Node visitCond(CondContext ctx) {
        if(ctx.ID()!= null){
            //Call Service
@@ -157,9 +156,11 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             return new CallServiceNode(ctx.ID().getText(),actualParams,null);
        }else{
               //BinExp
-              return visit(ctx.exp(0));
+               return(visit(ctx.exp(0)));
+
        }
     }
+
 
     @Override
     public Node visitListCount(ListCountContext ctx) {
@@ -174,12 +175,42 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
     @Override
     public Node visitCallFun(CallFunContext ctx) {
-        return super.visitCallFun(ctx);
+
+        ArrayList<String> idList = new ArrayList<>();
+        for (TerminalNode id : ctx.ID()) {
+            idList.add(id.getText());
+        }
+        return new CallFunNode(idList);
     }
 
     @Override
     public Node visitBinExp(BinExpContext ctx) {
         return new BinExpNode(visit(ctx.exp(0)),visit(ctx.exp(1)),ctx.op.getText());
+    }
+
+    @Override
+    public Node visitComplexType(ComplexTypeContext ctx) {
+
+        if(ctx.ID()!= null){
+            //Struct Node
+
+            IdNode id = new IdNode(ctx.ID(0).getText());
+            ArrayList<Pair<IdNode,TypeNode>> params = new ArrayList<>();
+            for(int i = 1;i<ctx.ID().size();i++){
+                if(ctx.arrayType(i).typeArr() != null){
+                    //ArrayNode
+                    ArrayType arr = new ArrayType(Utils.castType(ctx.arrayType(i).typeArr().type()));
+                    params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),arr));
+                }else
+                    params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.arrayType(i-1).type())));
+            }
+
+            return new StructNode(id,params);
+        }else{
+            //ArrayNode
+            ArrayType arr = new ArrayType(Utils.castType(ctx.typeArr().type()));
+            return arr;
+        }
     }
 
     public Node visitCallService(CallServiceContext ctx) {
@@ -211,5 +242,10 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
         }
         return new FormalParams(formalParamsList);
+    }
+
+    @Override
+    public Node visitValExp(ValExpContext ctx) {
+        return new ValNode(ctx.getText());
     }
 }

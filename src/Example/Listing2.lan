@@ -1,4 +1,4 @@
-service IsPremiumUser : (string) -> bool;
+service IsPremiumUser : () -> bool;
 service PremiumService : (any) -> void;
 service BasicService : (any) -> void;
 fn main(username: string, par: any) -> void {

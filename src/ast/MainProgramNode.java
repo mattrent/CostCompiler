@@ -1,6 +1,8 @@
 package ast;
 
-import java.awt.*;
+import utilities.EnvVar;
+import utilities.Environment;
+
 import java.util.ArrayList;
 
 public class MainProgramNode implements Node {
@@ -19,20 +21,43 @@ public class MainProgramNode implements Node {
     }
 
     @Override
-    public Environment checkSemantics(Environment e) {
+    public EnvVar checkVarEQ(EnvVar e) {
         e.add(this,"main");
 
 
         for(Node n : decServices){
-            n.checkSemantics(e);
+            n.checkVarEQ(e);
         }
         for(Node n : funDec){
-            n.checkSemantics(e);
+            n.checkVarEQ(e);
         }
         return e;
     }
 
-    public String toEquation(Environment e){
+    @Override
+    public ArrayList<String> checkSemantics(Environment env) {
+        env.openScope();
+        ArrayList<String> errors = new ArrayList<>();
+        if(complexType != null) {
+            for (Node n : complexType) {
+                errors.addAll(n.checkSemantics(env));
+            }
+        }
+        if(decServices != null) {
+            for (Node n : decServices) {
+                errors.addAll(n.checkSemantics(env));
+            }
+        }
+        if(funDec != null) {
+            for (Node n : funDec) {
+                errors.addAll(n.checkSemantics(env));
+            }
+        }
+        env.closeScope();
+        return errors;
+    }
+
+    public String toEquation(EnvVar e){
 
         String equ = "";
         for(Node n : funDec){
