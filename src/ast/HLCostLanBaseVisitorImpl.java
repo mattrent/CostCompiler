@@ -1,6 +1,7 @@
 package ast;
 
 import ast.typeNode.ArrayType;
+import ast.typeNode.IdType;
 import exp.BinExpNode;
 import exp.DerExpNode;
 import exp.ValNode;
@@ -31,8 +32,9 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             funDec.add(visitFund(fund));
         }
 
-
-
+        for(ComplexTypeContext complexTypeContext : ctx.complexType()){
+            complexType.add(visitComplexType(complexTypeContext));
+        }
         return new MainProgramNode(complexType, decServices, funDec);
     }
 
@@ -58,13 +60,20 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     @Override
     public Node visitDeclarationService(DeclarationServiceContext ctx) {
 
-        IdNode id = new IdNode(ctx.ID(0).getText());
+        IdNode id = new IdNode(ctx.ID().getText());
         ArrayList<Pair<IdNode,TypeNode>> params = new ArrayList<>();
-        for(int i = 1;i<ctx.ID().size();i++){
-            params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.type(i-1))));
-        }
+        for(int i = 0;i< ctx.typeDecl().size()-1;i++){
+            if(ctx.typeDecl(i).type()!= null)
+                params.add(new Pair<IdNode, TypeNode>(null,Utils.castType(ctx.typeDecl(i).type())));
+            else
+                params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.typeDecl(i).ID().getText()),null));
 
-        ReturnTypeNode returnType = new ReturnTypeNode(Utils.castType(ctx.type(ctx.type().size()-1)));
+            }
+        ReturnTypeNode returnType;
+        if(ctx.typeDecl(ctx.typeDecl().size()-1).type() == null)
+            returnType = new ReturnTypeNode(new IdNode(ctx.typeDecl(ctx.typeDecl().size()-1).ID().getText()));
+        else
+            returnType = new ReturnTypeNode(Utils.castType(ctx.typeDecl(ctx.typeDecl().size()-1).type()));
         return new DecService(id,params,returnType);
     }
 
@@ -108,10 +117,13 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             return visitLetIn(ctx.letIn());
         }
 
-        if(ctx.ID() != null && ctx.listCount() != null){
+        if(ctx.ID() != null && ctx.listExp() != null){
             String id = ctx.ID().getText();
-            Node listCount = visitListCount(ctx.listCount());
-            return new CallNode(new IdNode(id),listCount);
+            ArrayList<Node> listExp = new ArrayList<>();
+            for (ExpContext expContext : ctx.listExp().exp()) {
+                listExp.add(visit(expContext));
+            }
+            return new CallNode(new IdNode(id),listExp);
         }
         return super.visitStm(ctx);
     }
@@ -161,15 +173,12 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
        }
     }
 
-
-    @Override
-    public Node visitListCount(ListCountContext ctx) {
-
-        return super.visitListCount(ctx);
-    }
-
     @Override
     public Node visitListExp(ListExpContext ctx) {
+        ArrayList<Node> listExp = new ArrayList<>();
+        for (ExpContext expContext : ctx.exp()) {
+            listExp.add(visit(expContext));
+        }
         return super.visitListExp(ctx);
     }
 
@@ -193,18 +202,16 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
         if(ctx.ID()!= null){
             //Struct Node
-
             IdNode id = new IdNode(ctx.ID(0).getText());
             ArrayList<Pair<IdNode,TypeNode>> params = new ArrayList<>();
             for(int i = 1;i<ctx.ID().size();i++){
-                if(ctx.arrayType(i).typeArr() != null){
+                if(ctx.arrayType(i-1).typeArr() != null){
                     //ArrayNode
-                    ArrayType arr = new ArrayType(Utils.castType(ctx.arrayType(i).typeArr().type()));
+                    ArrayType arr = new ArrayType(Utils.castType(ctx.arrayType(i-1).typeArr().type()));
                     params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),arr));
                 }else
                     params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.arrayType(i-1).type())));
             }
-
             return new StructNode(id,params);
         }else{
             //ArrayNode
@@ -212,7 +219,6 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             return arr;
         }
     }
-
     public Node visitCallService(CallServiceContext ctx) {
         if(ctx.ID() != null && ctx.exp() != null) {
             //'call'ID'('exp(','exp)*')' stm?';'
@@ -237,7 +243,14 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
         if(!ctx.isEmpty()){
             for(int i = 0; i< ctx.ID().size();i++){
-                formalParamsList.add(new Pair<>(ctx.ID(i).getText(),Utils.castType(ctx.type(i))));
+                int j =ctx.ID().size();
+                int count = ctx.typeDecl().size();
+
+                if(ctx.typeDecl(i).type() == null){
+                    formalParamsList.add(new Pair<String, TypeNode>(ctx.ID(i).getText(),new IdType(ctx.typeDecl(i).ID().getText())));
+                }else{
+                    formalParamsList.add(new Pair<String, TypeNode>(ctx.ID(i).getText(),Utils.castType(ctx.typeDecl(i).type())));
+                }
             }
 
         }

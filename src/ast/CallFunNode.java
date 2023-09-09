@@ -6,6 +6,7 @@ import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CallFunNode implements Node{
 
@@ -30,15 +31,12 @@ public class CallFunNode implements Node{
 
         ArrayList<String> error = new ArrayList<>();
         if(env.containsDeclaration(listId.get(0))){
-            error.add(listId.get(0) +" is not declared");
-        }else{
-
             Node stcnode = env.getDeclaration(listId.get(0));
             if(stcnode instanceof StructNode) {
                 StructNode structNode = (StructNode) stcnode;
                 boolean flag = false;
                 for( Pair<IdNode, TypeNode> elem : structNode.getParams()){
-                    if (elem.a.getId() == listId.get(1) && !flag) {
+                    if (Objects.equals(elem.a.getId(), listId.get(1)) && !flag) {
                         flag = true;
                     }
                 }
@@ -46,6 +44,8 @@ public class CallFunNode implements Node{
                     error.add(listId.get(1) +" is not declared");
                 }
             }
+        }else{
+            error.add(listId.get(0) +" is not declared");
         }
         return error;
     }

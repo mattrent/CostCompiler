@@ -1,20 +1,21 @@
-package ast;
+package ast.typeNode;
 
 import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
 
-public class CallNode implements Node{
+public class IdType implements TypeNode{
 
-    IdNode id;
-    ArrayList<Node> listCount;
+    String id;
 
-    public CallNode(IdNode id, ArrayList<Node> listCount) {
+    public IdType(String id) {
         this.id = id;
-        this.listCount = listCount;
     }
 
+    public IdType(String id, IdType idType) {
+        this.id = id;
+    }
     @Override
     public String toPrint(String indent) {
         return null;
@@ -27,18 +28,16 @@ public class CallNode implements Node{
 
     @Override
     public ArrayList<String> checkSemantics(Environment env) {
-        ArrayList<String> error = new ArrayList<>();
-
-        if(!env.containsDeclaration(id.getId())){
-            error.add(id.getId() +" is not declared");
-        }
-
-        return error;
-
+        return null;
     }
 
     @Override
     public String toEquation(EnvVar e) {
+        return null;
+    }
+
+    @Override
+    public TypeNode getType() {
         return null;
     }
 }

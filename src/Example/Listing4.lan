@@ -1,0 +1,20 @@
+struct Params {
+	name:string
+}
+
+struct Result {
+	payload: string
+}
+service PremiumService: (Params) -> Result;
+service BasicService: (Params) -> Result;
+fn svc(isPremiumUser: bool, par: Params) -> Result {
+	if ( isPremiumUser ) {
+		call PremiumService( par );
+	} else {
+		call BasicService( par );
+	}
+}
+
+fn main(isPremiumUser: bool, par: Params) -> Result {
+	svc(isPremiumUser, par)
+}

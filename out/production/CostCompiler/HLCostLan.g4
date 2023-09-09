@@ -5,7 +5,8 @@ main : complexType* declarationService* fund*;
 
 //Declaration Services
 //service PremiumService: (Params) -> string;
-declarationService: 'service'ID':''('(type | ID)?(','(type | ID))*')''->'(type | ID)';';
+declarationService: 'service'ID':''('typeDecl?(','typeDecl)*')''->'typeDecl';';
+typeDecl : (type | ID);
 
 fund : 'fn'ID'(' formalParams  ')' '->' (ID|type)'{'stm'}' ;
 
@@ -14,16 +15,15 @@ stm :(
      |'if' '(' cond ')' '{'stm '}' 'else' '{' stm '}'
      |'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /*check for list of exp */
      | letIn
-     | ID'('listCount')'';' //perche non puo essre listExp?
+     | ID'('listExp')'';'
      );
 
-callService : 'call'ID'('exp(','exp)*')' ';' stm?;
+callService : 'call'ID'('(exp(','exp)*)?')' ';' stm?;
 
 letIn: 'let' ((ID':')? assignment)+ 'in' structAssignment* stm;
 
 cond : exp | 'call'ID'('exp  (',' exp)* ')' ;
 
-listCount : ID','  (params | ID)* ;
 listExp : exp','  (params | exp)* ;
 
 exp:    NUMBER                                                  #valExp
@@ -54,16 +54,16 @@ typeArr : type;
 structAssignment : ID'{'ID ':' (exp|stm)(','ID ':' (exp|stm))*'}';
 
 params :  ID','  params | ID ;
-formalParams:  ID ':' (type|ID)(','ID ':' (type|ID))*;
+formalParams:  ID ':' typeDecl(','ID ':' typeDecl)*;
 
 //IDs
 fragment CHAR 	    : 'a'..'z' |'A'..'Z' ;
 ID          : CHAR (CHAR | DIGIT)* ;
-STRING      : CHAR (CHAR)* ;
 
 //Numbers
 fragment DIGIT	    : '0'..'9';
 NUMBER      : DIGIT+;
+
 
 //ESCAPE SEQUENCES
 NEWLINE   :  ( '\r\n'   // DOS

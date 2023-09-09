@@ -28,6 +28,16 @@ public interface HLCostLanListener extends ParseTreeListener {
 	 */
 	void exitDeclarationService(HLCostLanParser.DeclarationServiceContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HLCostLanParser#typeDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeDecl(HLCostLanParser.TypeDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HLCostLanParser#typeDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeDecl(HLCostLanParser.TypeDeclContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HLCostLanParser#fund}.
 	 * @param ctx the parse tree
 	 */
@@ -77,16 +87,6 @@ public interface HLCostLanListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCond(HLCostLanParser.CondContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link HLCostLanParser#listCount}.
-	 * @param ctx the parse tree
-	 */
-	void enterListCount(HLCostLanParser.ListCountContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link HLCostLanParser#listCount}.
-	 * @param ctx the parse tree
-	 */
-	void exitListCount(HLCostLanParser.ListCountContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HLCostLanParser#listExp}.
 	 * @param ctx the parse tree

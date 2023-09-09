@@ -8,26 +8,23 @@ import java.util.Random;
 
 public class Utils{
     public static TypeNode castType(HLCostLanParser.TypeContext type) {
-        if (type.getText().equals("int")) {
+        String typeString = type.getText().toLowerCase();
+        if (typeString.equals("int")) {
             return new IntType();
-        } else if (type.getText().equals("bool")) {
+        } else if (typeString.equals("bool")) {
             return new BoolType();
-        } else if (type.getText().equals("string")) {
+        } else if (typeString.equals("string")) {
             return new StringType();
-        } else if (type.getText().equals("float")) {
+        } else if (typeString.equals("float")) {
             return new FloatType();
-        } else if (type.getText().equals("void")) {
+        } else if (typeString.equals("void")) {
             return new VoidType();
-        } else if (type.getText().equals("char")) {
+        } else if (typeString.equals("char")) {
             return new CharType();
-        } else if (type.getText().equals("any")) {
+        } else if (typeString.equals("any")) {
             return new AnyType();
-        } else if (type.getText().equals("bool")) {
-            return new BoolType();
-        } else if (type.getText().equals("string")) {
-            return new StringType();
         }
-        return null;
+        return new NullType();
     }
 
     public static char randomChar(){

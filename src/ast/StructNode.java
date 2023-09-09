@@ -33,10 +33,20 @@ public class StructNode implements Node {
     @Override
     public ArrayList<String> checkSemantics(Environment env) {
         ArrayList<String> errors = new ArrayList<>();
-        if(env.checkHeadDeclaration(id.getId())){
+        if(!env.checkHeadDeclaration(id.getId())){
             env.addDeclaration(id.getId(),this);
+            env.openScope();
+            for(Pair<IdNode,TypeNode> p : params){
+                String id = p.a.getId();
+                if(!env.checkHeadDeclaration(id)){
+                    env.addDeclaration(p.a.getId(),p.b);
+                }else{
+                    errors.add("Variable "+p.a.getId()+" is already declared");
+                }
+            }
+            env.closeScope();
         }else{
-            errors.add("Struct "+id.getId()+" is already declared");
+            errors.add("Variable Struct "+id.getId()+" is already declared");
         }
         return errors;
     }

@@ -41,6 +41,18 @@ public class HLCostLanBaseListener implements HLCostLanListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTypeDecl(HLCostLanParser.TypeDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypeDecl(HLCostLanParser.TypeDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFund(HLCostLanParser.FundContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -96,18 +108,6 @@ public class HLCostLanBaseListener implements HLCostLanListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCond(HLCostLanParser.CondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterListCount(HLCostLanParser.ListCountContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitListCount(HLCostLanParser.ListCountContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

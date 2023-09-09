@@ -23,6 +23,12 @@ public interface HLCostLanVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclarationService(HLCostLanParser.DeclarationServiceContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HLCostLanParser#typeDecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeDecl(HLCostLanParser.TypeDeclContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HLCostLanParser#fund}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -52,12 +58,6 @@ public interface HLCostLanVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCond(HLCostLanParser.CondContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link HLCostLanParser#listCount}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListCount(HLCostLanParser.ListCountContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HLCostLanParser#listExp}.
 	 * @param ctx the parse tree
