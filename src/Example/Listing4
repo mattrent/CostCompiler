@@ -16,5 +16,5 @@ fn svc(isPremiumUser: bool, par: Params) -> Result {
 }
 
 fn main(isPremiumUser: bool, par: Params) -> Result {
-	svc(isPremiumUser, par)
+	svc(isPremiumUser, par);
 }

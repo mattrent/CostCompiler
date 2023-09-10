@@ -1,0 +1,24 @@
+struct Params {
+	counter: int
+}
+struct Result {
+	payload: int
+}
+
+fn loop(c: int, acc: int) -> int {
+	if (c > 0) {
+		loop(c - 1, acc + c);
+	} else {
+		acc
+	}
+}
+
+fn main(par: Params) -> Result {
+	let
+		counter = par.counter * 2;
+		result = loop(counter, 0);
+	in
+		Result {
+			payload: result
+		}
+}

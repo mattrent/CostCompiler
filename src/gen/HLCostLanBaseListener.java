@@ -257,6 +257,18 @@ public class HLCostLanBaseListener implements HLCostLanListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAssign(HLCostLanParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssign(HLCostLanParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterParams(HLCostLanParser.ParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}

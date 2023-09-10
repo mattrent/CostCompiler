@@ -53,7 +53,8 @@ public class LetInNode implements Node {
             errors.addAll(n.checkSemantics(env));
         }
 
-        errors.addAll(statement.checkSemantics(env));
+        if(statement != null)
+            errors.addAll(statement.checkSemantics(env));
 
         return errors;
     }

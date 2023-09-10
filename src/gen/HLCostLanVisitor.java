@@ -136,6 +136,12 @@ public interface HLCostLanVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStructAssignment(HLCostLanParser.StructAssignmentContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HLCostLanParser#assign}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssign(HLCostLanParser.AssignContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HLCostLanParser#params}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

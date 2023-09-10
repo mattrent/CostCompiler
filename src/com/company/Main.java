@@ -11,7 +11,7 @@ import utilities.Environment;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String fileName = "src/Example/Listing4.lan";
+        String fileName = "src/Example/Listing4";
         CharStream input = CharStreams.fromFileName(fileName);
         HLCostLanLexer lexer = new HLCostLanLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);

@@ -13,9 +13,10 @@ fund : 'fn'ID'(' formalParams  ')' '->' (ID|type)'{'stm'}' ;
 stm :(
      | callService
      |'if' '(' cond ')' '{'stm '}' 'else' '{' stm '}'
-     |'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /*check for list of exp */
+     |'for' '('ID 'in' '(' NUMBER','exp ')' ')' '{' stm '}'   /*check for list of exp */
      | letIn
      | ID'('listExp')'';'
+     |exp
      );
 
 callService : 'call'ID'('(exp(','exp)*)?')' ';' stm?;
@@ -26,15 +27,15 @@ cond : exp | 'call'ID'('exp  (',' exp)* ')' ;
 
 listExp : exp','  (params | exp)* ;
 
-exp:    NUMBER                                                  #valExp
-        | ID                                                    #derExp
-        | left= exp op= ('+'|'-') right= exp                    #binExp
+exp:     left= exp op= ('+'|'-') right= exp                    #binExp
         | left= exp op= ('>'|'==' | '>=' |'!=') right= exp      #binExp
         | left= exp op= ('&&' |'*' | '/') right= exp            #binExp
         | ID'.'ID                                       #callFun
-        | '"'ID'"'                                              #stringExp;
+        | '"'ID'"'                                              #stringExp
+        | NUMBER                                                  #valExp
+        | ID                                                    #derExp;
 
-assignment: ID '=' (exp';'|stm) (ID '=' (exp';'|stm))*;
+assignment: ID '=' assign';' ( ID '=' assign';')*;
 
 type: 'int'
     | 'char'
@@ -51,8 +52,9 @@ complexType : 'array''['typeArr']'
 arrayType : 'array''['typeArr']' | type;
 typeArr : type;
 
-structAssignment : ID'{'ID ':' (exp|stm)(','ID ':' (exp|stm))*'}';
+structAssignment : ID'{'ID ':' assign (','ID ':' assign)*'}';
 
+assign : exp|stm;
 params :  ID','  params | ID ;
 formalParams:  ID ':' typeDecl(','ID ':' typeDecl)*;
 

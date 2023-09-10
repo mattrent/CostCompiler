@@ -33,7 +33,7 @@ public class DecService implements Node{
         ArrayList<String> errors = new ArrayList<>();
         env.addDeclaration(id.getId(),this);
         for (Pair<IdNode, TypeNode> elem : params) {
-            if(elem != null){
+            if(elem != null && elem.a != null){
                 if(!env.containsDeclaration(elem.a.getId()))
                     errors.add(elem.a.getId() + " is not declared");
             }

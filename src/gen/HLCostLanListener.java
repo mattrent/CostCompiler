@@ -218,6 +218,16 @@ public interface HLCostLanListener extends ParseTreeListener {
 	 */
 	void exitStructAssignment(HLCostLanParser.StructAssignmentContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HLCostLanParser#assign}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssign(HLCostLanParser.AssignContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HLCostLanParser#assign}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssign(HLCostLanParser.AssignContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HLCostLanParser#params}.
 	 * @param ctx the parse tree
 	 */

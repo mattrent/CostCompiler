@@ -125,6 +125,11 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             }
             return new CallNode(new IdNode(id),listExp);
         }
+
+        if(ctx.exp() != null){
+            return visit(ctx.exp());
+        }
+
         return super.visitStm(ctx);
     }
 
@@ -136,13 +141,19 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
         for( AssignmentContext assignmentNode: ctx.assignment()){
             for (int j = 0; j < assignmentNode.ID().size(); j++) {
-                listAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.exp(j))));
+                if(assignmentNode.assign(j).exp() != null)
+                    listAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.assign(j).exp())));
+                else
+                    listAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j).stm())));
             }
         }
 
         for( StructAssignmentContext assignmentNode: ctx.structAssignment()){
-            for (int j = 0; j < assignmentNode.ID().size(); j++) {
-                listAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.exp(j))));
+            for (int j = 1; j < assignmentNode.ID().size(); j++) {
+                if(assignmentNode.assign(j-1).exp() != null)
+                    structAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.assign(j-1).exp())));
+                else
+                    structAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j-1).stm())));
             }
         }
 
