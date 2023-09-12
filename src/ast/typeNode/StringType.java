@@ -1,10 +1,11 @@
 package ast.typeNode;
 
+import ast.Node;
 import utilities.Environment;
 
 import java.util.ArrayList;
 
-public class StringType  extends AnyType implements TypeNode{
+public class StringType  extends CharType{
     @Override
     public String toPrint(String indent) {
         return "String Type";
@@ -12,6 +13,11 @@ public class StringType  extends AnyType implements TypeNode{
 
     @Override
     public TypeNode getType() {
+        return this;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
         return this;
     }
 

@@ -1,5 +1,6 @@
 package ast;
 
+import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
 
@@ -39,6 +40,22 @@ public class LetInNode implements Node {
         statement.checkVarEQ(e);
 
         return e;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        for(AssignmentNode n : listAssignment){
+            n.typeCheck(e);
+        }
+
+        for(AssignmentNode n : structAssignment){
+            n.typeCheck(e);
+        }
+
+        if(statement != null)
+            statement.typeCheck(e);
+
+        return new VoidType();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ast.typeNode;
 
+import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
 
@@ -33,6 +34,14 @@ public class IdType implements TypeNode{
 
     @Override
     public String toEquation(EnvVar e) {
+        return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        if(e.containsDeclaration(id)){
+            return e.getDeclaration(id).typeCheck(e);
+        }
         return null;
     }
 

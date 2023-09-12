@@ -1,11 +1,12 @@
 package ast.typeNode;
 
+import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
 
-public class ArrayType implements TypeNode {
+public class ArrayType extends AnyType {
     TypeNode type;
 
     public ArrayType(TypeNode type) {
@@ -21,6 +22,11 @@ public class ArrayType implements TypeNode {
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        return this;
     }
 
     @Override

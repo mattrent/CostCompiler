@@ -29,6 +29,12 @@ public class DecService implements Node{
     }
 
     @Override
+    public Node typeCheck(Environment e) {
+        e.addDeclaration(id.getId(),this);
+        return this;
+    }
+
+    @Override
     public ArrayList<String> checkSemantics(Environment env) {
         ArrayList<String> errors = new ArrayList<>();
         env.addDeclaration(id.getId(),this);
@@ -44,5 +50,9 @@ public class DecService implements Node{
     @Override
     public String toEquation(EnvVar e) {
         return "";
+    }
+
+    public ArrayList<Pair<IdNode, TypeNode>> getParams() {
+        return params;
     }
 }

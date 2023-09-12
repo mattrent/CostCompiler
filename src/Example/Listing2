@@ -2,7 +2,7 @@ service IsPremiumUser : () -> bool;
 service PremiumService : (any) -> void;
 service BasicService : (any) -> void;
 fn main(username: string, par: any) -> void {
-	if ( call IsPremiumUser(username) ) {
+	if ( call IsPremiumUser() ) {
 		call PremiumService( par );
 	} else {
 		call BasicService( par );

@@ -4,7 +4,7 @@ import ast.typeNode.ArrayType;
 import ast.typeNode.IdType;
 import exp.BinExpNode;
 import exp.DerExpNode;
-import exp.ValNode;
+import exp.ValExpNode;
 import gen.*;
 import org.antlr.v4.runtime.misc.Pair;
 import ast.typeNode.TypeNode;
@@ -12,7 +12,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import utilities.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import gen.HLCostLanParser.*;
 
@@ -270,6 +269,6 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
     @Override
     public Node visitValExp(ValExpContext ctx) {
-        return new ValNode(ctx.getText());
+        return new ValExpNode(ctx.getText());
     }
 }

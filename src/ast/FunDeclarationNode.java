@@ -1,5 +1,6 @@
 package ast;
 
+import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
 
@@ -31,6 +32,18 @@ public class FunDeclarationNode implements Node{
     }
 
     @Override
+    public Node typeCheck(Environment e) {
+        e.addDeclaration(id.getId(),this);
+        e.openScope();
+        if(formalParams != null) {
+            formalParams.typeCheck(e);
+        }
+        stm.typeCheck(e);
+        e.closeScope();
+        return new VoidType();
+    }
+
+    @Override
     public ArrayList<String> checkSemantics(Environment env) {
         ArrayList<String> errors = new ArrayList<>();
         if(env.containsDeclaration(id.getId()))
@@ -42,6 +55,7 @@ public class FunDeclarationNode implements Node{
             errors.addAll(formalParams.checkSemantics(env));
         }
         errors.addAll(stm.checkSemantics(env));
+        errors.addAll(type.checkSemantics(env));
         env.closeScope();
         return errors;
     }
@@ -65,5 +79,13 @@ public class FunDeclarationNode implements Node{
         par = new StringBuilder(par.substring(0, par.length() - 1));
         return pre + par + post;
 
+    }
+
+    public FormalParams getFormalParams() {
+        return formalParams;
+    }
+
+    public Node getReturnNode(){
+        return type;
     }
 }

@@ -34,6 +34,7 @@ public class Main {
 
             Environment env = new Environment();
             System.out.println(ast.checkSemantics(env));
+            System.out.println(ast.typeCheck(env));
         }
     }
 }

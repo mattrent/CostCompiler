@@ -27,6 +27,11 @@ public class IdNode implements Node{
     }
 
     @Override
+    public Node typeCheck(Environment e) {
+        return e.getDeclaration(id).typeCheck(e);
+    }
+
+    @Override
     public ArrayList<String> checkSemantics(Environment env) {
         return new ArrayList<>();
     }

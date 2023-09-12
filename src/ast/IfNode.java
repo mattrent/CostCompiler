@@ -1,5 +1,7 @@
 package ast;
 
+import ast.typeNode.BoolType;
+import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
 
@@ -35,6 +37,18 @@ public class IfNode implements Node {
         e.add(stmT);
         e.add(stmF);
         return e;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        if(exp.typeCheck(e) instanceof BoolType){
+            stmT.typeCheck(e);
+            stmF.typeCheck(e);
+        }else {
+            System.err.println("Type error in if condition");
+            System.exit(0);
+        }
+        return new VoidType();
     }
 
     @Override

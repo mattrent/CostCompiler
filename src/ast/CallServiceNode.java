@@ -1,7 +1,11 @@
 package ast;
 
+import ast.typeNode.TypeNode;
+import ast.typeNode.VoidType;
+import org.antlr.v4.runtime.misc.Pair;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.Utils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -32,6 +36,19 @@ public class CallServiceNode implements Node {
             e = stm.checkVarEQ(e);
         }
         return e;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        DecService service = (DecService) e.getDeclaration(idCall);
+        ArrayList<Pair<IdNode, TypeNode>> par = service.getParams();
+        for(int i = 0 ;i< exp.size();i++){
+            Node parType = par.get(i).a != null ? par.get(i).a : par.get(i).b;
+            if(!Utils.isSubtype(exp.get(i).typeCheck(e),parType.typeCheck(e))  ){
+               System.err.println("Incompatible type in "+ idCall+" node");
+            }
+        }
+        return service.returnType.typeCheck(e);
     }
 
     @Override

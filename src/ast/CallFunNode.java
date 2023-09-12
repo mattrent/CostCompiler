@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class CallFunNode implements Node{
-
+    //CallFunNode : ID.ID;
     ArrayList<String> listId;
 
     public CallFunNode(ArrayList<String> listId) {
@@ -23,6 +23,27 @@ public class CallFunNode implements Node{
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
+        return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        //Dobbiamo controllare parametri formali e attuali coincidano
+        //TODO:permettere struct annidate(al momento non è possibile)
+        for(String id : listId){
+            if(e.containsDeclaration(id)){
+                Node node = e.getDeclaration(id);
+                if(node instanceof StructNode){
+                    StructNode structNode = (StructNode) node;
+                    id = listId.get(1);
+                    for(Pair<IdNode, TypeNode> elem : structNode.getParams()){
+                        if(elem.a.getId().equals(id)){
+                            return elem.b.typeCheck(e);
+                        }
+                    }
+                }
+            }
+        }
         return null;
     }
 

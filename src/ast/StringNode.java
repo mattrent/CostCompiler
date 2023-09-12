@@ -27,6 +27,11 @@ public class StringNode implements Node {
     }
 
     @Override
+    public Node typeCheck(Environment e) {
+        return new StringType();
+    }
+
+    @Override
     public ArrayList<String> checkSemantics(Environment env) {
         return new ArrayList<>();
     }

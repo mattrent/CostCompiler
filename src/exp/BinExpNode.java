@@ -1,8 +1,13 @@
 package exp;
 
+import ast.typeNode.BoolType;
+import ast.typeNode.FloatType;
+import ast.typeNode.IntType;
+import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import ast.Node;
 import utilities.Environment;
+import utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -25,6 +30,46 @@ public class BinExpNode implements Node {
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        switch (op){
+            case "+" :
+            case "-" :
+                if(Utils.isSubtype(left.typeCheck(e), new IntType()) && Utils.isSubtype(right.typeCheck(e), new IntType()))
+                    return new IntType();
+                else {
+                    System.out.println("Type error in " + op + " operation");
+                    System.exit(0);
+                }
+            case ">" :
+            case "==":
+            case "!=":
+            case ">=":
+                if(Utils.isSubtype(left.typeCheck(e),right.typeCheck(e)))
+                    return new BoolType();
+                else {
+                    System.out.println("Type error in " + op + " operation");
+                    System.exit(0);
+                }
+
+            case "&&":
+            case "/":
+            case "*":
+                if(Utils.isSubtype(left.typeCheck(e), new FloatType()) && Utils.isSubtype(right.typeCheck(e), new FloatType()))
+                    return new BoolType();
+                else {
+                    System.out.println("Type error in " + op + " operation");
+                    System.exit(0);
+
+                }
+
+            default:
+                System.err.println("Type error in " + op + " operation");
+                System.exit(0);
+        }
+        return new VoidType();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ast;
 
+import ast.typeNode.StructType;
 import ast.typeNode.TypeNode;
 import org.antlr.v4.runtime.misc.Pair;
 import utilities.EnvVar;
@@ -24,6 +25,13 @@ public class StructNode implements Node {
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        StructType structType = new StructType(id.getId(),params);
+        e.addDeclaration(id.getId(),structType);
+        return structType;
     }
 
     public ArrayList<Pair<IdNode, TypeNode>> getParams() {

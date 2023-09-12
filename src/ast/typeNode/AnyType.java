@@ -1,5 +1,6 @@
 package ast.typeNode;
 
+import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
 
@@ -14,6 +15,11 @@ public class AnyType implements TypeNode{
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        return this;
     }
 
     @Override

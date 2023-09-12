@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class FormalParams implements Node {
     ArrayList<Pair<String, TypeNode>> formalParams;
 
+    //TODO:check if TypeNode is a complex type
     public FormalParams(ArrayList<Pair<String, TypeNode>> formalParams) {
         this.formalParams= new ArrayList<Pair<String, TypeNode>>(formalParams);
     }
@@ -21,6 +22,19 @@ public class FormalParams implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
+        return null;
+    }
+
+    public Pair<String,TypeNode> get(int i){
+        return formalParams.get(i);
+    }
+    @Override
+    public Node typeCheck(Environment e) {
+        if(formalParams != null){
+            for(Pair<String, TypeNode> p : formalParams){
+                e.addDeclaration(p.a, p.b);
+            }
+        }
         return null;
     }
 
@@ -44,4 +58,7 @@ public class FormalParams implements Node {
         return "";
     }
 
+    public int size(){
+        return formalParams.size();
+    }
 }

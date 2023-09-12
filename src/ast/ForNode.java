@@ -1,6 +1,7 @@
 package ast;
 
 import ast.typeNode.IntType;
+import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
 
@@ -32,6 +33,15 @@ public class ForNode implements Node {
         e = exp.checkVarEQ(e);
         e = stm.checkVarEQ(e);
         return e;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        e.addDeclaration(id,exp.typeCheck(e));
+        e.openScope();
+        stm.typeCheck(e);
+        e.closeScope();
+        return new VoidType();
     }
 
     @Override

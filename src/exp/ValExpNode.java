@@ -1,5 +1,6 @@
 package exp;
 
+import ast.typeNode.IntType;
 import utilities.EnvVar;
 import ast.Node;
 import utilities.Environment;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 public class ValExpNode implements Node {
     private int val;
 
-    public ValExpNode(int val) {
-        this.val = val;
+    public ValExpNode(String val) {
+        this.val = Integer.parseInt(val);
     }
 
     @Override
@@ -21,6 +22,11 @@ public class ValExpNode implements Node {
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        return new IntType();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ast.typeNode;
 
+import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
 
@@ -18,6 +19,11 @@ public class NullType implements TypeNode {
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        return this;
     }
 
     @Override

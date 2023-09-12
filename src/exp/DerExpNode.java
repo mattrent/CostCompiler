@@ -26,6 +26,11 @@ public class DerExpNode implements Node {
     }
 
     @Override
+    public Node typeCheck(Environment e) {
+        return e.getDeclaration(id.getId()).typeCheck(e);
+    }
+
+    @Override
     public ArrayList<String> checkSemantics(Environment env) {
         ArrayList<String> error = new ArrayList<String>();
         if(!env.containsDeclaration(id.getId())){

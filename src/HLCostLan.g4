@@ -23,9 +23,9 @@ callService : 'call'ID'('(exp(','exp)*)?')' ';' stm?;
 
 letIn: 'let' ((ID':')? assignment)+ 'in' structAssignment* stm;
 
-cond : exp | 'call'ID'('exp  (',' exp)* ')' ;
+cond : exp | 'call'ID'('(exp  (',' exp)*)? ')' ;
 
-listExp : exp','  (params | exp)* ;
+listExp : exp(',' exp)* ;
 
 exp:     left= exp op= ('+'|'-') right= exp                    #binExp
         | left= exp op= ('>'|'==' | '>=' |'!=') right= exp      #binExp

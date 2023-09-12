@@ -1,7 +1,9 @@
 package ast;
 
+import jdk.jshell.execution.Util;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,21 @@ public class AssignmentNode implements Node {
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        Node type = ass.typeCheck(e);
+        if(e.containsDeclaration(id.getId())){
+            if(Utils.isSubtype(e.getDeclaration(id.getId()).typeCheck(e),type))
+                return type;
+            else
+                System.err.println("Incompatible type in assignment Node");
+                System.exit(0);
+        }else{
+            e.addDeclaration(id.getId(),type);
+        }
+        return type;
     }
 
     @Override

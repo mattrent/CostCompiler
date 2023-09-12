@@ -1,5 +1,6 @@
 package ast;
 
+import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
 
@@ -25,13 +26,37 @@ public class MainProgramNode implements Node {
         e.add(this,"main");
 
 
-        for(Node n : decServices){
-            n.checkVarEQ(e);
-        }
-        for(Node n : funDec){
-            n.checkVarEQ(e);
-        }
+        if(decServices != null)
+            for(Node n : decServices){
+                n.checkVarEQ(e);
+            }
+        if(complexType != null)
+            for(Node n : complexType){
+                n.checkVarEQ(e);
+            }
         return e;
+    }
+
+    @Override
+    public Node typeCheck(Environment e) {
+        e.openScope();
+        if(complexType != null)
+            for(Node n : complexType){
+                n.typeCheck(e);
+            }
+        if(decServices != null){
+            for(Node n : decServices){
+                n.typeCheck(e);
+            }
+        }
+
+        if(funDec != null){
+            for(Node n : funDec){
+                n.typeCheck(e);
+            }
+        }
+        e.closeScope();
+        return new VoidType();
     }
 
     @Override

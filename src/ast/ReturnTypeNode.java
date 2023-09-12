@@ -29,6 +29,14 @@ public class ReturnTypeNode implements Node{
     }
 
     @Override
+    public Node typeCheck(Environment e) {
+        if(id != null){
+            return e.getDeclaration(id.getId()).typeCheck(e);
+        }
+        return type.typeCheck(e);
+    }
+
+    @Override
     public ArrayList<String> checkSemantics(Environment env) {
         ArrayList<String> error = new ArrayList<>();
 
