@@ -1,4 +1,4 @@
-package exp;
+package ast.exp;
 
 import ast.typeNode.IntType;
 import utilities.EnvVar;

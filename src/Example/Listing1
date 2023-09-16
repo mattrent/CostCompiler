@@ -6,7 +6,7 @@ struct Params {
 service PremiumService : () -> void;
 service BasicService : (any,any) -> void;
 fn function(isPremiumUser: bool, par: any) -> void {
-	if ( Params.sender == 123  ) {
+	if ( isPremiumUser ) {
 		call PremiumService();
 	} else {
 		call BasicService( par );

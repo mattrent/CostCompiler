@@ -1,5 +1,6 @@
 package ast;
 
+import ast.typeNode.StructType;
 import ast.typeNode.TypeNode;
 import org.antlr.v4.runtime.misc.Pair;
 import utilities.EnvVar;
@@ -32,11 +33,19 @@ public class CallFunNode implements Node{
         //TODO:permettere struct annidate(al momento non è possibile)
         for(String id : listId){
             if(e.containsDeclaration(id)){
-                Node node = e.getDeclaration(id);
+                Node node = e.getDeclaration(id).typeCheck(e);
                 if(node instanceof StructNode){
                     StructNode structNode = (StructNode) node;
                     id = listId.get(1);
                     for(Pair<IdNode, TypeNode> elem : structNode.getParams()){
+                        if(elem.a.getId().equals(id)){
+                            return elem.b.typeCheck(e);
+                        }
+                    }
+                }else if(node instanceof StructType){
+                    StructType structType = (StructType) node;
+                    id = listId.get(1);
+                    for(Pair<IdNode, TypeNode> elem : structType.getParams()){
                         if(elem.a.getId().equals(id)){
                             return elem.b.typeCheck(e);
                         }

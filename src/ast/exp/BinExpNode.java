@@ -1,4 +1,4 @@
-package exp;
+package ast.exp;
 
 import ast.typeNode.BoolType;
 import ast.typeNode.FloatType;
@@ -58,7 +58,7 @@ public class BinExpNode implements Node {
             case "/":
             case "*":
                 if(Utils.isSubtype(left.typeCheck(e), new FloatType()) && Utils.isSubtype(right.typeCheck(e), new FloatType()))
-                    return new BoolType();
+                    return new FloatType();
                 else {
                     System.out.println("Type error in " + op + " operation");
                     System.exit(0);

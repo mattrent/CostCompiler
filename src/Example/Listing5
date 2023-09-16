@@ -16,7 +16,7 @@ fn loop(c: int, acc: int) -> int {
 fn main(par: Params) -> Result {
 	let
 		counter = par.counter * 2;
-		result = loop(counter, 0);
+		result = loop(counter, 0);//io qua dovrei poter usare anche counter invece che par.counter avendolo gia definito
 	in
 		Result {
 			payload: result

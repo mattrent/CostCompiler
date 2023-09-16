@@ -13,7 +13,7 @@ fund : 'fn'ID'(' formalParams  ')' '->' (ID|type)'{'stm'}' ;
 stm :(
      | callService
      |'if' '(' cond ')' '{'stm '}' 'else' '{' stm '}'
-     |'for' '('ID 'in' '(' NUMBER','exp ')' ')' '{' stm '}'   /*check for list of exp */
+     |'for' '('ID 'in' '(' NUMBER','exp ')' ')' '{' stm '}'   /*check for list of ast.exp */
      | letIn
      | ID'('listExp')'';'
      |exp
@@ -35,7 +35,7 @@ exp:     left= exp op= ('+'|'-') right= exp                    #binExp
         | NUMBER                                                  #valExp
         | ID                                                    #derExp;
 
-assignment: ID '=' assign';' ( ID '=' assign';')*;
+assignment: (ID '=' assign) ( ID '=' assign)*;
 
 type: 'int'
     | 'char'
@@ -54,7 +54,7 @@ typeArr : type;
 
 structAssignment : ID'{'ID ':' assign (','ID ':' assign)*'}';
 
-assign : exp|stm;
+assign : (exp';'|stm);
 params :  ID','  params | ID ;
 formalParams:  ID ':' typeDecl(','ID ':' typeDecl)*;
 

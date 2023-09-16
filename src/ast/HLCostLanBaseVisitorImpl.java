@@ -2,9 +2,9 @@ package ast;
 
 import ast.typeNode.ArrayType;
 import ast.typeNode.IdType;
-import exp.BinExpNode;
-import exp.DerExpNode;
-import exp.ValExpNode;
+import ast.exp.BinExpNode;
+import ast.exp.DerExpNode;
+import ast.exp.ValExpNode;
 import gen.*;
 import org.antlr.v4.runtime.misc.Pair;
 import ast.typeNode.TypeNode;
@@ -79,7 +79,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     @Override
     public Node visitStm(StmContext ctx) {
         if(ctx.cond() != null && ctx.stm().size() == 2){
-            // 'if' exp 'then' stm 'else' stm
+            // 'if' ast.exp 'then' stm 'else' stm
             int line = ctx.start.getLine();
 
             if(ctx.cond()!= null && ctx.cond().ID() != null){
@@ -98,7 +98,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
                 return new IfNode(exp,stm1,stm2,line);
             }
         }
-        //'for' '('ID 'in' '(' '0'','exp ')' ')' '{' stm '}'   /
+        //'for' '('ID 'in' '(' '0'','ast.exp ')' ')' '{' stm '}'   /
         if(ctx.ID() != null && ctx.exp() != null && ctx.stm() != null){
             String id = ctx.ID().getText();
             Node exp = (Node) visit(ctx.exp());
@@ -231,7 +231,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     }
     public Node visitCallService(CallServiceContext ctx) {
         if(ctx.ID() != null && ctx.exp() != null) {
-            //'call'ID'('exp(','exp)*')' stm?';'
+            //'call'ID'('ast.exp(','ast.exp)*')' stm?';'
             String idCall = ctx.ID().getText();
             ArrayList<Node> exp = new ArrayList<>();
             for (ExpContext expContext : ctx.exp()) {
