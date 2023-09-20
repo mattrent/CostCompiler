@@ -17,11 +17,6 @@ public class MainProgramNode implements Node {
     }
 
     @Override
-    public String toPrint(String indent) {
-        return null;
-    }
-
-    @Override
     public EnvVar checkVarEQ(EnvVar e) {
         e.add(this,"main");
 
@@ -40,6 +35,7 @@ public class MainProgramNode implements Node {
     @Override
     public Node typeCheck(Environment e) {
         e.openScope();
+        Node lastType = new VoidType();
         if(complexType != null)
             for(Node n : complexType){
                 n.typeCheck(e);
@@ -49,14 +45,13 @@ public class MainProgramNode implements Node {
                 n.typeCheck(e);
             }
         }
-
         if(funDec != null){
             for(Node n : funDec){
-                n.typeCheck(e);
+                lastType = n.typeCheck(e);
             }
         }
         e.closeScope();
-        return new VoidType();
+        return lastType;
     }
 
     @Override

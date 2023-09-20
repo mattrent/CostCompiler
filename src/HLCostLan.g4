@@ -43,7 +43,8 @@ type: 'int'
     | 'bool'
     | 'float'
     | 'any'
-    | 'void';
+    | 'void'
+    | 'null';
 
 // `<type> <= any` for all types
 complexType : 'array''['typeArr']'

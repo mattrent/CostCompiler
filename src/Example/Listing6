@@ -1,0 +1,26 @@
+struct Params {
+	par :any
+}
+
+struct Result {
+	payload: string,
+	success: bool
+}
+
+service PremiumService: (Params) -> Result;
+service BasicService: (Params) -> Result;
+
+fn svc(isPremiumUser: bool, par: Params) -> bool {
+	if ( isPremiumUser ) {
+		(call PremiumService( par )).success == true
+	} else {
+		(call BasicService( par )).success == true
+	}
+}
+
+fn main(isPremiumUser: bool, par: Params) -> Result {
+	Result{
+		success: svc(isPremiumUser, par),
+		payload: ""
+	}
+}

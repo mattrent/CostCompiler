@@ -19,10 +19,6 @@ public class FunDeclarationNode implements Node{
         this.formalParams = formalParams;
         this.stm = stm;
     }
-    @Override
-    public String toPrint(String indent) {
-        return null;
-    }
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
@@ -40,7 +36,7 @@ public class FunDeclarationNode implements Node{
         }
         stm.typeCheck(e);
         e.closeScope();
-        return new VoidType();
+        return type.typeCheck(e);
     }
 
     @Override

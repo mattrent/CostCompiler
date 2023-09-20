@@ -16,10 +16,6 @@ public class CallNode implements Node{
         this.listCount = listCount;
     }
 
-    @Override
-    public String toPrint(String indent) {
-        return null;
-    }
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {

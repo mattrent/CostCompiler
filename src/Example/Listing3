@@ -1,5 +1,5 @@
 service Map :(any, int) -> void;
-service Reduce :(any, int) -> void;
+service Reduce :(any, int, int  ) -> void;
 fn main(jobs:any, m:int , r:int) ->void {
       for(i in (0,m)){
           call Map(jobs,i);

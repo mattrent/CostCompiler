@@ -15,11 +15,6 @@ public class DerExpNode implements Node {
     }
 
     @Override
-    public String toPrint(String indent) {
-        return indent + "DerExp: " + id.toPrint(indent + "\t");
-    }
-
-    @Override
     public EnvVar checkVarEQ(EnvVar e) {
         e.add(this, this.id.getId());
         return e;

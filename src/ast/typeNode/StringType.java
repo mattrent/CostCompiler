@@ -6,10 +6,6 @@ import utilities.Environment;
 import java.util.ArrayList;
 
 public class StringType  extends CharType{
-    @Override
-    public String toPrint(String indent) {
-        return "String Type";
-    }
 
     @Override
     public TypeNode getType() {

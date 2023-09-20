@@ -22,10 +22,6 @@ public class ForNode implements Node {
         this.line = line;
     }
 
-    @Override
-    public String toPrint(String indent) {
-        return null;
-    }
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {

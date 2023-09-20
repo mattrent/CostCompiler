@@ -17,11 +17,6 @@ public class IdNode implements Node{
     }
 
     @Override
-    public String toPrint(String indent) {
-        return indent + "Id: " + id + "\n";
-    }
-
-    @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
     }

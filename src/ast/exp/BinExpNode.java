@@ -22,10 +22,6 @@ public class BinExpNode implements Node {
         this.op = op;
     }
 
-    @Override
-    public String toPrint(String indent) {
-        return indent + "BinExp: " + op + "\n" + left.toPrint(indent + "\t") + right.toPrint(indent + "\t");
-    }
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
@@ -46,6 +42,7 @@ public class BinExpNode implements Node {
             case ">" :
             case "==":
             case "!=":
+            case "&&":
             case ">=":
                 if(Utils.isSubtype(left.typeCheck(e),right.typeCheck(e)))
                     return new BoolType();
@@ -54,7 +51,6 @@ public class BinExpNode implements Node {
                     System.exit(0);
                 }
 
-            case "&&":
             case "/":
             case "*":
                 if(Utils.isSubtype(left.typeCheck(e), new FloatType()) && Utils.isSubtype(right.typeCheck(e), new FloatType()))

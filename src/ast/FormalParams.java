@@ -15,10 +15,6 @@ public class FormalParams implements Node {
         this.formalParams= new ArrayList<Pair<String, TypeNode>>(formalParams);
     }
 
-    @Override
-    public String toPrint(String indent) {
-        return null;
-    }
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {

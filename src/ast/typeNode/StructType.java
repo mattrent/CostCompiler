@@ -21,11 +21,6 @@ public class StructType extends AnyType{
     }
 
     @Override
-    public String toPrint(String indent) {
-        return null;
-    }
-
-    @Override
     public Node typeCheck(Environment e) {
         return this;
     }

@@ -4,6 +4,7 @@ import ast.typeNode.BoolType;
 import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -26,10 +27,6 @@ public class IfNode implements Node {
         this.line = line;
     }
 
-    @Override
-    public String toPrint(String indent) {
-        return indent + "IfNode\n" + exp.toPrint(indent + "\t") + "\n" + stmT.toPrint(indent + "\t") + "\n" + stmF.toPrint(indent + "\t");
-    }
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
@@ -41,14 +38,12 @@ public class IfNode implements Node {
 
     @Override
     public Node typeCheck(Environment e) {
-        if(exp.typeCheck(e) instanceof BoolType){
-            stmT.typeCheck(e);
-            stmF.typeCheck(e);
-        }else {
-            System.err.println("Type error in if condition");
+        if(!(exp.typeCheck(e) instanceof BoolType ||
+            Utils.isSubtype(stmT.typeCheck(e),stmF.typeCheck(e)))){
+            System.err.println("Incompatible type in if Node");
             System.exit(0);
         }
-        return new VoidType();
+        return stmT.typeCheck(e);
     }
 
     @Override

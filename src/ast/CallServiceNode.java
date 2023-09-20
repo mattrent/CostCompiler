@@ -25,11 +25,6 @@ public class CallServiceNode implements Node {
         this.stm = stm;
     }
     @Override
-    public String toPrint(String indent) {
-        return indent + "CallServiceNode " + idCall + "\n" + indent + "Exp:\n" + exp.toString() + "\n" + indent + "Stm:\n" + stm.toString();
-    }
-
-    @Override
     public EnvVar checkVarEQ(EnvVar e) {
         e.add(this, String.valueOf(idCall.charAt(0)));
         if(stm != null){
@@ -57,13 +52,19 @@ public class CallServiceNode implements Node {
         if(!env.containsDeclaration(idCall)){
             errors.add(idCall +" is not declared");
         }
-        if(exp != null) {
-            for (Node n : exp) {
-                errors.addAll(n.checkSemantics(env));
+        else{
+            DecService node = (DecService) env.getDeclaration(idCall);
+            if(node.getParams().size() != exp.size()){
+                errors.add("Wrong number of parameters in "+idCall);
             }
-        }
-        if(stm != null){
-            errors.addAll(stm.checkSemantics(env));
+            if(exp != null) {
+                for (Node n : exp) {
+                    errors.addAll(n.checkSemantics(env));
+                }
+            }
+            if(stm != null){
+                errors.addAll(stm.checkSemantics(env));
+            }
         }
         return errors;
     }

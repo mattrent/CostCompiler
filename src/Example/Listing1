@@ -3,12 +3,12 @@ struct Params {
 	payload: any,
 	sender: string
 }
-service PremiumService : () -> void;
-service BasicService : (any,any) -> void;
+service PremiumService : (string) -> void;
+service BasicService : (any, null) -> void;
 fn function(isPremiumUser: bool, par: any) -> void {
 	if ( isPremiumUser ) {
-		call PremiumService();
+		call PremiumService("pippo");
 	} else {
-		call BasicService( par );
+		call BasicService( par , par);
 	}
 }

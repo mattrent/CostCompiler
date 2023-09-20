@@ -29,14 +29,8 @@ public class LetInNode implements Node {
 
 
     @Override
-        public String toPrint(String indent) {
-            return indent + "LetInNode\n" + listAssignment.toString() + "\n" + structAssignment.toString() + "\n" + statement.toPrint(indent + "\t");
-        }
-
-    @Override
     public EnvVar checkVarEQ(EnvVar e) {
         e.add(this,"letin");
-
         statement.checkVarEQ(e);
 
         return e;

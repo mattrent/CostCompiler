@@ -12,11 +12,6 @@ public class NullType implements TypeNode {
     }
 
     @Override
-    public String toPrint(String indent) {
-        return null;
-    }
-
-    @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
     }

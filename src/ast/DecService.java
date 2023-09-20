@@ -19,11 +19,6 @@ public class DecService implements Node{
     }
 
     @Override
-    public String toPrint(String indent) {
-        return null;
-    }
-
-    @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
     }

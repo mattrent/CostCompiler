@@ -17,10 +17,6 @@ public class StructNode implements Node {
         this.params = params;
     }
 
-    @Override
-    public String toPrint(String indent) {
-        return null;
-    }
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {

@@ -14,10 +14,6 @@ public class ValExpNode implements Node {
         this.val = Integer.parseInt(val);
     }
 
-    @Override
-    public String toPrint(String indent) {
-        return indent + "ValExp: " + val + "\n";
-    }
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {

@@ -8,11 +8,6 @@ import java.util.ArrayList;
 
 public class AnyType implements TypeNode{
     @Override
-    public String toPrint(String indent) {
-        return "Any Type";
-    }
-
-    @Override
     public EnvVar checkVarEQ(EnvVar e) {
         return null;
     }
