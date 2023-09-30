@@ -3,6 +3,7 @@ package ast;
 import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class LetInNode implements Node {
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
         for(AssignmentNode n : listAssignment){
             n.typeCheck(e);
         }

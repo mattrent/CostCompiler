@@ -3,6 +3,7 @@ package ast;
 import ast.typeNode.TypeNode;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class ReturnTypeNode implements Node{
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
         if(id != null){
             return e.getDeclaration(id.getId()).typeCheck(e);
         }

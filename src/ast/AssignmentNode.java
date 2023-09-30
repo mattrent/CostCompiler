@@ -3,6 +3,7 @@ package ast;
 import jdk.jshell.execution.Util;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
@@ -29,14 +30,13 @@ public class AssignmentNode implements Node {
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
         Node type = ass.typeCheck(e);
         if(e.containsDeclaration(id.getId())){
             if(Utils.isSubtype(e.getDeclaration(id.getId()).typeCheck(e),type))
                 return type;
             else
-                System.err.println("Incompatible type in assignment Node");
-                System.exit(0);
+                throw new TypeErrorException("Incompatible type in assignment Node");
         }else{
             e.addDeclaration(id.getId(),type);
         }

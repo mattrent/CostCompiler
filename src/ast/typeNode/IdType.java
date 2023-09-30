@@ -3,6 +3,7 @@ package ast.typeNode;
 import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 
 import java.util.ArrayList;
 
@@ -33,11 +34,11 @@ public class IdType implements TypeNode{
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
         if(e.containsDeclaration(id)){
             return e.getDeclaration(id).typeCheck(e);
         }
-        return null;
+        return new VoidType();
     }
 
     @Override

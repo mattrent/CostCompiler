@@ -4,6 +4,7 @@ import ast.typeNode.BoolType;
 import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
@@ -37,11 +38,10 @@ public class IfNode implements Node {
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
         if(!(exp.typeCheck(e) instanceof BoolType ||
             Utils.isSubtype(stmT.typeCheck(e),stmF.typeCheck(e)))){
-            System.err.println("Incompatible type in if Node");
-            System.exit(0);
+            throw new TypeErrorException("Incompatible type in if Node");
         }
         return stmT.typeCheck(e);
     }

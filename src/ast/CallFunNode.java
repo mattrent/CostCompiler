@@ -5,6 +5,7 @@ import ast.typeNode.TypeNode;
 import org.antlr.v4.runtime.misc.Pair;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class CallFunNode implements Node{
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
         //Dobbiamo controllare parametri formali e attuali coincidano
         //TODO:permettere struct annidate(al momento non è possibile)
         for(String id : listId){

@@ -2,6 +2,7 @@ package ast;
 
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class IdNode implements Node{
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
         return e.getDeclaration(id).typeCheck(e);
     }
 

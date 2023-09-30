@@ -57,4 +57,10 @@ public class TestCostCompiler {
 
     }
 
+    @Test
+    public void test8() throws IOException {
+            System.out.println("Test Listing 8");
+            assertEquals(CostCompiler("src/Example/Listing8"), Results.TYPE_CHECKING_ERROR);
+    }
+
 }

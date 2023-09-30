@@ -2,6 +2,7 @@ package ast;
 
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
@@ -23,18 +24,16 @@ public class CallNode implements Node{
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
 
         FunDeclarationNode fun = (FunDeclarationNode) e.getDeclaration(id.getId());
         FormalParams fp = fun.getFormalParams();
         if(fp.size() != listCount.size()){
-            System.err.println("Wrong number of parameters in call "+id.getId());
-            System.exit(0);
+            throw new TypeErrorException("Wrong number of parameters in call "+id.getId());
         }
         for(int i =0;i<listCount.size();i++){
             if(!Utils.isSubtype(fp.get(i).b.typeCheck(e),listCount.get(i).typeCheck(e))) {
-                System.err.println("Incompatible type in call node");
-                System.exit(0);
+                throw new TypeErrorException("Incompatible type in call node");
             }
         }
         return fun.getReturnNode().typeCheck(e);

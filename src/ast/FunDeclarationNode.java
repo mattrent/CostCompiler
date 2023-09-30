@@ -3,6 +3,7 @@ package ast;
 import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
+import utilities.TypeErrorException;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class FunDeclarationNode implements Node{
     }
 
     @Override
-    public Node typeCheck(Environment e) {
+    public Node typeCheck(Environment e) throws TypeErrorException {
         e.addDeclaration(id.getId(),this);
         e.openScope();
         if(formalParams != null) {
