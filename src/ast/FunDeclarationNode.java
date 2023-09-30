@@ -14,11 +14,13 @@ public class FunDeclarationNode implements Node{
     private final IdNode id;
     private final FormalParams formalParams;
     private final Node stm;
+    private String parFun;
     public FunDeclarationNode(Node type, IdNode id, FormalParams formalParams, Node stm) {
         this.type = type;
         this.id = id;
         this.formalParams = formalParams;
         this.stm = stm;
+        parFun = null;
     }
 
     @Override
@@ -35,7 +37,8 @@ public class FunDeclarationNode implements Node{
         if(formalParams != null) {
             formalParams.typeCheck(e);
         }
-        stm.typeCheck(e);
+        if(stm!= null)
+            stm.typeCheck(e);
         e.closeScope();
         return type.typeCheck(e);
     }
@@ -51,7 +54,8 @@ public class FunDeclarationNode implements Node{
         if(formalParams != null) {
             errors.addAll(formalParams.checkSemantics(env));
         }
-        errors.addAll(stm.checkSemantics(env));
+        if(stm!= null)
+            errors.addAll(stm.checkSemantics(env));
         errors.addAll(type.checkSemantics(env));
         env.closeScope();
         return errors;
@@ -59,22 +63,23 @@ public class FunDeclarationNode implements Node{
 
     @Override
     public String toEquation(EnvVar e) {
-        EnvVar e1 = new EnvVar();
-        stm.checkVarEQ(e1);
 
+        stm.checkVarEQ(e);
+        e.add(this,id.getId());
         String pre = id.getId() + "(" ;
 
-        String post =  ") = " + stm.toEquation(e1) + ";\n";
+        String post =  ") = " + stm.toEquation(e) ;
 
-        Set<Node> set = e1.getSet();
+        Set<Node> set = e.getSet();
         StringBuilder par = new StringBuilder();
         for(Node n : set){
-            par.append(e1.get(n)).append(",");
+            if(!(n instanceof FunDeclarationNode))
+                par.append(e.get(n)).append(",");
         }
 
 
-        par = new StringBuilder(par.substring(0, par.length() - 1));
-        return pre + par + post;
+        this.parFun = String.valueOf(new StringBuilder(par.substring(0, par.length() - 1)));
+        return pre + this.parFun + post;
 
     }
 
@@ -85,4 +90,9 @@ public class FunDeclarationNode implements Node{
     public Node getReturnNode(){
         return type;
     }
+
+    public String getId() { return id.getId(); }
+
+    public String getParFun() { return parFun; }
+
 }

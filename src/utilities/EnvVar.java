@@ -1,5 +1,6 @@
 package utilities;
 
+import ast.FunDeclarationNode;
 import ast.IdNode;
 import ast.Node;
 
@@ -28,17 +29,17 @@ public class EnvVar {
         if(map.containsKey(n) ){
             return map.get(n);
         }else if(n instanceof IdNode){
-             Node node = checkEqualsIdNode(map.keySet(), ((IdNode) n).getId());
+             Node node = checkIdNode(map.keySet(), ((IdNode) n).getId());
              if(node != null){
                  return map.get(node);
              }
         }
-        char c;
+        String c;
         do {
             c = randomChar();
         }while(map.containsValue(c));
-        map.put(n, String.valueOf(c));
-        return  String.valueOf(c);
+        map.put(n,c);
+        return  c;
     }
 
     public String add(Node n,String s){
@@ -62,7 +63,7 @@ public class EnvVar {
         map.remove(n);
     }
 
-    Node checkEqualsIdNode(Set<Node> set, String id){
+    public Node checkIdNode(Set<Node> set, String id){
         for(Node n : set){
             if(n instanceof IdNode){
                 if(((IdNode) n).getId().equals(id)){
@@ -73,7 +74,21 @@ public class EnvVar {
         return null;
     }
 
+    public Node getFunDecNode(String id){
+        for(Node n : map.keySet()){
+            if(n instanceof FunDeclarationNode){
+               if(((FunDeclarationNode) n).getId().equals(id)){
+                        return n;
+                    }
+            }
+        }
+        return null;
+    }
+
     public Set<Node> getSet(){
         return map.keySet();
     }
+
+    //make a function that given a value(string) return a node
+
 }

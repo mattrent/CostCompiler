@@ -31,8 +31,8 @@ public class LetInNode implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
-        e.add(this,"letin");
-        statement.checkVarEQ(e);
+        if(statement != null)
+            statement.checkVarEQ(e);
 
         return e;
     }
@@ -73,6 +73,26 @@ public class LetInNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        return null;
+        StringBuilder pre = new StringBuilder(" ");
+
+        concatEq(e, pre, listAssignment);
+        concatEq(e, pre, structAssignment);
+
+        if(statement != null)
+            pre.append(statement.toEquation(e));
+        return String.valueOf(pre);
+    }
+
+    private void concatEq(EnvVar e, StringBuilder pre, ArrayList<AssignmentNode> ass) {
+        for(AssignmentNode n : ass){
+            String s = n.toEquation(e);
+            if(!s.equals(" ")){
+                pre.append(s);
+                pre.append(" + ");
+            }
+        }
+        if(ass != null)
+            //remove the last character
+            pre.deleteCharAt(pre.length()-1);
     }
 }

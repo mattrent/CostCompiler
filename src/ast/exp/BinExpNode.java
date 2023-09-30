@@ -55,16 +55,11 @@ public class BinExpNode implements Node {
                 if(Utils.isSubtype(left.typeCheck(e), new FloatType()) && Utils.isSubtype(right.typeCheck(e), new FloatType()))
                     return new FloatType();
                 else {
-                    System.out.println("Type error in " + op + " operation");
-                    System.exit(0);
-
+                    throw new TypeErrorException("Type error in " + op + " operation");
                 }
-
             default:
-                System.err.println("Type error in " + op + " operation");
-                System.exit(0);
+                throw new TypeErrorException("Type error in " + op + " operation");
         }
-        return new VoidType();
     }
 
     @Override

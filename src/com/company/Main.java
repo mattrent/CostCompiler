@@ -17,15 +17,14 @@ import utilities.SyntaxError;
 import utilities.TypeErrorException;
 
 public class Main {
-
+//TODO: check syntax error in Listing6
     public static void main(String[] args) throws Exception{
-        String file = "src/Example/Listing8";
+        String file = "src/Example/Listing6";
         System.out.print(CostCompiler(file));
     }
-    public static Results CostCompiler(String file) throws IOException {
-        CharStream input = CharStreams.fromFileName(file);
-
+    public static Results CostCompiler(String file) throws IOException{
         try {
+            CharStream input = CharStreams.fromFileName(file);
             HLCostLanLexer lexer = new HLCostLanLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             HLCostLanParser parser = new HLCostLanParser(tokens);
@@ -52,14 +51,17 @@ public class Main {
                     return Results.TYPE_CHECKING_ERROR;
                 }
 
-                //System.out.println(ast.toPrint(""));
-                //String equ = ast.toEquation(new EnvVar());
-                //System.out.println(equ);
+                String equ = ast.toEquation(new EnvVar());
+                System.out.println(equ);
                 return Results.PASS;
             }
-        }catch (Exception e){
+        }catch (RecognitionException e) {
             System.err.println(e.getMessage());
             return Results.SYNTAX_ERROR;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Results.GENERIC_ERROR;
         }
     }
 }

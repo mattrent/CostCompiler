@@ -33,13 +33,13 @@ public class SyntaxErrorListener extends BaseErrorListener {
                 SyntaxError i = (SyntaxError)errors.next();
                 if(i.getRecognizer().getClass().getSimpleName().equals("AssetLanLexer"))
                     lexicalErrors += "Error: " + i.getMsg() + " at line " + i.getLine() + "\n";
-                else
+                else {
                     syntaxErrors += "Error: " + i.getMsg() + " at line " + i.getLine() + "\n";
+                }
             }
             //out.println(lexicalErrors + "\n" + syntaxErrors);
             System.out.println(lexicalErrors + "\n" + syntaxErrors);
             //out.close();
-
         } catch (FileNotFoundException var10) {
             e.printStackTrace();
         }

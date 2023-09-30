@@ -55,6 +55,8 @@ public class AssignmentNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        return null;
+        if(ass instanceof CallNode || ass instanceof ForNode || ass instanceof IfNode)
+            return ass.toEquation(e);
+        else return " ";
     }
 }

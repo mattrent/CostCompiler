@@ -36,13 +36,13 @@ public class Utils{
         return new NullType();
     }
 
-    public static char randomChar(){
+    public static String randomChar(){
         String charList = "abcdefghijklmnopqrstuvwxyz";
 
         Random random = new Random();
         int randomIndex = random.nextInt(charList.length());
 
-        char randomChar = charList.charAt(randomIndex);
+        String randomChar = String.valueOf(charList.charAt(randomIndex));
         return randomChar;
     }
 
