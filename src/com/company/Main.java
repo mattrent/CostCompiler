@@ -17,7 +17,7 @@ import utilities.SyntaxError;
 import utilities.TypeErrorException;
 
 public class Main {
-//TODO: check syntax error in Listing6
+
     public static void main(String[] args) throws Exception{
         String file = "src/Example/Listing6";
         System.out.print(CostCompiler(file));
@@ -37,7 +37,9 @@ public class Main {
 
             HLCostLanBaseVisitorImpl visitor = new HLCostLanBaseVisitorImpl();
             Node ast = visitor.visit(parser.main());
-
+            if(!errorListener.getSyntaxErrors().isEmpty()){
+                return Results.SYNTAX_ERROR;
+            }
             Environment env = new Environment();
             ArrayList<String> errorSemantics = ast.checkSemantics(env);
             if (!errorSemantics.isEmpty()) {
@@ -55,11 +57,7 @@ public class Main {
                 System.out.println(equ);
                 return Results.PASS;
             }
-        }catch (RecognitionException e) {
-            System.err.println(e.getMessage());
-            return Results.SYNTAX_ERROR;
-
-        }catch (Exception e){
+        }catch (Exception e) {
             e.printStackTrace();
             return Results.GENERIC_ERROR;
         }

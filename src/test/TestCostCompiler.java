@@ -58,6 +58,11 @@ public class TestCostCompiler {
     }
 
     @Test
+    public void test7() throws IOException {
+            System.out.println("Test Listing 7");
+            assertEquals(CostCompiler("src/Example/Listing7"), Results.SEMANTIC_ERROR);
+    }
+    @Test
     public void test8() throws IOException {
             System.out.println("Test Listing 8");
             assertEquals(CostCompiler("src/Example/Listing8"), Results.TYPE_CHECKING_ERROR);
