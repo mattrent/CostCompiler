@@ -60,7 +60,7 @@ public class TestCostCompiler {
     @Test
     public void test7() throws IOException {
             System.out.println("Test Listing 7");
-            assertEquals(CostCompiler("src/Example/Listing7"), Results.SEMANTIC_ERROR);
+            assertEquals(CostCompiler("src/Example/Listing7"), Results.PASS);
     }
     @Test
     public void test8() throws IOException {

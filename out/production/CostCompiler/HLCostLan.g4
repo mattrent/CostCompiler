@@ -21,7 +21,7 @@ stm :(
 
 callService : 'call'ID'('(exp(','exp)*)?')' ';' stm?;
 
-letIn: 'let' ((ID':')? assignment)+ 'in' structAssignment* stm;
+letIn: 'let' (assignment)+ 'in' structAssignment* stm;
 
 cond : exp | 'call'ID'('(exp  (',' exp)*)? ')' ;
 
@@ -35,7 +35,8 @@ exp:     left= exp op= ('+'|'-') right= exp                    #binExp
         | NUMBER                                                  #valExp
         | ID                                                    #derExp;
 
-assignment: (ID '=' assign) ( ID '=' assign)*;
+assignment: (structType)? (ID '=' assign) ( ID '=' assign)*;
+structType: ID;
 
 type: 'int'
     | 'char'

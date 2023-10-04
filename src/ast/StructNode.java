@@ -59,4 +59,14 @@ public class StructNode implements Node {
     public String toEquation(EnvVar e) {
         return null;
     }
+
+    public TypeNode getParamsId(IdNode id){
+        for(Pair<IdNode,TypeNode> p : params){
+            if(p.a.getId().equals(id.getId())){
+                return p.b;
+            }
+        }
+        return null;
+    }
 }
+

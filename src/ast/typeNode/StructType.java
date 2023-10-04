@@ -20,6 +20,14 @@ public class StructType extends AnyType{
         return params;
     }
 
+    public TypeNode getType(IdNode id){
+        for(Pair<IdNode,TypeNode> p : params){
+            if(p.a.getId().equals(id.getId())){
+                return p.b;
+            }
+        }
+        return null;
+    }
     @Override
     public Node typeCheck(Environment e) {
         return this;

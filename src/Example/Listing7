@@ -12,7 +12,7 @@ service BasicService: (Params) -> Result;
 
 fn svc(isPremiumUser: bool, par: Params) -> Result {
 	let
-		res: Result = if (isPremiumUser) {
+		Result res = if (isPremiumUser) {
 			call PremiumService(par);
 		} else {
 			call BasicService(par);

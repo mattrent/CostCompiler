@@ -9,19 +9,19 @@ import java.util.ArrayList;
 
 public class LetInNode implements Node {
 
-        ArrayList<AssignmentNode> listAssignment;
-        ArrayList<AssignmentNode> structAssignment;
+    ArrayList<LetAssignmentNode> listAssignment;
+    ArrayList<AssignmentNodeIn> structAssignment;
 
-        Node statement;
+    Node statement;
 
-    public LetInNode(ArrayList<AssignmentNode> listAssignment, ArrayList<AssignmentNode> structAssignment, Node statement) {
+    public LetInNode(ArrayList<LetAssignmentNode> listAssignment, ArrayList<AssignmentNodeIn> structAssignment, Node statement) {
         this.listAssignment = listAssignment;
         this.structAssignment = structAssignment;
 
-        if(this.listAssignment == null){
+        if (this.listAssignment == null) {
             this.listAssignment = new ArrayList<>();
         }
-        if(this.structAssignment == null){
+        if (this.structAssignment == null) {
             this.structAssignment = new ArrayList<>();
         }
 
@@ -31,7 +31,7 @@ public class LetInNode implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
-        if(statement != null)
+        if (statement != null)
             statement.checkVarEQ(e);
 
         return e;
@@ -39,15 +39,15 @@ public class LetInNode implements Node {
 
     @Override
     public Node typeCheck(Environment e) throws TypeErrorException {
-        for(AssignmentNode n : listAssignment){
+        for (LetAssignmentNode n : listAssignment) {
             n.typeCheck(e);
         }
 
-        for(AssignmentNode n : structAssignment){
+        for (AssignmentNodeIn n : structAssignment) {
             n.typeCheck(e);
         }
 
-        if(statement != null)
+        if (statement != null)
             statement.typeCheck(e);
 
         return new VoidType();
@@ -57,15 +57,19 @@ public class LetInNode implements Node {
     public ArrayList<String> checkSemantics(Environment env) {
         ArrayList<String> errors = new ArrayList<>();
 
-        for(AssignmentNode n : listAssignment){
+        env.openScope();
+        for (LetAssignmentNode n : listAssignment) {
             errors.addAll(n.checkSemantics(env));
         }
+        env.closeScope();
 
-        for(AssignmentNode n : structAssignment){
+        env.openScope();
+        for (AssignmentNodeIn n : structAssignment) {
             errors.addAll(n.checkSemantics(env));
         }
+        env.closeScope();
 
-        if(statement != null)
+        if (statement != null)
             errors.addAll(statement.checkSemantics(env));
 
         return errors;
@@ -75,24 +79,32 @@ public class LetInNode implements Node {
     public String toEquation(EnvVar e) {
         StringBuilder pre = new StringBuilder(" ");
 
-        concatEq(e, pre, listAssignment);
-        concatEq(e, pre, structAssignment);
-
-        if(statement != null)
-            pre.append(statement.toEquation(e));
-        return String.valueOf(pre);
-    }
-
-    private void concatEq(EnvVar e, StringBuilder pre, ArrayList<AssignmentNode> ass) {
-        for(AssignmentNode n : ass){
+        for (Node n : listAssignment) {
             String s = n.toEquation(e);
-            if(!s.equals(" ")){
+            if (!s.equals(" ")) {
                 pre.append(s);
                 pre.append(" + ");
             }
         }
-        if(ass != null)
+        if (listAssignment != null)
             //remove the last character
-            pre.deleteCharAt(pre.length()-1);
+            pre.deleteCharAt(pre.length() - 1);
+
+        for (Node n : structAssignment) {
+            String s = n.toEquation(e);
+            if (!s.equals(" ")) {
+                pre.append(s);
+                pre.append(" + ");
+            }
+        }
+        if (structAssignment != null)
+            //remove the last character
+            pre.deleteCharAt(pre.length() - 1);
+
+        if (statement != null)
+            pre.append(statement.toEquation(e));
+        return String.valueOf(pre);
     }
 }
+
+

@@ -1,4 +1,4 @@
-// Generated from C:/Users/simon/Desktop/CostCompiler/src\HLCostLan.g4 by ANTLR 4.12.0
+// Generated from C:/Users/simon/Desktop/CostCompiler/src/HLCostLan.g4 by ANTLR 4.13.1
 package gen;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -192,6 +192,18 @@ public class HLCostLanBaseListener implements HLCostLanListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssignment(HLCostLanParser.AssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStructType(HLCostLanParser.StructTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStructType(HLCostLanParser.StructTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

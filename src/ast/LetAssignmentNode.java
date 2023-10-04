@@ -1,6 +1,5 @@
 package ast;
 
-import jdk.jshell.execution.Util;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
@@ -8,14 +7,16 @@ import utilities.Utils;
 
 import java.util.ArrayList;
 
-public class AssignmentNode implements Node {
+public class LetAssignmentNode implements Node {
 //Can be used to AssignmentNode and StructAssignment
+    IdNode type;
     IdNode id;
     Node ass;
 
-    public AssignmentNode(IdNode id,Node ass){
+    public LetAssignmentNode(IdNode type, IdNode id, Node ass){
         this.ass = ass;
         this.id = id;
+        this.type= type;
     }
 
 
@@ -32,13 +33,12 @@ public class AssignmentNode implements Node {
     @Override
     public Node typeCheck(Environment e) throws TypeErrorException {
         Node type = ass.typeCheck(e);
-        if(e.containsDeclaration(id.getId())){
+        if(!e.containsDeclaration(id.getId())){
+            e.addDeclaration(id.getId(),type);
             if(Utils.isSubtype(e.getDeclaration(id.getId()).typeCheck(e),type))
                 return type;
             else
                 throw new TypeErrorException("Incompatible type in assignment Node");
-        }else{
-            e.addDeclaration(id.getId(),type);
         }
         return type;
     }
@@ -50,6 +50,10 @@ public class AssignmentNode implements Node {
             error.add(id.getId()+"is already declared");
         else
             env.addDeclaration(id.getId(),ass);
+
+        if(type != null && !env.containsDeclaration(type.getId())){
+            error.add(type.getId()+" is not defined");
+        }
         return error;
         }
 

@@ -134,25 +134,32 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
     @Override
     public LetInNode visitLetIn(LetInContext ctx) {
-        ArrayList<AssignmentNode> listAssignment = new ArrayList<>();
-        ArrayList<AssignmentNode> structAssignment = new ArrayList<>();
+
+        ArrayList<LetAssignmentNode> listAssignment = new ArrayList<>();
+        ArrayList<AssignmentNodeIn> structAssignment = new ArrayList<>();
+
 
 
         for( AssignmentContext assignmentNode: ctx.assignment()){
+            IdNode idType;
+            if(assignmentNode.structType() != null)
+                idType = new IdNode(assignmentNode.structType().ID().getText());
+            else
+                idType = null;
             for (int j = 0; j < assignmentNode.ID().size(); j++) {
                 if(assignmentNode.assign(j).exp() != null)
-                    listAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.assign(j).exp())));
+                    listAssignment.add(new LetAssignmentNode(idType,new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.assign(j).exp())));
                 else
-                    listAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j).stm())));
+                    listAssignment.add(new LetAssignmentNode(idType,new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j).stm())));
             }
         }
 
         for( StructAssignmentContext assignmentNode: ctx.structAssignment()){
             for (int j = 1; j < assignmentNode.ID().size(); j++) {
                 if(assignmentNode.assign(j-1).exp() != null)
-                    structAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.assign(j-1).exp())));
+                    structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.assign(j-1).exp())));
                 else
-                    structAssignment.add(new AssignmentNode(new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j-1).stm())));
+                    structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j-1).stm())));
             }
         }
 

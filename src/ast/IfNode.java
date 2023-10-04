@@ -39,7 +39,7 @@ public class IfNode implements Node {
 
     @Override
     public Node typeCheck(Environment e) throws TypeErrorException {
-        if(!(exp.typeCheck(e) instanceof BoolType ||
+        if(!(exp.typeCheck(e) instanceof BoolType &&
             Utils.isSubtype(stmT.typeCheck(e),stmF.typeCheck(e)))){
             throw new TypeErrorException("Incompatible type in if Node");
         }

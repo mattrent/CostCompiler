@@ -1,4 +1,4 @@
-// Generated from C:/Users/simon/Desktop/CostCompiler/src\HLCostLan.g4 by ANTLR 4.12.0
+// Generated from C:/Users/simon/Desktop/CostCompiler/src/HLCostLan.g4 by ANTLR 4.13.1
 package gen;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -105,6 +105,12 @@ public interface HLCostLanVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssignment(HLCostLanParser.AssignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HLCostLanParser#structType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructType(HLCostLanParser.StructTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HLCostLanParser#type}.
 	 * @param ctx the parse tree

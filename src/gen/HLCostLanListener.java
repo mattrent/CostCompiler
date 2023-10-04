@@ -1,4 +1,4 @@
-// Generated from C:/Users/simon/Desktop/CostCompiler/src\HLCostLan.g4 by ANTLR 4.12.0
+// Generated from C:/Users/simon/Desktop/CostCompiler/src/HLCostLan.g4 by ANTLR 4.13.1
 package gen;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -167,6 +167,16 @@ public interface HLCostLanListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssignment(HLCostLanParser.AssignmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HLCostLanParser#structType}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructType(HLCostLanParser.StructTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HLCostLanParser#structType}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructType(HLCostLanParser.StructTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HLCostLanParser#type}.
 	 * @param ctx the parse tree
