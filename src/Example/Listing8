@@ -7,7 +7,7 @@ service PremiumService : (string) -> void;
 service BasicService : (any, null) -> void;
 fn function(isPremiumUser: bool, par: any) -> void {
 	if ( isPremiumUser ) {
-		call PremiumService(1838492);
+		call PremiumService("test");
 	} else {
 		call BasicService( par , par);
 	}

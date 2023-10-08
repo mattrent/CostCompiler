@@ -12,6 +12,9 @@ public class Utils{
         if (a instanceof StructType && b instanceof StructType) {
             return ((StructType) a).equals(((StructType) b));
         }
+        if(a instanceof AnyType){
+            return true;
+        }
         return a.getClass().isAssignableFrom( b.getClass()); // ||
         // ( (a instanceof BoolTypeNode) && (b instanceof IntTypeNode) ); //
     }

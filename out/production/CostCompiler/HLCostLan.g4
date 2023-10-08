@@ -8,7 +8,7 @@ main : complexType* declarationService* fund*;
 declarationService: 'service'ID':''('typeDecl?(','typeDecl)*')''->'typeDecl';';
 typeDecl : (type | ID);
 
-fund : 'fn'ID'(' formalParams  ')' '->' (ID|type)'{'stm'}' ;
+fund : 'fn'ID'(' formalParams?  ')' '->' (ID|type)'{'stm'}' ;
 
 stm :(
      | callService
@@ -48,8 +48,7 @@ type: 'int'
     | 'null';
 
 // `<type> <= any` for all types
-complexType : 'array''['typeArr']'
-            | 'struct'ID'{' ID ':' (arrayType) (',' ID ':' (arrayType))* '}';
+complexType : 'struct'ID'{' ID ':' (arrayType) (',' ID ':' (arrayType))* '}';
 
 arrayType : 'array''['typeArr']' | type;
 typeArr : type;
@@ -63,7 +62,6 @@ formalParams:  ID ':' typeDecl(','ID ':' typeDecl)*;
 //IDs
 fragment CHAR 	    : 'a'..'z' |'A'..'Z' ;
 ID          : CHAR (CHAR | DIGIT)* ;
-
 //Numbers
 fragment DIGIT	    : '0'..'9';
 NUMBER      : DIGIT+;

@@ -61,16 +61,14 @@ public class LetInNode implements Node {
         for (LetAssignmentNode n : listAssignment) {
             errors.addAll(n.checkSemantics(env));
         }
-        env.closeScope();
 
-        env.openScope();
         for (AssignmentNodeIn n : structAssignment) {
             errors.addAll(n.checkSemantics(env));
         }
-        env.closeScope();
 
         if (statement != null)
             errors.addAll(statement.checkSemantics(env));
+        env.closeScope();
 
         return errors;
     }
@@ -97,7 +95,7 @@ public class LetInNode implements Node {
                 pre.append(" + ");
             }
         }
-        if (structAssignment != null)
+        if (!structAssignment.isEmpty())
             //remove the last character
             pre.deleteCharAt(pre.length() - 1);
 

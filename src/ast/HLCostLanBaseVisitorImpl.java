@@ -44,7 +44,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
         ReturnTypeNode returnType;
         
-        formalParamsNode = visitFormalParams(ctx.formalParams());
+        formalParamsNode =ctx.formalParams() != null ? visitFormalParams(ctx.formalParams()) : null;
 
         if(ctx.type()!= null){
             returnType = new ReturnTypeNode(Utils.castType(ctx.type()));
@@ -230,11 +230,8 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
                     params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.arrayType(i-1).type())));
             }
             return new StructNode(id,params);
-        }else{
-            //ArrayNode
-            ArrayType arr = new ArrayType(Utils.castType(ctx.typeArr().type()));
-            return arr;
         }
+        return super.visitComplexType(ctx);
     }
     public Node visitCallService(CallServiceContext ctx) {
         if(ctx.ID() != null && ctx.exp() != null) {

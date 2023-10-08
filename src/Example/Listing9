@@ -1,0 +1,11 @@
+struct Conn{
+        payload:array[any],
+        legth : int
+}
+service connection : (any)-> any;
+fn main()-> any{
+    let
+        Conn c = call connection();
+    in
+        c
+}
