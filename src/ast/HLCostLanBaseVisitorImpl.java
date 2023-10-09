@@ -125,6 +125,19 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             return new CallNode(new IdNode(id),listExp);
         }
 
+        if (ctx.structAssignment()!= null){
+            ArrayList<AssignmentNodeIn> structAssignment = new ArrayList<>();
+                StructAssignmentContext assignmentNode = ctx.structAssignment();
+                for (int j = 0; j < ctx.structAssignment().assign().size(); j++) {
+                    if(assignmentNode.assign(j).exp() != null)
+                        structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(1).getText()),visit(assignmentNode.assign(j).exp())));
+                    else
+                        structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(1).getText()),visitStm(assignmentNode.assign(j).stm())));
+
+            }
+            return new ListAssignmentMain(structAssignment);
+        }
+
         if(ctx.exp() != null){
             return visit(ctx.exp());
         }

@@ -54,6 +54,7 @@ public class LetAssignmentNode implements Node {
         if(type != null && !env.containsDeclaration(type.getId())){
             error.add(type.getId()+" is not defined");
         }
+        error.addAll(ass.checkSemantics(env));
         return error;
         }
 

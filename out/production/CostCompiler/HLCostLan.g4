@@ -15,11 +15,12 @@ stm :(
      |'if' '(' cond ')' '{'stm '}' 'else' '{' stm '}'
      |'for' '('ID 'in' '(' NUMBER','exp ')' ')' '{' stm '}'   /*check for list of ast.exp */
      | letIn
-     | ID'('listExp')'';'
+     | ID'('listExp')'
+     |structAssignment
      |exp
      );
 
-callService : 'call'ID'('(exp(','exp)*)?')' ';' stm?;
+callService : 'call'ID'('(exp(','exp)*)?')' (';' stm)?;
 
 letIn: 'let' (assignment)+ 'in' structAssignment* stm;
 

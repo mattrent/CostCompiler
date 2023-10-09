@@ -13,9 +13,9 @@ service BasicService: (Params) -> Result;
 fn svc(isPremiumUser: bool, par: Params) -> Result {
 	let
 		Result res = if (isPremiumUser) {
-			call PremiumService(par);
+			call PremiumService(par)
 		} else {
-			call BasicService(par);
+			call BasicService(par)
 		}
 	in
 		Result {
@@ -25,5 +25,5 @@ fn svc(isPremiumUser: bool, par: Params) -> Result {
 }
 
 fn main(isPremiumUser: bool, par: Params) -> Result {
-	svc(isPremiumUser, par);
+	svc(isPremiumUser, par)
 }

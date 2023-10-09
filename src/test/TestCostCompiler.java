@@ -78,4 +78,8 @@ public class TestCostCompiler {
             assertEquals(CostCompiler("src/Example/Listing10"), Results.PASS);
     }
 
+    public void test11() throws IOException {
+            System.out.println("Test Listing 11");
+            assertEquals(CostCompiler("src/Example/Listing11"), Results.PASS);
+    }
 }
