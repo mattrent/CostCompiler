@@ -72,6 +72,32 @@ public class BinExpNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
+        return op + right.toEquation(e);
+    }
+
+    public String negToEquation(EnvVar e) {
+        switch (op) {
+            case "+":
+                return "-" + right.toEquation(e);
+            case "-":
+                return "+" + right.toEquation(e);
+            case "*":
+                return "/" + right.toEquation(e);
+            case "/":
+                return "*" + right.toEquation(e);
+            case ">":
+                return "<=" + right.toEquation(e);
+            case "<":
+                return ">=" + right.toEquation(e);
+            case ">=":
+                return "<" + right.toEquation(e);
+            case "<=":
+                return ">" + right.toEquation(e);
+            case "==":
+                return "!=" + right.toEquation(e);
+            case "!=":
+                return "==" + right.toEquation(e);
+        }
         return null;
     }
 }

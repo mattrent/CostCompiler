@@ -1,12 +1,10 @@
 struct Params {
 	par:any
 }
-
 struct Result {
-	payload: any,
+	payload: string,
 	success: bool
 }
-
 service PremiumService: (Params) -> Result;
 service BasicService: (Params) -> Result;
 
@@ -25,6 +23,6 @@ fn svc(isPremiumUser: bool, par: Params) -> bool {
 fn main(isPremiumUser: bool, par: Params) -> Result {
 	Result{
 		success: svc(isPremiumUser, par),
-		payload: 1
+		payload: " svc payload"
 	}
 }

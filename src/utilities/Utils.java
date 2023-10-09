@@ -1,5 +1,6 @@
 package utilities;
 
+import ast.FunDeclarationNode;
 import ast.Node;
 import gen.HLCostLanParser;
 import ast.typeNode.*;
@@ -47,6 +48,22 @@ public class Utils{
 
         String randomChar = String.valueOf(charList.charAt(randomIndex));
         return randomChar;
+    }
+
+    public static FunDeclarationNode getFunDecNodeByLine(EnvVar e, int line){
+        //given a line return the function that contains that line
+        int mostNeighbour = 2000000;
+        FunDeclarationNode funNeighbour = null;
+        for( Node node:e.getSet()){
+            if(node instanceof FunDeclarationNode){
+                FunDeclarationNode fun = (FunDeclarationNode) node;
+                if(line - fun.getLine() > 0 && line - fun.getLine() < mostNeighbour){
+                    mostNeighbour = line - fun.getLine();
+                    funNeighbour = fun;
+                }
+            }
+        }
+        return funNeighbour;
     }
 
 

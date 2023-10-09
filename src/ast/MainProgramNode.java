@@ -80,11 +80,11 @@ public class MainProgramNode implements Node {
 
     public String toEquation(EnvVar e){
 
-        String equ = "";
+        StringBuilder equ = new StringBuilder();
         for(Node n : funDec){
-            equ += n.toEquation(e);
+            equ.append(n.toEquation(e));
         }
-        return equ;
+        return equ.toString();
 
 
 

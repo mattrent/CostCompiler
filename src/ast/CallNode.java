@@ -58,4 +58,8 @@ public class CallNode implements Node{
         assert fun != null;
         return this.id.getId() + "("+ fun.getParFun()+")";
     }
+
+    public String getId() {
+        return id.getId();
+    }
 }

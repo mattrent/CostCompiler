@@ -15,12 +15,14 @@ public class FunDeclarationNode implements Node{
     private final FormalParams formalParams;
     private final Node stm;
     private String parFun;
-    public FunDeclarationNode(Node type, IdNode id, FormalParams formalParams, Node stm) {
+    private int line;
+    public FunDeclarationNode(Node type, IdNode id, FormalParams formalParams, Node stm, int line) {
         this.type = type;
         this.id = id;
         this.formalParams = formalParams;
         this.stm = stm;
         parFun = null;
+        this.line = line;
     }
 
     @Override
@@ -81,6 +83,10 @@ public class FunDeclarationNode implements Node{
         this.parFun = String.valueOf(new StringBuilder(par.substring(0, par.length() - 1)));
         return pre + this.parFun + post;
 
+    }
+
+    public int getLine() {
+        return line;
     }
 
     public FormalParams getFormalParams() {

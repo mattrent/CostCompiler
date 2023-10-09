@@ -19,7 +19,7 @@ fn svc(isPremiumUser: bool, par: Params) -> Result {
 		}
 	in
 		Result {
-			success: res.success && res.payload != "failure",
+			success: res.success && res.payload !="failure",
 			payload: res.payload
 		}
 }

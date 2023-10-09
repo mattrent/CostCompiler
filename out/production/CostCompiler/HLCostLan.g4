@@ -32,8 +32,8 @@ exp:     left= exp op= ('+'|'-') right= exp                    #binExp
         | left= exp op= ('>'|'==' | '>=' |'!=') right= exp      #binExp
         | left= exp op= ('&&' |'*' | '/') right= exp            #binExp
         | ID'.'ID                                       #callFun
-        | '"'ID'"'                                              #stringExp
-        | NUMBER                                                  #valExp
+        | '"' STRING                                #stringExp
+        | NUMBER                                                #valExp
         | ID                                                    #derExp;
 
 assignment: (structType)? (ID '=' assign) ( ID '=' assign)*;
@@ -67,7 +67,10 @@ ID          : CHAR (CHAR | DIGIT)* ;
 fragment DIGIT	    : '0'..'9';
 NUMBER      : DIGIT+;
 
+//String
+STRING      :  ID(ID | ' ')* CLS_STR ;
 
+CLS_STR : '"' ;
 //ESCAPE SEQUENCES
 NEWLINE   :  ( '\r\n'   // DOS
                | '\r'   // MAC
@@ -75,7 +78,7 @@ NEWLINE   :  ( '\r\n'   // DOS
              )
              ->skip;
 LINECOMMENTS 	: '//' (~('\n'|'\r'))* -> skip;
-WS         : (' '|'\t')+ -> skip;
+WS         :    (' '|'\t')+ -> skip;
 BLOCKCOMMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMMENTS)* '*/' -> skip;
 LINE_NUMBER : [0-9]+;
 

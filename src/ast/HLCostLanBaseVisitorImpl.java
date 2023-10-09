@@ -53,7 +53,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         }
         Node stm = visitStm(ctx.stm());
 
-        return new FunDeclarationNode( returnType,new IdNode(id),formalParamsNode,stm);
+        return new FunDeclarationNode( returnType,new IdNode(id),formalParamsNode,stm, ctx.start.getLine());
     }
 
     @Override
@@ -151,8 +151,6 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         ArrayList<LetAssignmentNode> listAssignment = new ArrayList<>();
         ArrayList<AssignmentNodeIn> structAssignment = new ArrayList<>();
 
-
-
         for( AssignmentContext assignmentNode: ctx.assignment()){
             IdNode idType;
             if(assignmentNode.structType() != null)
@@ -166,7 +164,6 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
                     listAssignment.add(new LetAssignmentNode(idType,new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j).stm())));
             }
         }
-
         for( StructAssignmentContext assignmentNode: ctx.structAssignment()){
             for (int j = 1; j < assignmentNode.ID().size(); j++) {
                 if(assignmentNode.assign(j-1).exp() != null)
@@ -175,15 +172,9 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
                     structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j-1).stm())));
             }
         }
-
         Node stm = visitStm(ctx.stm());
 
         return new LetInNode(listAssignment,structAssignment,stm);
-    }
-
-    @Override
-    public Node visitStringExp(StringExpContext ctx) {
-        return new StringNode(ctx.getText());
     }
 
 
@@ -287,5 +278,9 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     @Override
     public Node visitValExp(ValExpContext ctx) {
         return new ValExpNode(ctx.getText());
+    }
+    @Override
+    public Node visitStringExp(StringExpContext ctx) {
+        return new StringNode(ctx.getText());
     }
 }

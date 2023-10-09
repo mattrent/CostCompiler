@@ -1,18 +1,6 @@
 package test;
-import ast.HLCostLanBaseVisitorImpl;
-import ast.Node;
-import com.company.Main;
-import com.company.SyntaxErrorListener;
-import gen.HLCostLanLexer;
-import gen.HLCostLanParser;
-import junit.framework.TestCase;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
+
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
-import utilities.Environment;
-import test.Results;
 import java.io.IOException;
 
 import static com.company.Main.CostCompiler;
@@ -50,13 +38,11 @@ public class TestCostCompiler {
             System.out.println("Test Listing 5");
             assertEquals(CostCompiler("src/Example/Listing5"), Results.PASS);
         }
-        @Test
+    @Test
     public void test6() throws IOException {
             System.out.println("Test Listing 6");
             assertEquals(CostCompiler("src/Example/Listing6"), Results.SYNTAX_ERROR);
-
     }
-
     @Test
     public void test7() throws IOException {
             System.out.println("Test Listing 7");
@@ -77,7 +63,7 @@ public class TestCostCompiler {
             System.out.println("Test Listing 10");
             assertEquals(CostCompiler("src/Example/Listing10"), Results.PASS);
     }
-
+    @Test
     public void test11() throws IOException {
             System.out.println("Test Listing 11");
             assertEquals(CostCompiler("src/Example/Listing11"), Results.PASS);

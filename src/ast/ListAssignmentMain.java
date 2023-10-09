@@ -16,7 +16,7 @@ public class ListAssignmentMain implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
-        return null;
+        return e;
     }
 
     @Override
@@ -38,6 +38,20 @@ public class ListAssignmentMain implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        return null;
+        StringBuilder pre = new StringBuilder(" ");
+
+        for (Node n : structAssignment) {
+            String s = n.toEquation(e);
+            if (!s.equals(" ")) {
+                pre.append(s);
+                pre.append(" +");
+            }
+        }
+        if (!structAssignment.isEmpty())
+            //remove the last character
+            pre.deleteCharAt(pre.length() - 1);
+
+
+        return String.valueOf(pre);
     }
 }

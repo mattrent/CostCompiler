@@ -31,6 +31,15 @@ public class LetInNode implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
+        if (listAssignment != null)
+            for (Node n : listAssignment) {
+                n.checkVarEQ(e);
+            }
+
+        if (structAssignment != null)
+            for (Node n : structAssignment) {
+                n.checkVarEQ(e);
+            }
         if (statement != null)
             statement.checkVarEQ(e);
 
@@ -92,7 +101,7 @@ public class LetInNode implements Node {
             String s = n.toEquation(e);
             if (!s.equals(" ")) {
                 pre.append(s);
-                pre.append(" + ");
+                pre.append(" +");
             }
         }
         if (!structAssignment.isEmpty())

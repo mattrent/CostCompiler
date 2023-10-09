@@ -32,6 +32,6 @@ public class ValExpNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        return null;
+        return String.valueOf(val);
     }
 }

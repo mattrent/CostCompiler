@@ -1,5 +1,6 @@
 package utilities;
 
+import ast.CallNode;
 import ast.FunDeclarationNode;
 import ast.IdNode;
 import ast.Node;
@@ -56,7 +57,10 @@ public class EnvVar {
         return null;
     }
     public String get(Node node){
-        return map.get(node);
+        if (node instanceof CallNode)
+            return map.get(getFunDecNode(((CallNode)node).getId()));
+        else
+            return map.get(node);
     }
 
     public void remove(Node n){
