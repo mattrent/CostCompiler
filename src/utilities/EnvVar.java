@@ -1,7 +1,7 @@
 package utilities;
 
-import ast.CallNode;
-import ast.FunDeclarationNode;
+import ast.statement.CallNode;
+import ast.statement.FunDeclarationNode;
 import ast.IdNode;
 import ast.Node;
 

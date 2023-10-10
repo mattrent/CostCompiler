@@ -1,18 +1,17 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
+import ast.StructNode;
 import ast.typeNode.StructType;
-import ast.typeNode.TypeNode;
-import org.antlr.v4.runtime.misc.Pair;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
 import utilities.Utils;
 
-import java.sql.Struct;
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class AssignmentNodeIn implements Node{
+public class AssignmentNodeIn implements Node {
     IdNode type;
     IdNode id;
     Node ass;

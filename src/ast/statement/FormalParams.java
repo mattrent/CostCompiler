@@ -1,5 +1,6 @@
-package ast;
+package ast.statement;
 
+import ast.Node;
 import org.antlr.v4.runtime.misc.Pair;
 import ast.typeNode.TypeNode;
 import utilities.EnvVar;

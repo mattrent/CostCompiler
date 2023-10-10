@@ -1,5 +1,7 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
 import org.antlr.v4.runtime.misc.Pair;
 import ast.typeNode.TypeNode;
 import utilities.EnvVar;
@@ -7,7 +9,7 @@ import utilities.Environment;
 
 import java.util.ArrayList;
 
-public class DecService implements Node{
+public class DecService implements Node {
     IdNode id;
     ArrayList<Pair<IdNode,TypeNode>> params;
     ReturnTypeNode returnType;

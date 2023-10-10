@@ -1,5 +1,7 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
@@ -7,7 +9,7 @@ import utilities.Utils;
 
 import java.util.ArrayList;
 
-public class CallNode implements Node{
+public class CallNode implements Node {
 
     IdNode id;
     ArrayList<Node> listCount;

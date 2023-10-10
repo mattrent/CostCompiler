@@ -1,5 +1,7 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
 import ast.typeNode.TypeNode;
 import utilities.EnvVar;
 import utilities.Environment;
@@ -7,7 +9,7 @@ import utilities.TypeErrorException;
 
 import java.util.ArrayList;
 
-public class ReturnTypeNode implements Node{
+public class ReturnTypeNode implements Node {
     TypeNode type;
     IdNode id;
     public ReturnTypeNode(TypeNode type) {

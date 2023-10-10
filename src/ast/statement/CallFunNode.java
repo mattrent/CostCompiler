@@ -1,5 +1,8 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
+import ast.StructNode;
 import ast.typeNode.StructType;
 import ast.typeNode.TypeNode;
 import org.antlr.v4.runtime.misc.Pair;
@@ -10,7 +13,7 @@ import utilities.TypeErrorException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class CallFunNode implements Node{
+public class CallFunNode implements Node {
     //CallFunNode : ID.ID;
     ArrayList<String> listId;
 

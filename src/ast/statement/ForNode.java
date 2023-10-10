@@ -1,5 +1,6 @@
-package ast;
+package ast.statement;
 
+import ast.Node;
 import ast.typeNode.IntType;
 import ast.typeNode.VoidType;
 import utilities.EnvVar;

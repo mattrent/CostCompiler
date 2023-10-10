@@ -1,8 +1,10 @@
-package ast;
+package ast.statement;
 
+import ast.Node;
 import ast.exp.BinExpNode;
+import ast.statement.CallNode;
+import ast.statement.CallServiceNode;
 import ast.typeNode.BoolType;
-import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
@@ -19,7 +21,7 @@ public class IfNode implements Node {
     Node stmT;
     Node stmF;
     int line;
-    public IfNode(CallServiceNode callServiceNode, Node node, Node node1,int line) {
+    public IfNode(CallServiceNode callServiceNode, Node node, Node node1, int line) {
         this.exp = callServiceNode;
         this.stmT = node;
         this.stmF = node1;

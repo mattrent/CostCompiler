@@ -1,6 +1,6 @@
 package utilities;
 
-import ast.FunDeclarationNode;
+import ast.statement.FunDeclarationNode;
 import ast.Node;
 import gen.HLCostLanParser;
 import ast.typeNode.*;

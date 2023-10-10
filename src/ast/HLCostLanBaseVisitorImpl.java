@@ -1,5 +1,6 @@
 package ast;
 
+import ast.statement.*;
 import ast.typeNode.ArrayType;
 import ast.typeNode.IdType;
 import ast.exp.BinExpNode;

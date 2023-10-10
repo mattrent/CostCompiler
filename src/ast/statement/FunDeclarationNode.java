@@ -1,6 +1,7 @@
-package ast;
+package ast.statement;
 
-import ast.typeNode.VoidType;
+import ast.IdNode;
+import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
@@ -8,7 +9,7 @@ import utilities.TypeErrorException;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class FunDeclarationNode implements Node{
+public class FunDeclarationNode implements Node {
 
     private final Node type;
     private final IdNode id;

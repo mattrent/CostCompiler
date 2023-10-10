@@ -1,5 +1,7 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
