@@ -40,9 +40,7 @@ public class IfNode implements Node {
         e.add(exp);
         e.add(stmT);
         e.add(stmF);
-        exp.checkVarEQ(e);
-        stmT.checkVarEQ(e);
-        stmF.checkVarEQ(e);
+
         return e;
     }
 
@@ -68,22 +66,20 @@ public class IfNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        e.add(exp);
-        e.add(stmT);
-        e.add(stmF);
 
         String dec =  "if"+line+"(" + e.get(exp)+","+ e.get(stmT)+","+e.get(stmF)+") ";
+        String decCall =  "0, [ "+ dec +"] , []";
         if(exp instanceof CallServiceNode){
-            return dec +" \n"+dec +"="+ e.get(exp)+" +" +" max("+ e.get(stmT)+","+e.get(stmF)+" )\n" ;
+            return decCall +" \n"+dec +" , "+ e.get(exp)+" +" +" max("+ e.get(stmT)+","+e.get(stmF)+" )\n" ;
         }else {
             if (stmF instanceof CallNode &&  (getFunDecNodeByLine(e, line) != null) && Objects.equals(((CallNode) stmF).getId(), getFunDecNodeByLine(e, line).getId()) && exp instanceof BinExpNode) {
                 BinExpNode expNode = (BinExpNode) this.exp;
-                return dec + " \n" + dec + " = " + e.get(stmT) + " [" + e.get(exp) + expNode.negToEquation(e) + " ] \n" + dec + " = " + e.get(stmF) + " [" + e.get(exp) +exp.toEquation(e) +" ] \n";
+                return decCall + " ).\neq(" + dec + " , " + e.get(stmT) + ", [" + e.get(exp) + expNode.negToEquation(e) + " ]). \n" + dec + " , " + e.get(stmF) + ", [" + e.get(exp) +exp.toEquation(e) +" ]). \n";
             } else if (stmT instanceof CallNode &&  getFunDecNodeByLine(e, line)!= null && Objects.equals(((CallNode) stmT).getId(), getFunDecNodeByLine(e, line).getId()) && exp instanceof BinExpNode){
                 BinExpNode expNode = (BinExpNode) this.exp;
-                return dec + " \n" + dec + " = " + e.get(stmT) + " [" + e.get(exp) + exp.toEquation(e) + " ] \n" + dec + " = " + e.get(stmF) + " [" + e.get(exp) + expNode.negToEquation(e)+"] \n";
+                return decCall + ").\neq(" + dec + " ,0, [" + e.get(stmT) + "], [" + e.get(exp) + exp.toEquation(e) + " ] ).\neq(" + dec + " , " + e.get(stmF) + ", [], [" + e.get(exp) + expNode.negToEquation(e)+"] ).\n";
             }else
-                return dec +" \n" + dec + " = " +e.get(stmT)+ " ["+ e.get(exp)+" = 1] \n"+ dec +" = "+e.get(stmF)+ " ["+ e.get(exp)+" = 0] \n";
+                return decCall +").\neq(" + dec + " , nat(" +e.get(stmT)+ ") ,[], ["+ e.get(exp)+" = 1]).\neq("+ dec +" , nat("+e.get(stmF)+ "), [] , ["+ e.get(exp)+" = 0] ).\n";
 
         }
 

@@ -5,8 +5,9 @@ import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
-
+import ast.statement.CallNode;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Set;
 
 public class FunDeclarationNode implements Node {
@@ -71,18 +72,31 @@ public class FunDeclarationNode implements Node {
         e.add(this,id.getId());
         String pre = id.getId() + "(" ;
 
-        String post =  ") = " + stm.toEquation(e) ;
 
+        //check in e if there is recursive call
+        Node nodeToRemove = null;
+        for (Node n : e.getSet()){
+            if(Objects.equals(e.get(n), this.id.getId()) && n instanceof CallNode){
+               nodeToRemove = n;
+            }
+        }
+
+        if(nodeToRemove != null)
+            e.remove(nodeToRemove);
+
+        String post =  ") ," + stm.toEquation(e) ;
         Set<Node> set = e.getSet();
         StringBuilder par = new StringBuilder();
         for(Node n : set){
-            if(!(n instanceof FunDeclarationNode))
+            if (!(n instanceof FunDeclarationNode ||
+                    (n instanceof CallNode) && ((CallNode) n).getId().equals(this.id.getId()))) {
                 par.append(e.get(n)).append(",");
+            }
         }
 
 
         this.parFun = String.valueOf(new StringBuilder(par.substring(0, par.length() - 1)));
-        return pre + this.parFun + post;
+        return "eq("+ pre + this.parFun + post ;
 
     }
 

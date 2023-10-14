@@ -39,4 +39,8 @@ public class DerExpNode implements Node {
     public String toEquation(EnvVar e) {
         return e.get(this);
     }
+
+    public String getId() {
+    	return id.getId();
+    }
 }

@@ -102,7 +102,7 @@ public class LetInNode implements Node {
             String s = n.toEquation(e);
             if (!s.equals(" ")) {
                 pre.append(s);
-                pre.append(" +");
+                pre.append(" ,");
             }
         }
         if (!structAssignment.isEmpty())
@@ -111,7 +111,7 @@ public class LetInNode implements Node {
 
         if (statement != null)
             pre.append(statement.toEquation(e));
-        return String.valueOf(pre);
+        return " 0,["+String.valueOf(pre) + "],[]).";
     }
 }
 

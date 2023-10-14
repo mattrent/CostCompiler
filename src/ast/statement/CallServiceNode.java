@@ -73,8 +73,12 @@ public class CallServiceNode implements Node {
     @Override
     public String toEquation(EnvVar e) {
         if(stm != null) {
-            return e.get(this) + "+" + stm.toEquation(e);
+            return "nat("+e.get(this)+")+" + stm.toEquation(e);
         }else
-            return e.get(this);
+            return "nat("+ e.get(this)+")";
+    }
+
+    public String getId() {
+    	return idCall;
     }
 }

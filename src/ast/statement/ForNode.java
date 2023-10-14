@@ -65,34 +65,34 @@ public class ForNode implements Node {
 
         String linexp = "";
         for(Node node : expList){
-            linexp += e2.get(node)+",";
+            linexp += e.get(node)+",";
         }
         linexp = linexp.substring(0,linexp.length()-1);
         String linestm = "";
         for(Node node : stmList){
-            linestm += e1.get(node)+",";
+            linestm += e.get(node)+",";
         }
 
         linestm = linestm.substring(0,linestm.length()-1);
         String s = ")";
-        String decStart = "for"+line+"(0,"+linestm + ","+ linexp+") ";
-        String dec = "for"+line+"("+id+","+linestm + ","+ linexp+") ";
+        String decStart = "0,[for"+line+"(0,"+linestm + ","+ linexp+")],[] ";
+        String dec = "for"+line+"("+id.toUpperCase()+","+linestm + ","+ linexp+") ";
         String stmStr = stm.toEquation(e);
 
 
 
-        String condLoop ="["+exp.toEquation(e)+">= "+id+"]";
-        String condNoLoop = "["+id+" >= "+exp.toEquation(e)+"+ 1]";
+        String condLoop ="["+exp.toEquation(e)+">= "+id.toUpperCase()+"]";
+        String condNoLoop = "["+id.toUpperCase()+" >= "+exp.toEquation(e)+"+ 1]";
 
         if(stmStr.contains("\n")){
             String stmStr1 = stmStr.substring(0,stmStr.indexOf("\n"));
             String stmStr2 = stmStr.substring(stmStr.indexOf("\n")+1);
 
-            return  decStart + "\n" + dec +" = "+ stmStr1 + " + for"+line+"("+id+"+1,"+linestm + linexp+") "+ condLoop + "\n"
-                    + dec + " = 0 \t" + condNoLoop + "\n" + stmStr2;
+            return  decStart + ").\neq(" + dec +" , "+ stmStr1 + " \neq("
+                    + dec + " ,0,[]," + condNoLoop + ").\n" + stmStr2;
         }
 
-       return  decStart + "\n" + dec +" = "+ stmStr + " + for"+line+"("+id+"+1,"+linestm + linexp+") "+ condLoop + "\n"
-               + dec + " = 0 \t" + condNoLoop + "\n";
+       return  decStart + ").\neq(" + dec +" , "+ stmStr + " , [for"+line+"("+id.toUpperCase()+"+1,"+linestm+ ","+ linexp+")], "+ condLoop + ").\neq("
+               + dec + " ,0,[], " + condNoLoop + ").\n";
     }
 }

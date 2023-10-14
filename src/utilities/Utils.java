@@ -6,6 +6,8 @@ import gen.HLCostLanParser;
 import ast.typeNode.*;
 import ast.typeNode.TypeNode;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Utils{
@@ -41,7 +43,7 @@ public class Utils{
     }
 
     public static String randomChar(){
-        String charList = "abcdefghijklmnopqrstuvwxyz";
+        String charList = "abcdefghijklmnopqrstuvwxyz".toUpperCase();
 
         Random random = new Random();
         int randomIndex = random.nextInt(charList.length());
@@ -50,6 +52,15 @@ public class Utils{
         return randomChar;
     }
 
+    public static String getCharUnivoqueKey(HashMap<Node,String> set, String name){
+        int i = 0;
+        char v;
+        do{
+            v = name.charAt(i);
+            i++;
+        }while(set.containsValue(String.valueOf(v)));
+        return String.valueOf(v).toUpperCase();
+    }
     public static FunDeclarationNode getFunDecNodeByLine(EnvVar e, int line){
         //given a line return the function that contains that line
         int mostNeighbour = 2000000;
@@ -64,6 +75,22 @@ public class Utils{
             }
         }
         return funNeighbour;
+    }
+
+    public static boolean hasMethod(Object obj, String methodName) {
+        Class<?> clazz = obj.getClass();
+
+        // Ottieni tutti i metodi della classe, inclusi quelli ereditati
+        Method[] methods = clazz.getMethods();
+
+        // Cerca il metodo con il nome specificato
+        for (Method method : methods) {
+            if (method.getName().equals(methodName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

@@ -5,10 +5,11 @@ import ast.statement.FunDeclarationNode;
 import ast.IdNode;
 import ast.Node;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Set;
 
-import static utilities.Utils.randomChar;
+import static utilities.Utils.*;
 
 public class EnvVar {
 //TODO: Guardare se invertire String,Node è più efficiente
@@ -36,14 +37,35 @@ public class EnvVar {
              }
         }
         String c;
-        do {
-            c = randomChar();
-        }while(map.containsValue(c));
-        map.put(n,c);
-        return  c;
+
+            String result = "";
+
+            if (hasMethod(n,"getId")) {
+                try {
+                    // Ottieni il metodo "getId"
+                    Method getIdMethod = n.getClass().getMethod("getId");
+                    // Chiamare il metodo e ottenere il risultato
+                    result = (String) getIdMethod.invoke(n);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                c = getCharUnivoqueKey(map,result);
+                map.put(n,c);
+                return  c;
+            }else {
+                do {
+                    c = randomChar();
+
+                } while (map.containsValue(c));
+                map.put(n, c);
+                return c;
+            }
     }
 
+
+
     public String add(Node n,String s){
+        s = s.toUpperCase();
         if(!map.containsValue(s)){
             map.put(n,s);
             return s;
