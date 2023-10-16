@@ -63,20 +63,22 @@ public class ForNode implements Node {
         e1= stm.checkVarEQ(e1);
         Set<Node> stmList = e1.getSet();
 
-        String linexp = "";
+        String linexp = " ";
         for(Node node : expList){
             linexp += e.get(node)+",";
         }
         linexp = linexp.substring(0,linexp.length()-1);
-        String linestm = "";
+        String linestm = " ";
         for(Node node : stmList){
             linestm += e.get(node)+",";
         }
-
         linestm = linestm.substring(0,linestm.length()-1);
         String s = ")";
-        String decStart = "0,[for"+line+"(0,"+linestm + ","+ linexp+")],[] ";
-        String dec = "for"+line+"("+id.toUpperCase()+","+linestm + ","+ linexp+") ";
+        String decStart = "0,[for"+line+"(0,"+linestm + ((!expList.isEmpty()) ? (","+ linexp) : "")
+                                            +")],[] ";
+
+        String dec = "for"+line+"("+id.toUpperCase()+","+linestm +
+                                                    ((!expList.isEmpty()) ? (","+ linexp) : "") +") ";
         String stmStr = stm.toEquation(e);
 
 
@@ -88,11 +90,11 @@ public class ForNode implements Node {
             String stmStr1 = stmStr.substring(0,stmStr.indexOf("\n"));
             String stmStr2 = stmStr.substring(stmStr.indexOf("\n")+1);
 
-            return  decStart + ").\neq(" + dec +" , "+ stmStr1 + " \neq("
-                    + dec + " ,0,[]," + condNoLoop + ").\n" + stmStr2;
+            return  decStart + ").\neq(" + dec +","+ stmStr1 + " \neq("
+                    + dec + ",0,[]," + condNoLoop + ").\n" + stmStr2;
         }
 
-       return  decStart + ").\neq(" + dec +" , "+ stmStr + " , [for"+line+"("+id.toUpperCase()+"+1,"+linestm+ ","+ linexp+")], "+ condLoop + ").\neq("
-               + dec + " ,0,[], " + condNoLoop + ").\n";
+       return  decStart + ").\neq(" + dec +","+ stmStr + ",[for"+line+"("+id.toUpperCase()+"+1,"+linestm+
+               ((!expList.isEmpty()) ? (","+ linexp) : "") +")], "+ condLoop + ").\neq(" + dec + ",0,[]," + condNoLoop + ").\n";
     }
 }

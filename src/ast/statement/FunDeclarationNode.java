@@ -84,7 +84,12 @@ public class FunDeclarationNode implements Node {
         if(nodeToRemove != null)
             e.remove(nodeToRemove);
 
-        String post =  ") ," + stm.toEquation(e) ;
+        String post = "";
+        if(stm instanceof CallNode || stm instanceof ListAssignmentMain){
+            post =  "),1,[" + stm.toEquation(e) + "],[]).";
+        }
+        else post =  ")," + stm.toEquation(e) ;
+
         Set<Node> set = e.getSet();
         StringBuilder par = new StringBuilder();
         for(Node n : set){

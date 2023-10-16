@@ -75,7 +75,7 @@ public class CallServiceNode implements Node {
         if(stm != null) {
             return "nat("+e.get(this)+")+" + stm.toEquation(e);
         }else
-            return "nat("+ e.get(this)+")";
+            return "nat("+ e.add(new IdNode(idCall))+")";
     }
 
     public String getId() {

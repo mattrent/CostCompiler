@@ -25,7 +25,6 @@ public class EnvVar {
     public boolean containsValue(String s){
         return map.containsValue(s);
     }
-
     public String add( Node n) {
         //choose a marker univoque to identify the node
         if(map.containsKey(n) ){
@@ -117,4 +116,23 @@ public class EnvVar {
 
     //make a function that given a value(string) return a node
 
+    public String fromIdToNode(String id) {
+        for (Node n : map.keySet()) {
+            String result = "";
+            if (hasMethod(n, "getId")) {
+                try {
+                    // Ottieni il metodo "getId"
+                    Method getIdMethod = n.getClass().getMethod("getId");
+                    // Chiamare il metodo e ottenere il risultato
+                    result = (String) getIdMethod.invoke(n);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (result.equals(id)) {
+                    return map.get(n);
+                }
+            }
+        }
+        return null;
+    }
 }

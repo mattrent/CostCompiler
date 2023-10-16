@@ -41,7 +41,7 @@ public class TestCostCompiler {
     @Test
     public void test6() throws IOException {
             System.out.println("Test Listing 6");
-            assertEquals(CostCompiler("src/Example/Listing6"), Results.SYNTAX_ERROR);
+            assertEquals(CostCompiler("src/Example/Listing6"), Results.PASS);
     }
     @Test
     public void test7() throws IOException {

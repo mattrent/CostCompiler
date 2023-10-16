@@ -29,7 +29,8 @@ public class LetAssignmentNode implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
-        return null;
+        id.checkVarEQ(e);
+        return e;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class LetAssignmentNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        if(ass instanceof CallNode || ass instanceof ForNode || ass instanceof IfNode)
+        if(ass instanceof CallNode || ass instanceof ForNode || ass instanceof IfNode || ass instanceof CallServiceNode)
             return ass.toEquation(e);
         else return " ";
     }

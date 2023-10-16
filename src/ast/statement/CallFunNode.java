@@ -23,7 +23,7 @@ public class CallFunNode implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
-        return null;
+        return null ;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CallFunNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        return null;
+        return e.get(e.checkIdNode(e.getSet(), listId.get(0)));
     }
 
 }

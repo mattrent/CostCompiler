@@ -17,7 +17,7 @@ public class ValExpNode implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
-        return null;
+        return e;
     }
 
     @Override

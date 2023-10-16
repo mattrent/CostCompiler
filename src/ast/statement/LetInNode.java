@@ -41,8 +41,7 @@ public class LetInNode implements Node {
             for (Node n : structAssignment) {
                 n.checkVarEQ(e);
             }
-        if (statement != null)
-            statement.checkVarEQ(e);
+
 
         return e;
     }
@@ -91,10 +90,10 @@ public class LetInNode implements Node {
             String s = n.toEquation(e);
             if (!s.equals(" ")) {
                 pre.append(s);
-                pre.append(" + ");
+                pre.append(" +");
             }
         }
-        if (listAssignment != null)
+        if (listAssignment != null && !structAssignment.isEmpty())
             //remove the last character
             pre.deleteCharAt(pre.length() - 1);
 
@@ -109,9 +108,15 @@ public class LetInNode implements Node {
             //remove the last character
             pre.deleteCharAt(pre.length() - 1);
 
-        if (statement != null)
+        if(statement != null && statement instanceof IfNode)
+            return String.valueOf(pre.append(statement.toEquation(e)));
+        if(statement != null && !(statement instanceof CallNode)){
+            return pre.append(statement.toEquation(e)) + ",[],[]).";
+        }else if (statement != null ) {
             pre.append(statement.toEquation(e));
-        return " 0,["+String.valueOf(pre) + "],[]).";
+            return " 0,[" + String.valueOf(pre) + "],[]).";
+        }
+        return null;
     }
 }
 
