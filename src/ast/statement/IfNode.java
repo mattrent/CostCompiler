@@ -85,9 +85,13 @@ public class IfNode implements Node {
         } else if (stmT instanceof CallNode &&  getFunDecNodeByLine(e, line)!= null && Objects.equals(((CallNode) stmT).getId(), getFunDecNodeByLine(e, line).getId()) && exp instanceof BinExpNode){
             BinExpNode expNode = (BinExpNode) this.exp;
             return decCall + ").\neq(" + dec + ",0,[" + stmT.toEquation(e) + "], [" + e.get(exp) + exp.toEquation(e) + " ] ).\neq(" + dec + " , nat(" + e.get(stmF) + "),[],[" + e.get(exp) + expNode.negToEquation(e)+"]).\n";
-        }else
-            return decCall +").\neq(" + dec + ",nat(" +e.get(stmT)+ "),[],["+ e.get(exp)+"=1]).\neq("+ dec +",nat("+e.get(stmF)+ "),[],["+ e.get(exp)+"=0]).\n";
-
+        }else {
+            String valStmT = stmT instanceof CallFunNode ? "1" : "nat("+e.get(stmT)+")";
+            String valStmF = stmF instanceof CallFunNode ? "1" : "nat("+e.get(stmT)+")";
+            valStmT = stmT.toEquation(e);
+            valStmF = stmF.toEquation(e);
+            return decCall + ").\neq(" + dec + ","+ valStmT +",[],[" + e.get(exp) + "=1]).\neq(" + dec +","+ valStmF+",[],[" + e.get(exp) + "=0]).\n";
+        }
 
 
         //una volta fatto le equazioni del nodo andiamo a fare quelle per i nodi sottostanti

@@ -1,6 +1,7 @@
 package utilities;
 
 import ast.statement.CallNode;
+import ast.statement.CallServiceNode;
 import ast.statement.FunDeclarationNode;
 import ast.IdNode;
 import ast.Node;
@@ -64,6 +65,9 @@ public class EnvVar {
 
 
     public String add(Node n,String s){
+        if(checkIdFromSpecificNode(getSet(), n) != null ){
+            return checkIdFromSpecificNode(getSet(), n);
+        }
         s = s.toUpperCase();
         if(!map.containsValue(s)){
             map.put(n,s);
@@ -80,8 +84,21 @@ public class EnvVar {
     public String get(Node node){
         if (node instanceof CallNode)
             return map.get(getFunDecNode(((CallNode)node).getId()));
-        else
+        else if(map.get(node) != null)
             return map.get(node);
+        else
+            return checkIdFromSpecificNode(map.keySet(), node);
+    }
+
+    private String checkIdFromSpecificNode(Set<Node> nodes, Node node) {
+        for(Node n : nodes){
+            if(n instanceof CallNode && node instanceof CallNode && ((CallNode) n).getId().equals(((CallNode) node).getId())){
+                    return map.get(n);
+            }else if(n instanceof CallServiceNode && node instanceof CallServiceNode && ((CallServiceNode) n).getId().equals(((CallServiceNode) node).getId())){
+                return map.get(n);
+            }
+        }
+        return null;
     }
 
     public void remove(Node n){

@@ -10,15 +10,15 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Utils{
-    public static boolean isSubtype (Node a, Node b) {
+public class Utils {
+    public static boolean isSubtype(Node a, Node b) {
         if (a instanceof StructType && b instanceof StructType) {
             return ((StructType) a).equals(((StructType) b));
         }
-        if(a instanceof AnyType){
+        if (a instanceof AnyType) {
             return true;
         }
-        return a.getClass().isAssignableFrom( b.getClass()); // ||
+        return a.getClass().isAssignableFrom(b.getClass()); // ||
         // ( (a instanceof BoolTypeNode) && (b instanceof IntTypeNode) ); //
     }
 
@@ -42,7 +42,7 @@ public class Utils{
         return new NullType();
     }
 
-    public static String randomChar(){
+    public static String randomChar() {
         String charList = "abcdefghijklmnopqrstuvwxyz".toUpperCase();
 
         Random random = new Random();
@@ -52,23 +52,24 @@ public class Utils{
         return randomChar;
     }
 
-    public static String getCharUnivoqueKey(HashMap<Node,String> set, String name){
+    public static String getCharUnivoqueKey(HashMap<Node, String> set, String name) {
         int i = 0;
         char v;
-        do{
+        do {
             v = name.charAt(i);
             i++;
-        }while(set.containsValue(String.valueOf(v)));
+        } while (set.containsValue(String.valueOf(v)));
         return String.valueOf(v).toUpperCase();
     }
-    public static FunDeclarationNode getFunDecNodeByLine(EnvVar e, int line){
+
+    public static FunDeclarationNode getFunDecNodeByLine(EnvVar e, int line) {
         //given a line return the function that contains that line
         int mostNeighbour = 2000000;
         FunDeclarationNode funNeighbour = null;
-        for( Node node:e.getSet()){
-            if(node instanceof FunDeclarationNode){
+        for (Node node : e.getSet()) {
+            if (node instanceof FunDeclarationNode) {
                 FunDeclarationNode fun = (FunDeclarationNode) node;
-                if(line - fun.getLine() > 0 && line - fun.getLine() < mostNeighbour){
+                if (line - fun.getLine() > 0 && line - fun.getLine() < mostNeighbour) {
                     mostNeighbour = line - fun.getLine();
                     funNeighbour = fun;
                 }
@@ -92,6 +93,4 @@ public class Utils{
 
         return false;
     }
-
-
 }

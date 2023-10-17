@@ -81,7 +81,7 @@ public class CallFunNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        return e.get(e.checkIdNode(e.getSet(), listId.get(0)));
+        return "1";
     }
 
 }

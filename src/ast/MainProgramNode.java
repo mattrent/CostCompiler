@@ -80,6 +80,9 @@ public class MainProgramNode implements Node {
 
     public String toEquation(EnvVar e){
 
+        for (Node n : decServices){
+            n.checkVarEQ(e);
+        }
         StringBuilder equ = new StringBuilder();
         for(Node n : funDec){
             equ.append(n.toEquation(e));

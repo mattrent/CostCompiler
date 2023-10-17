@@ -22,7 +22,8 @@ public class DecService implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
-        return null;
+        e.add(new CallServiceNode(id.getId(),null));
+        return e;
     }
 
     @Override
