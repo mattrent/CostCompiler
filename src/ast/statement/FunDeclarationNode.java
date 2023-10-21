@@ -60,6 +60,7 @@ public class FunDeclarationNode implements Node {
         }
         if(stm!= null)
             errors.addAll(stm.checkSemantics(env));
+
         errors.addAll(type.checkSemantics(env));
         env.closeScope();
         return errors;

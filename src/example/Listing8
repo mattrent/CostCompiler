@@ -4,11 +4,11 @@ struct Params {
 	sender: string
 }
 service PremiumService : (string) -> void;
-service BasicService : (any, null) -> void;
-fn function(isPremiumUser: bool, par: any) -> void {
+service BasicService : (any) -> void;
+(isPremiumUser: bool, par: any) => {
 	if ( isPremiumUser ) {
 		call PremiumService("test");
 	} else {
-		call BasicService( par , par);
+		call BasicService( par);
 	}
 }

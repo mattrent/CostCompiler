@@ -1,5 +1,6 @@
 package ast;
 
+import ast.statement.FunDeclarationNode;
 import ast.typeNode.VoidType;
 import utilities.EnvVar;
 import utilities.Environment;
@@ -7,14 +8,17 @@ import utilities.TypeErrorException;
 
 import java.util.ArrayList;
 
-public class MainProgramNode implements Node {
+public class ProgramNode implements Node {
     ArrayList<Node> complexType;
     ArrayList<Node> decServices;
     ArrayList<Node> funDec;
-    public MainProgramNode(ArrayList<Node> complexType, ArrayList<Node> decServices, ArrayList<Node> funDec) {
+    Node main;
+
+    public ProgramNode(ArrayList<Node> complexType, ArrayList<Node> decServices, ArrayList<Node> funDec, Node main) {
         this.complexType = complexType;
         this.decServices = decServices;
         this.funDec = funDec;
+        this.main = main;
     }
 
     @Override
@@ -51,6 +55,8 @@ public class MainProgramNode implements Node {
                 lastType = n.typeCheck(e);
             }
         }
+
+        main.typeCheck(e);
         e.closeScope();
         return lastType;
     }
@@ -69,6 +75,7 @@ public class MainProgramNode implements Node {
                 errors.addAll(n.checkSemantics(env));
             }
         }
+        main.checkSemantics(env);
         if(funDec != null) {
             for (Node n : funDec) {
                 errors.addAll(n.checkSemantics(env));
@@ -87,6 +94,7 @@ public class MainProgramNode implements Node {
         for(Node n : funDec){
             equ.append(n.toEquation(e));
         }
+        equ.append(main.toEquation(e));
         return equ.toString();
 
 

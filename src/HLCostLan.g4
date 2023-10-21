@@ -1,14 +1,15 @@
 grammar HLCostLan;
 
-main : complexType* declarationService* fund*;
+prg : complexType* serviceDecl* functionDecl* init;
+
+init: '('formalParams? ')''=''>' '{' stm '}';
 /* p contains the list of paramters of the function */
 
 //Declaration Services
 //service PremiumService: (Params) -> string;
-declarationService: 'service'ID':''('typeDecl?(','typeDecl)*')''->'typeDecl';';
-typeDecl : (type | ID);
+serviceDecl: 'service'ID':''('(type(','type)*)?')''->'type';';
 
-fund : 'fn'ID'(' formalParams?  ')' '->' (ID|type)'{'stm'}' ;
+functionDecl : 'fn'ID'(' formalParams?  ')' '->' (type)'{'stm'}' ;
 
 stm :(
      | callService
@@ -39,14 +40,15 @@ exp:     left= exp op= ('+'|'-') right= exp                    #binExp
 assignment: (structType)? (ID '=' assign) ( ID '=' assign)*;
 structType: ID;
 
-type: 'int'
+type : basictype | ID;
+
+basictype: 'int'
     | 'char'
     | 'string'
     | 'bool'
     | 'float'
     | 'any'
-    | 'void'
-    | 'null';
+    | 'void';
 
 // `<type> <= any` for all types
 complexType : 'struct'ID'{' ID ':' (arrayType) (',' ID ':' (arrayType))* '}';
@@ -58,7 +60,7 @@ structAssignment : ID'{'ID ':' assign (','ID ':' assign)*'}';
 
 assign : (exp';'|stm);
 params :  ID','  params | ID ;
-formalParams:  ID ':' typeDecl(','ID ':' typeDecl)*;
+formalParams:  ID ':' type(','ID ':' type)*;
 
 //IDs
 fragment CHAR 	    : 'a'..'z' |'A'..'Z' ;

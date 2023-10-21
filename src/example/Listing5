@@ -13,7 +13,7 @@ fn loop(c: int, acc: int) -> int {
 	}
 }
 
-fn main(par: Params) -> Result {
+(par: Params) => {
 	let
 		counter = par.counter * 2
 		result = loop(counter, 0)

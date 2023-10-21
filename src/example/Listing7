@@ -10,7 +10,7 @@ struct Result {
 service PremiumService: (Params) -> Result;
 service BasicService: (Params) -> Result;
 
-fn svc(isPremiumUser: bool, par: Params) -> Result {
+(isPremiumUser: bool, par: Params) =>  {
 	let
 		Result res = if (isPremiumUser) {
 			call PremiumService(par)

@@ -20,7 +20,7 @@ fn svc(isPremiumUser: bool, par: Params) -> bool {
         }
 }
 
-fn main(isPremiumUser: bool, par: Params) -> Result {
+(isPremiumUser: bool, par: Params) => {
 	Result{
 		success: svc(isPremiumUser, par),
 		payload: " svc payload"

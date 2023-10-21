@@ -19,6 +19,6 @@ public class VoidType  extends AnyType implements TypeNode{
 
     @Override
     public ArrayList<String> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>();
     }
 }

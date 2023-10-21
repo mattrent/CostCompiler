@@ -4,7 +4,6 @@ fn svc(i: int) -> void{
         call BasicService(i)
     }
 }
-
-fn main(len : int) -> void {
+(len : int) => {
 	svc(len)
 }

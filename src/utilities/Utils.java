@@ -22,7 +22,7 @@ public class Utils {
         // ( (a instanceof BoolTypeNode) && (b instanceof IntTypeNode) ); //
     }
 
-    public static TypeNode castType(HLCostLanParser.TypeContext type) {
+    public static TypeNode castType(HLCostLanParser.BasictypeContext type) {
         String typeString = type.getText().toLowerCase();
         if (typeString.equals("int")) {
             return new IntType();

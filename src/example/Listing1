@@ -5,7 +5,7 @@ struct Params {
 }
 service PremiumService : (string) -> void;
 service BasicService : (any) -> void;
-fn function(isPremiumUser: bool, par: any) -> void {
+(isPremiumUser: bool, par: any) => {
 	if ( isPremiumUser ) {
 		call PremiumService("pippo");
 	} else {

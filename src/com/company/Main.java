@@ -19,7 +19,7 @@ import utilities.TypeErrorException;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        String file = "src/Example/Listing11";
+        String file = "src/Example/Listing1";
         System.out.print(CostCompiler(file));
     }
     public static Results CostCompiler(String file) throws IOException{
@@ -36,7 +36,7 @@ public class Main {
             parser.addErrorListener(errorListener);
 
             HLCostLanBaseVisitorImpl visitor = new HLCostLanBaseVisitorImpl();
-            Node ast = visitor.visit(parser.main());
+            Node ast = visitor.visit(parser.prg());
             if(!errorListener.getSyntaxErrors().isEmpty()){
                 return Results.SYNTAX_ERROR;
             }

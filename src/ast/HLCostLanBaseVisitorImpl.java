@@ -6,6 +6,7 @@ import ast.typeNode.IdType;
 import ast.exp.BinExpNode;
 import ast.exp.DerExpNode;
 import ast.exp.ValExpNode;
+import ast.typeNode.VoidType;
 import gen.*;
 import org.antlr.v4.runtime.misc.Pair;
 import ast.typeNode.TypeNode;
@@ -19,28 +20,39 @@ import gen.HLCostLanParser.*;
 
 public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     @Override
-    public Node visitMain(MainContext ctx) {
+    public Node visitPrg(PrgContext ctx) {
         ArrayList<Node> complexType = new ArrayList<>();
         ArrayList<Node> decServices = new ArrayList<>();
         ArrayList<Node> funDec = new ArrayList<>();
 
-        for (DeclarationServiceContext decService : ctx.declarationService()) {
-            decServices.add(visitDeclarationService(decService));
+        for (ServiceDeclContext decService : ctx.serviceDecl()){
+            decServices.add(visitServiceDecl(decService));
         }
 
-        for (FundContext fund : ctx.fund()) {
-            funDec.add(visitFund(fund));
+        for (FunctionDeclContext fund : ctx.functionDecl()) {
+            funDec.add(visitFunctionDecl(fund));
         }
 
         for(ComplexTypeContext complexTypeContext : ctx.complexType()){
             complexType.add(visitComplexType(complexTypeContext));
         }
-        return new MainProgramNode(complexType, decServices, funDec);
+        return new ProgramNode(complexType, decServices, funDec, visitInit(ctx.init()));
     }
 
     @Override
-    public Node visitFund(FundContext ctx) {
-        String id = ctx.ID().get(0).getText();
+    public Node visitInit(InitContext ctx) {
+        FormalParams formalParamsNode =ctx.formalParams() != null ? visitFormalParams(ctx.formalParams()) : null;
+
+        return new FunDeclarationNode(new VoidType(),new IdNode("main"),formalParamsNode,visitStm(ctx.stm()), ctx.start.getLine());
+    }
+
+    @Override
+    public Node visitFunctionDecl(FunctionDeclContext ctx) {
+        String id = ctx.ID().getText();
+        if(id.equals("main")) {
+            System.err.println("Error: main function is reserved");
+            System.exit(1);
+        }
         FormalParams formalParamsNode;
 
         ReturnTypeNode returnType;
@@ -48,9 +60,9 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         formalParamsNode =ctx.formalParams() != null ? visitFormalParams(ctx.formalParams()) : null;
 
         if(ctx.type()!= null){
-            returnType = new ReturnTypeNode(Utils.castType(ctx.type()));
+            returnType = new ReturnTypeNode(Utils.castType(ctx.type().basictype()));
         }else{
-            returnType = new ReturnTypeNode(new IdNode(ctx.ID(1).getText()));
+            returnType = new ReturnTypeNode(new IdNode(ctx.ID().getText()));
         }
         Node stm = visitStm(ctx.stm());
 
@@ -58,22 +70,22 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitDeclarationService(DeclarationServiceContext ctx) {
+    public Node visitServiceDecl(ServiceDeclContext ctx) {
 
         IdNode id = new IdNode(ctx.ID().getText());
         ArrayList<Pair<IdNode,TypeNode>> params = new ArrayList<>();
-        for(int i = 0;i< ctx.typeDecl().size()-1;i++){
-            if(ctx.typeDecl(i).type()!= null)
-                params.add(new Pair<IdNode, TypeNode>(null,Utils.castType(ctx.typeDecl(i).type())));
+        for(int i = 0;i< ctx.type().size()-1;i++){
+            if(ctx.type(i).basictype()!= null)
+                params.add(new Pair<IdNode, TypeNode>(null,Utils.castType(ctx.type(i).basictype())));
             else
-                params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.typeDecl(i).ID().getText()),null));
+                params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.type(i).ID().getText()),null));
 
             }
         ReturnTypeNode returnType;
-        if(ctx.typeDecl(ctx.typeDecl().size()-1).type() == null)
-            returnType = new ReturnTypeNode(new IdNode(ctx.typeDecl(ctx.typeDecl().size()-1).ID().getText()));
+        if(ctx.type(ctx.type().size()-1).basictype() == null)
+            returnType = new ReturnTypeNode(new IdNode(ctx.type(ctx.type().size()-1).ID().getText()));
         else
-            returnType = new ReturnTypeNode(Utils.castType(ctx.typeDecl(ctx.typeDecl().size()-1).type()));
+            returnType = new ReturnTypeNode(Utils.castType(ctx.type(ctx.type().size()-1).basictype()));
         return new DecService(id,params,returnType);
     }
 
@@ -229,10 +241,10 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             for(int i = 1;i<ctx.ID().size();i++){
                 if(ctx.arrayType(i-1).typeArr() != null){
                     //ArrayNode
-                    ArrayType arr = new ArrayType(Utils.castType(ctx.arrayType(i-1).typeArr().type()));
+                    ArrayType arr = new ArrayType(Utils.castType(ctx.arrayType(i-1).typeArr().type().basictype()));
                     params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),arr));
                 }else
-                    params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.arrayType(i-1).type())));
+                    params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.arrayType(i-1).type().basictype())));
             }
             return new StructNode(id,params);
         }
@@ -263,12 +275,12 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         if(!ctx.isEmpty()){
             for(int i = 0; i< ctx.ID().size();i++){
                 int j =ctx.ID().size();
-                int count = ctx.typeDecl().size();
+                int count = ctx.type().size();
 
-                if(ctx.typeDecl(i).type() == null){
-                    formalParamsList.add(new Pair<String, TypeNode>(ctx.ID(i).getText(),new IdType(ctx.typeDecl(i).ID().getText())));
+                if(ctx.type(i).basictype() == null){
+                    formalParamsList.add(new Pair<String, TypeNode>(ctx.ID(i).getText(),new IdType(ctx.type(i).ID().getText())));
                 }else{
-                    formalParamsList.add(new Pair<String, TypeNode>(ctx.ID(i).getText(),Utils.castType(ctx.typeDecl(i).type())));
+                    formalParamsList.add(new Pair<String, TypeNode>(ctx.ID(i).getText(),Utils.castType(ctx.type(i).basictype())));
                 }
             }
 
