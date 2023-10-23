@@ -28,10 +28,11 @@ public class ReturnTypeNode implements Node {
 
     @Override
     public Node typeCheck(Environment e) throws TypeErrorException {
-        if(id != null){
-            return e.getDeclaration(id.getId()).typeCheck(e);
+        if(id != null  && e.getDeclaration(id.getId()) != null){
+            return e.getDeclaration(id.getId());
+        }else{
+            return type.typeCheck(e);
         }
-        return type.typeCheck(e);
     }
 
     @Override

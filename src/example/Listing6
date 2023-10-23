@@ -1,8 +1,9 @@
 service BasicService: (int) -> void;
 fn svc(i: int) -> void{
-    for(i in (0,10)){
+    for(m in (0,10)){
         call BasicService(i)
     }
+
 }
 (len : int) => {
 	svc(len)

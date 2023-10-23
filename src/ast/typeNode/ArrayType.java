@@ -28,6 +28,10 @@ public class ArrayType extends AnyType {
 
     @Override
     public Node typeCheck(Environment e) {
+        if(e.getDeclaration(id.getId()) == null)
+            e.addDeclaration(id.getId(),this);
+        else
+            return this;
         return this;
     }
 

@@ -19,7 +19,7 @@ import utilities.TypeErrorException;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        String file = "src/Example/Listing7";
+        String file = "src/Example/Listing10";
         System.out.print(CostCompiler(file));
     }
     public static Results CostCompiler(String file) throws IOException{

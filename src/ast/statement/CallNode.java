@@ -27,18 +27,21 @@ public class CallNode implements Node {
 
     @Override
     public Node typeCheck(Environment e) throws TypeErrorException {
-
-        FunDeclarationNode fun = (FunDeclarationNode) e.getDeclaration(id.getId());
-        FormalParams fp = fun.getFormalParams();
-        if(fp.size() != listCount.size()){
-            throw new TypeErrorException("Wrong number of parameters in call "+id.getId());
-        }
-        for(int i =0;i<listCount.size();i++){
-            if(!Utils.isSubtype(fp.get(i).b.typeCheck(e),listCount.get(i).typeCheck(e))) {
-                throw new TypeErrorException("Incompatible type in call node");
+        try {
+            FunDeclarationNode fun = (FunDeclarationNode) e.getDeclaration(id.getId());
+            FormalParams fp = fun.getFormalParams();
+            if (fp.size() != listCount.size()) {
+                throw new TypeErrorException("Wrong number of parameters in call " + id.getId());
             }
+            for (int i = 0; i < listCount.size(); i++) {
+                if (!Utils.isSubtype(fp.get(i).b.typeCheck(e), listCount.get(i).typeCheck(e))) {
+                    throw new TypeErrorException("Incompatible type in call node");
+                }
+            }
+            return fun.getReturnNode().typeCheck(e);
+        }catch (ClassCastException ex){
+            throw new TypeErrorException("Error in call node");
         }
-        return fun.getReturnNode().typeCheck(e);
     }
 
     @Override

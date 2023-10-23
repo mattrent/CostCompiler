@@ -26,7 +26,9 @@ public class BinExpNode implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
-        return null;
+        e = left.checkVarEQ(e);
+        e = right.checkVarEQ(e);
+        return e;
     }
 
     @Override

@@ -45,11 +45,13 @@ public class ForNode implements Node {
     @Override
     public ArrayList<String> checkSemantics(Environment env) {
         ArrayList<String> errors = new ArrayList<>();
-        env.openScope();
-        env.addDeclaration(id,new IntType());
+        if(!env.checkHeadDeclaration(id))
+            env.addDeclaration(id,new IntType());
+        else
+            errors.add("Error: Variable "+id+" already declared");
+
         errors.addAll(exp.checkSemantics(env));
         errors.addAll(stm.checkSemantics(env));
-        env.closeScope();
         return errors;
     }
 

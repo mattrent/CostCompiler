@@ -58,14 +58,20 @@ public class TestCostCompiler {
             System.out.println("Test Listing 9");
             assertEquals(CostCompiler("src/Example/Listing9"), Results.PASS);
     }
-    /* @Test
+     @Test
      public void test10() throws IOException {
              System.out.println("Test Listing 10");
              assertEquals(CostCompiler("src/Example/Listing10"), Results.PASS);
-     }*/
+     }
     @Test
     public void test11() throws IOException {
             System.out.println("Test Listing 11");
             assertEquals(CostCompiler("src/Example/Listing11"), Results.PASS);
+    }
+
+    @Test
+    public void test12() throws IOException {
+            System.out.println("Test Listing 12");
+            assertEquals(CostCompiler("src/Example/Listing12"), Results.PASS);
     }
 }

@@ -3,10 +3,8 @@ grammar HLCostLan;
 prg : complexType* serviceDecl* functionDecl* init;
 
 init: '('formalParams? ')''=''>' '{' stm '}';
-/* p contains the list of paramters of the function */
 
-//Declaration Services
-//service PremiumService: (Params) -> string;
+
 serviceDecl: 'service'ID':''('(type(','type)*)?')''->'type';';
 
 functionDecl : 'fn'ID'(' formalParams?  ')' '->' (type)'{'stm'}' ;
@@ -54,7 +52,7 @@ basictype: 'int'
 
 // `<type> <= any` for all types
 complexType : 'struct'ID'{' ID ':' (structType) (',' ID ':' (structType))* '}'
-            | type ID '['NUMBER']';
+            |  ID ':' type'['NUMBER']';
 
 structType : 'array''['typeArr']' | type;
 typeArr : type;

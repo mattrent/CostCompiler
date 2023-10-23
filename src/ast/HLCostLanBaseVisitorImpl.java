@@ -59,10 +59,10 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         
         formalParamsNode =ctx.formalParams() != null ? visitFormalParams(ctx.formalParams()) : null;
 
-        if(ctx.type()!= null){
-            returnType = new ReturnTypeNode(Utils.castType(ctx.type().basictype()));
-        }else{
+        if(ctx.type().ID() != null){
             returnType = new ReturnTypeNode(new IdNode(ctx.ID().getText()));
+        }else{
+            returnType = new ReturnTypeNode(Utils.castType(ctx.type().basictype()));
         }
         Node stm = visitStm(ctx.stm());
 
