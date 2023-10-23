@@ -1,29 +1,9 @@
-struct Params {
-	par: any
-}
-
-struct Result {
-	payload: string,
-	success: bool
-}
-
-service PremiumService: (Params) -> Result;
-service BasicService: (Params) -> Result;
-
-(isPremiumUser: bool, par: Params) =>  {
+int arr[5]
+service PremiumService : (string) -> arr;
+service BasicService : (any) -> void;
+(isPremiumUser: bool, par: any) => {
 	let
-		Result res = if (isPremiumUser) {
-			call PremiumService(par)
-		} else {
-			call BasicService(par)
-		}
+	    i = call PremiumService(par)
 	in
-		Result {
-			success: res.success && res.payload !="failure",
-			payload: res.payload
-		}
-}
-
-fn main(isPremiumUser: bool, par: Params) -> Result {
-	svc(isPremiumUser, par)
+    	return i
 }

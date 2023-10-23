@@ -91,25 +91,11 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
     @Override
     public Node visitStm(StmContext ctx) {
-        if(ctx.cond() != null && ctx.stm().size() == 2){
+        if(ctx.expOrCall() != null && ctx.stm().size() == 2){
             // 'if' ast.exp 'then' stm 'else' stm
             int line = ctx.start.getLine();
 
-            if(ctx.cond()!= null && ctx.cond().ID() != null){
-                ArrayList<Node> actualParams = new ArrayList<>();
-                for (ExpContext expContext : ctx.cond().exp()) {
-                    actualParams.add(visit(expContext));
-                }
-                CallServiceNode callServiceNode = new CallServiceNode(ctx.cond().ID().getText(),actualParams,null);
-                return new IfNode(visitCond(ctx.cond()),visitStm(ctx.stm(0)),visitStm(ctx.stm(1)),line);
-            }else{
-                Node exp = visitCond(ctx.cond());
-
-                Node stm1 = visit(ctx.stm(0));
-                Node stm2 = visit(ctx.stm(1));
-
-                return new IfNode(exp,stm1,stm2,line);
-            }
+            return new IfNode(visitExpOrCall(ctx.expOrCall()),visitStm(ctx.stm(0)),visitStm(ctx.stm(1)),line);
         }
         //'for' '('ID 'in' '(' '0'','ast.exp ')' ')' '{' stm '}'   /
         if(ctx.ID() != null && ctx.exp() != null && ctx.stm() != null){
@@ -120,8 +106,8 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             return new ForNode(id,exp,stm,line);
         }
 
-        if(ctx.callService() != null){
-            return visitCallService(ctx.callService());
+        if(ctx.serviceCall() != null){
+            return visitServiceCall(ctx.serviceCall());
         }
 
         //let in
@@ -129,26 +115,12 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
             return visitLetIn(ctx.letIn());
         }
 
-        if(ctx.ID() != null && ctx.listExp() != null){
-            String id = ctx.ID().getText();
-            ArrayList<Node> listExp = new ArrayList<>();
-            for (ExpContext expContext : ctx.listExp().exp()) {
-                listExp.add(visit(expContext));
-            }
-            return new CallNode(new IdNode(id),listExp);
+        if(ctx.functionCall() != null){
+            return visitFunctionCall(ctx.functionCall());
         }
 
-        if (ctx.structAssignment()!= null){
-            ArrayList<AssignmentNodeIn> structAssignment = new ArrayList<>();
-                StructAssignmentContext assignmentNode = ctx.structAssignment();
-                for (int j = 0; j < ctx.structAssignment().assign().size(); j++) {
-                    if(assignmentNode.assign(j).exp() != null)
-                        structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(1).getText()),visit(assignmentNode.assign(j).exp())));
-                    else
-                        structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(1).getText()),visitStm(assignmentNode.assign(j).stm())));
-
-            }
-            return new ListAssignmentMain(structAssignment);
+        if (ctx.expPlus()!= null){
+            return visitExpPlus(ctx.expPlus());
         }
 
         if(ctx.exp() != null){
@@ -163,57 +135,63 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
 
         ArrayList<LetAssignmentNode> listAssignment = new ArrayList<>();
         ArrayList<AssignmentNodeIn> structAssignment = new ArrayList<>();
-
-        for( AssignmentContext assignmentNode: ctx.assignment()){
-            IdNode idType;
-            if(assignmentNode.structType() != null)
-                idType = new IdNode(assignmentNode.structType().ID().getText());
+        for(int i= 0;i< ctx.expPlus().size();i++){
+            ExpPlusContext exp = ctx.expPlus(i);
+            if(exp.ID(i) != null)
+                structAssignment.add(new AssignmentNodeIn(new IdNode(ctx.expPlus(i).ID(0).getText()),new IdNode(ctx.ID(i).getText()),visitExpPlus(ctx.expPlus(i))));
             else
-                idType = null;
-            for (int j = 0; j < assignmentNode.ID().size(); j++) {
-                if(assignmentNode.assign(j).exp() != null)
-                    listAssignment.add(new LetAssignmentNode(idType,new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.assign(j).exp())));
-                else
-                    listAssignment.add(new LetAssignmentNode(idType,new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j).stm())));
-            }
+                listAssignment.add(new LetAssignmentNode(null,new IdNode(ctx.ID(i).getText()),visitExpPlus(ctx.expPlus(i))));
         }
-        for( StructAssignmentContext assignmentNode: ctx.structAssignment()){
-            for (int j = 1; j < assignmentNode.ID().size(); j++) {
-                if(assignmentNode.assign(j-1).exp() != null)
-                    structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(j).getText()),visit(assignmentNode.assign(j-1).exp())));
-                else
-                    structAssignment.add(new AssignmentNodeIn(new IdNode(assignmentNode.ID(0).getText()),new IdNode(assignmentNode.ID(j).getText()),visitStm(assignmentNode.assign(j-1).stm())));
-            }
-        }
+
         Node stm = visitStm(ctx.stm());
 
         return new LetInNode(listAssignment,structAssignment,stm);
     }
 
-
     @Override
-    public Node visitCond(CondContext ctx) {
-       if(ctx.ID()!= null){
-           //Call Service
-            ArrayList<Node> actualParams = new ArrayList<>();
-            for (ExpContext expContext : ctx.exp()) {
-                actualParams.add(visit(expContext));
-            }
-            return new CallServiceNode(ctx.ID().getText(),actualParams,null);
-       }else{
-              //BinExp
-               return(visit(ctx.exp(0)));
-
-       }
-    }
-
-    @Override
-    public Node visitListExp(ListExpContext ctx) {
+    public Node visitFunctionCall(FunctionCallContext ctx) {
+        String id = ctx.ID().getText();
         ArrayList<Node> listExp = new ArrayList<>();
         for (ExpContext expContext : ctx.exp()) {
             listExp.add(visit(expContext));
         }
-        return super.visitListExp(ctx);
+        return new CallNode(new IdNode(id),listExp);
+    }
+
+    @Override
+    public Node visitExpOrCall(ExpOrCallContext ctx) {
+       if(ctx.serviceCall()!= null){
+           //Call Service
+            ArrayList<Node> actualParams = new ArrayList<>();
+            for (ExpContext expContext : ctx.serviceCall().exp()) {
+                actualParams.add(visit(expContext));
+            }
+            return new CallServiceNode(ctx.serviceCall().ID().getText(),actualParams,null);
+       }else{
+              //BinExp
+               return(visit(ctx.exp()));
+
+       }
+    }
+
+
+    @Override
+    public Node visitExpPlus(ExpPlusContext ctx) {
+        if(ctx.serviceCall() != null){
+            return visitServiceCall(ctx.serviceCall());
+        }
+        else if (ctx.functionCall() != null){
+            return visitFunctionCall(ctx.functionCall());
+        }
+        else if(ctx.ID() != null && !ctx.ID().isEmpty()){
+            ArrayList<LetAssignmentNode> list = new ArrayList<>();
+            int len = ctx.ID().size();
+            int lenAss = ctx.expPlus().size();
+            for(int i = 0; i < ctx.expPlus().size(); i++) {
+                list.add(new LetAssignmentNode(null, new IdNode(ctx.ID(i+1).getText()), visitExpPlus(ctx.expPlus(i))));
+            }
+            return new StructAssignmentNode(new IdNode(ctx.ID(0).getText()), list);
+        }else return visit(ctx.exp());
     }
 
     @Override
@@ -234,23 +212,29 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
     @Override
     public Node visitComplexType(ComplexTypeContext ctx) {
 
-        if(ctx.ID()!= null){
+        if(ctx.NUMBER() == null){
             //Struct Node
             IdNode id = new IdNode(ctx.ID(0).getText());
             ArrayList<Pair<IdNode,TypeNode>> params = new ArrayList<>();
             for(int i = 1;i<ctx.ID().size();i++){
-                if(ctx.arrayType(i-1).typeArr() != null){
+                if(ctx.structType(i-1).typeArr() != null){
                     //ArrayNode
-                    ArrayType arr = new ArrayType(Utils.castType(ctx.arrayType(i-1).typeArr().type().basictype()));
+                    ArrayType arr = new ArrayType(Utils.castType(ctx.structType(i-1).typeArr().type().basictype()));
                     params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),arr));
                 }else
-                    params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.arrayType(i-1).type().basictype())));
+                    params.add(new Pair<IdNode, TypeNode>(new IdNode(ctx.ID(i).getText()),Utils.castType(ctx.structType(i-1).type().basictype())));
             }
             return new StructNode(id,params);
+        }else{
+            //Array Node
+
+            if(ctx.type().ID()!= null){
+                return new ArrayType(new IdType(ctx.type().ID().getText()),new IdNode(ctx.ID(0).getText()),Integer.parseInt(ctx.NUMBER().getText()));
+            }else
+                return new ArrayType(Utils.castType(ctx.type().basictype()),new IdNode(ctx.ID(0).getText()),Integer.parseInt(ctx.NUMBER().getText()));
         }
-        return super.visitComplexType(ctx);
     }
-    public Node visitCallService(CallServiceContext ctx) {
+    public Node visitServiceCall(ServiceCallContext ctx) {
         if(ctx.ID() != null && ctx.exp() != null) {
             //'call'ID'('ast.exp(','ast.exp)*')' stm?';'
             String idCall = ctx.ID().getText();

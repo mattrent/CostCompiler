@@ -11,23 +11,28 @@ serviceDecl: 'service'ID':''('(type(','type)*)?')''->'type';';
 
 functionDecl : 'fn'ID'(' formalParams?  ')' '->' (type)'{'stm'}' ;
 
-stm :(
-     | callService
-     |'if' '(' cond ')' '{'stm '}' 'else' '{' stm '}'
+stm :
+     | serviceCall
+     |'if' '(' expOrCall ')' '{'stm '}' 'else' '{' stm '}'
      |'for' '('ID 'in' '(' NUMBER','exp ')' ')' '{' stm '}'   /*check for list of ast.exp */
      | letIn
-     | ID'('listExp')'
-     |structAssignment
-     |exp
-     );
+     | functionCall
+     | 'return' expPlus ;
 
-callService : 'call'ID'('(exp(','exp)*)?')' (';' stm)?;
+serviceCall : 'call'ID'('(exp(','exp)*)?')' (';' stm)?;
 
-letIn: 'let' (assignment)+ 'in' structAssignment* stm;
+functionCall : ID'('( exp (','exp)* )? ')';
 
-cond : exp | 'call'ID'('(exp  (',' exp)*)? ')' ;
+letIn: 'let' (ID '=' expPlus)+ 'in' stm;
 
-listExp : exp(',' exp)* ;
+expOrCall : exp | serviceCall ;
+
+
+expPlus	:	exp
+			| serviceCall
+			| functionCall
+			| ID '{' ID ':' expPlus (',' ID ':' expPlus)* '}'
+			;
 
 exp:     left= exp op= ('+'|'-') right= exp                    #binExp
         | left= exp op= ('>'|'==' | '>=' |'!=') right= exp      #binExp
@@ -36,9 +41,6 @@ exp:     left= exp op= ('+'|'-') right= exp                    #binExp
         | '"' STRING                                #stringExp
         | NUMBER                                                #valExp
         | ID                                                    #derExp;
-
-assignment: (structType)? (ID '=' assign) ( ID '=' assign)*;
-structType: ID;
 
 type : basictype | ID;
 
@@ -51,14 +53,12 @@ basictype: 'int'
     | 'void';
 
 // `<type> <= any` for all types
-complexType : 'struct'ID'{' ID ':' (arrayType) (',' ID ':' (arrayType))* '}';
+complexType : 'struct'ID'{' ID ':' (structType) (',' ID ':' (structType))* '}'
+            | type ID '['NUMBER']';
 
-arrayType : 'array''['typeArr']' | type;
+structType : 'array''['typeArr']' | type;
 typeArr : type;
 
-structAssignment : ID'{'ID ':' assign (','ID ':' assign)*'}';
-
-assign : (exp';'|stm);
 params :  ID','  params | ID ;
 formalParams:  ID ':' type(','ID ':' type)*;
 

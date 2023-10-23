@@ -2,6 +2,7 @@ package ast.statement;
 
 import ast.IdNode;
 import ast.Node;
+import ast.typeNode.TypeNode;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
@@ -66,5 +67,10 @@ public class LetAssignmentNode implements Node {
         if(ass instanceof CallNode || ass instanceof ForNode || ass instanceof IfNode || ass instanceof CallServiceNode)
             return ass.toEquation(e);
         else return " ";
+    }
+
+
+    public Node getAss() {
+        return this.ass;
     }
 }

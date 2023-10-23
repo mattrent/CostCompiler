@@ -14,14 +14,14 @@ fn svc(isPremiumUser: bool, par: Params) -> bool {
         j = call BasicService(par)
     in
         if ( isPremiumUser ) {
-            i.success
+            return i.success
         } else {
-            j.success
+            return j.success
         }
 }
 
 (isPremiumUser: bool, par: Params) => {
-	Result{
+	return Result{
 		success: svc(isPremiumUser, par),
 		payload: " svc payload"
 	}

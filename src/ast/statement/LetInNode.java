@@ -93,7 +93,7 @@ public class LetInNode implements Node {
                 pre.append(" +");
             }
         }
-        if (listAssignment != null && !structAssignment.isEmpty())
+        if (!listAssignment.isEmpty() && !structAssignment.isEmpty())
             //remove the last character
             pre.deleteCharAt(pre.length() - 1);
 

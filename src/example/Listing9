@@ -5,7 +5,7 @@ struct Conn{
 service connection : (any)-> any;
 ()=> {
     let
-        Conn c = call connection(12)
+        con = Conn { payload : call connection(12)}
     in
-        c
+        return con
 }

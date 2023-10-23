@@ -37,9 +37,12 @@ public class AssignmentNodeIn implements Node {
     public Node typeCheck(Environment e) throws TypeErrorException {
         StructType st = (StructType) e.getDeclaration(type.getId());
         Node assType = ass.typeCheck(e);
-        if(!Utils.isSubtype(assType.typeCheck(e),st.getType(id).typeCheck(e)))
+        if(!Utils.isSubtype(assType.typeCheck(e),st))
             throw new TypeErrorException(id +" must be the same type of"+ type);
-        else return assType.typeCheck(e);
+        else {
+            e.addDeclaration(id.getId(),ass.typeCheck(e));
+            return assType.typeCheck(e);
+        }
     }
 
     @Override

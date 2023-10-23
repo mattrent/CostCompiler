@@ -1,5 +1,6 @@
 package ast.typeNode;
 
+import ast.IdNode;
 import ast.Node;
 import utilities.EnvVar;
 import utilities.Environment;
@@ -8,10 +9,16 @@ import java.util.ArrayList;
 
 public class ArrayType extends AnyType {
     TypeNode type;
-
+    IdNode id;
+    int len;
     public ArrayType(TypeNode type) {
         this.type = type;
-
+        this.id = null;
+    }
+    public ArrayType(TypeNode type, IdNode id,int length){
+        this.type = type;
+        this.id = id;
+        this.len = length;
     }
 
     @Override
@@ -26,7 +33,11 @@ public class ArrayType extends AnyType {
 
     @Override
     public ArrayList<String> checkSemantics(Environment env) {
-        return null;
+        if(id != null){
+            env.addDeclaration(id.getId(),this);
+        }
+
+        return new ArrayList<>();
     }
 
     @Override
