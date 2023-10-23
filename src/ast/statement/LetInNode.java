@@ -88,7 +88,7 @@ public class LetInNode implements Node {
 
         for (Node n : listAssignment) {
             String s = n.toEquation(e);
-            if (!s.equals(" ")) {
+            if (!s.equals("")) {
                 pre.append(s);
                 pre.append(" +");
             }

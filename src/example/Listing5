@@ -7,9 +7,9 @@ struct Result {
 
 fn loop(c: int, acc: int) -> int {
 	if (c > 0) {
-		loop(c - 1, acc + c)
+		return loop(c - 1, acc + c)
 	} else {
-		acc
+		return acc
 	}
 }
 
@@ -18,7 +18,7 @@ fn loop(c: int, acc: int) -> int {
 		counter = par.counter * 2
 		result = loop(counter, 0)
 	in
-		Result {
+		return Result {
 			payload: result
 		}
 }

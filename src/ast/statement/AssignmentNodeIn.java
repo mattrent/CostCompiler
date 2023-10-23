@@ -62,6 +62,8 @@ public class AssignmentNodeIn implements Node {
     @Override
     public String toEquation(EnvVar e) {
         if(ass instanceof CallNode || ass instanceof ForNode || ass instanceof IfNode)
+            return "0,["+ass.toEquation(e)+"],[]).";
+        else if(ass instanceof StructAssignmentNode)
             return ass.toEquation(e);
         else return " ";
     }

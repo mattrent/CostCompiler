@@ -66,7 +66,7 @@ public class LetAssignmentNode implements Node {
     public String toEquation(EnvVar e) {
         if(ass instanceof CallNode || ass instanceof ForNode || ass instanceof IfNode || ass instanceof CallServiceNode)
             return ass.toEquation(e);
-        else return " ";
+        else return "";
     }
 
 

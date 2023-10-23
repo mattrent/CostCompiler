@@ -56,10 +56,17 @@ public class StructAssignmentNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        String eq = "";
+        StringBuilder eq = new StringBuilder();
+        String callservice = "";
+        String callFunction = "";
+        int call = 0;
         for (LetAssignmentNode n : assign) {
-            eq += n.toEquation(e);
+            if(n.ass instanceof CallServiceNode)
+                return n.toEquation(e);
+            else
+                callFunction += n.toEquation(e);
         }
-        return eq;
+
+        return "0,["+callFunction+"][]).";
     }
 }
