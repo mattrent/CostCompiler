@@ -67,6 +67,6 @@ public class StructAssignmentNode implements Node {
                 callFunction += n.toEquation(e);
         }
 
-        return "0,["+callFunction+"][]).";
+        return "0,["+callFunction+"],[]).";
     }
 }

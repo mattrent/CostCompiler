@@ -5,6 +5,7 @@ import ast.exp.BinExpNode;
 import ast.statement.CallNode;
 import ast.statement.CallServiceNode;
 import ast.typeNode.BoolType;
+import org.junit.platform.commons.util.StringUtils;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
@@ -86,11 +87,29 @@ public class IfNode implements Node {
             BinExpNode expNode = (BinExpNode) this.exp;
             return decCall + ").\neq(" + dec + ",0,[" + stmT.toEquation(e) + "], [" + e.get(exp) + exp.toEquation(e) + " ] ).\neq(" + dec + " , nat(" + e.get(stmF) + "),[],[" + e.get(exp) + expNode.negToEquation(e)+"]).\n";
         }else {
-            String valStmT = stmT instanceof CallFunNode ? "1" : "nat("+e.get(stmT)+")";
-            String valStmF = stmF instanceof CallFunNode ? "1" : "nat("+e.get(stmT)+")";
-            valStmT = stmT.toEquation(e);
-            valStmF = stmF.toEquation(e);
-            return decCall + ").\neq(" + dec + ","+ valStmT +",[],[" + e.get(exp) + "=1]).\neq(" + dec +","+ valStmF+",[],[" + e.get(exp) + "=0]).\n";
+            String valStmT;
+            String valStmF;
+            String valExpT;
+            String valExpF;
+            valExpT =  "[" + e.get(exp) + "=1]"  ;
+            valExpF = "[" + e.get(exp) + "=0]" ;
+            valStmT = !(stmT instanceof CallNode) ? stmT.toEquation(e)+ ",[]," : "0,["+stmT.toEquation(e)+"],";
+            valStmF = !(stmF instanceof CallNode) ? stmF.toEquation(e)+ ",[]," : "0,["+stmF.toEquation(e)+"],";
+            if(stmF instanceof ForNode){
+                valStmF = stmF.toEquation(e);
+                valStmF = valStmF.replaceFirst("\\[\\]",valExpF);
+                //remove last 2 character
+                valStmF = valStmF.substring(0,valStmF.length()-2);
+                valExpF= "";
+            }
+            if (stmT instanceof ForNode){
+                valStmT = stmT.toEquation(e);
+                valStmT = valStmT.replaceFirst("\\[\\]",valExpT);
+                //remove last 2 character
+                valStmT = valStmT.substring(0,valStmT.length()-2);
+                valExpT= "";
+            }
+            return decCall + ").\neq(" + dec + ","+ valStmT+valExpT+").\neq(" + dec +","+ valStmF+valExpF + ").\n";
         }
 
 
