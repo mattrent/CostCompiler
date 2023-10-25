@@ -74,7 +74,7 @@ public class IfNode implements Node {
             e.add(stmF);
         }
         if(e.get(exp)==null){
-            exp.checkVarEQ(e);
+           e.add(exp);
         }
         String dec =  "if"+line+"(" + e.get(exp)+","+ e.get(stmT)+","+e.get(stmF)+")";
         String expCost = (this.exp instanceof CallServiceNode)? "nat("+e.get(exp)+")" : "0";
@@ -82,10 +82,10 @@ public class IfNode implements Node {
 
         if (stmF instanceof CallNode &&  (getFunDecNodeByLine(e, line) != null) && Objects.equals(((CallNode) stmF).getId(), getFunDecNodeByLine(e, line).getId()) && exp instanceof BinExpNode) {
             BinExpNode expNode = (BinExpNode) this.exp;
-            return decCall + " ).\neq(" + dec + ",nat(" + e.get(stmT) + "),[" + e.get(exp) + expNode.negToEquation(e) + "]).\neq(" + dec + ",0,["+ stmF.toEquation(e)+"][" + e.get(exp) +exp.toEquation(e) +"]).\n";
+            return decCall + " ).\neq(" + dec + ",nat(" + e.get(stmT) + "),[" + e.get(exp) + expNode.negToEquation(e) + "]).\neq(" + dec + ",0,["+ stmF.toEquation(e)+"][" +exp.toEquation(e) +"]).\n";
         } else if (stmT instanceof CallNode &&  getFunDecNodeByLine(e, line)!= null && Objects.equals(((CallNode) stmT).getId(), getFunDecNodeByLine(e, line).getId()) && exp instanceof BinExpNode){
             BinExpNode expNode = (BinExpNode) this.exp;
-            return decCall + ").\neq(" + dec + ",0,[" + stmT.toEquation(e) + "], [" + e.get(exp) + exp.toEquation(e) + " ] ).\neq(" + dec + " , nat(" + e.get(stmF) + "),[],[" + e.get(exp) + expNode.negToEquation(e)+"]).\n";
+            return decCall + ").\neq(" + dec + ",0,[" + stmT.toEquation(e) + "], [" + exp.toEquation(e) + " ] ).\neq(" + dec + " , nat(" + e.get(stmF) + "),[],[" +expNode.negToEquation(e)+"]).\n";
         }else {
             String valStmT;
             String valStmF;
@@ -99,14 +99,14 @@ public class IfNode implements Node {
                 valStmF = stmF.toEquation(e);
                 valStmF = valStmF.replaceFirst("\\[\\]",valExpF);
                 //remove last 2 character
-                valStmF = valStmF.substring(0,valStmF.length()-2);
+                valStmF = valStmF.substring(0,valStmF.length()-3);
                 valExpF= "";
             }
             if (stmT instanceof ForNode){
                 valStmT = stmT.toEquation(e);
                 valStmT = valStmT.replaceFirst("\\[\\]",valExpT);
                 //remove last 2 character
-                valStmT = valStmT.substring(0,valStmT.length()-2);
+                valStmT = valStmT.substring(0,valStmT.length()-3);
                 valExpT= "";
             }
             return decCall + ").\neq(" + dec + ","+ valStmT+valExpT+").\neq(" + dec +","+ valStmF+valExpF + ").\n";

@@ -78,6 +78,17 @@ public class BinExpNode implements Node {
         return left.toEquation(e) + (Objects.equals(op, "==") ? "=" : op) + right.toEquation(e);
     }
 
+    public String getEquation(EnvVar e) {
+        if(e.get(this)== null){
+            if(e.get(left) != null)
+                return e.get(left);
+            else if(e.get(right) != null)
+                return e.get(right);
+            else
+                return left.toEquation(e) + (Objects.equals(op, "==") ? "=" : op) + right.toEquation(e);
+        }
+        return null;
+    }
     public String negToEquation(EnvVar e) {
         switch (op) {
             case "+":

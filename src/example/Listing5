@@ -1,24 +1,14 @@
-struct Params {
-	counter: int
+payload : any[32]
+service BasicService: (int) -> any;
+fn svc(i: int, n:int) -> any{
+    for (j in (0,n)){
+        if(i == 0){
+            return call BasicService(i+1)
+        }else{
+            return call BasicService(i-1)
+        }
+    }
 }
-struct Result {
-	payload: int
-}
-
-fn loop(c: int, acc: int) -> int {
-	if (c > 0) {
-		return loop(c - 1, acc + c)
-	} else {
-		return acc
-	}
-}
-
-(par: Params) => {
-	let
-		counter = par.counter * 2
-		result = loop(counter, 0)
-	in
-		return Result {
-			payload: result
-		}
+(len : int) => {
+	return svc(len,10)
 }

@@ -8,20 +8,23 @@ import gen.HLCostLanParser;
 import org.antlr.v4.runtime.*;
 import utilities.Environment;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+
 
 import test.Results;
-import utilities.SyntaxError;
 import utilities.TypeErrorException;
+
+import static java.lang.Thread.sleep;
 
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        String file = "src/example/Listing12";
-        System.out.print(CostCompiler(file));
+        String fi = "src/Example/Listing7";
+        CostCompiler(fi);
     }
+
     public static Results CostCompiler(String file) throws IOException{
         try {
             CharStream input = CharStreams.fromFileName(file);
@@ -55,6 +58,16 @@ public class Main {
 
                 String equ = ast.toEquation(new EnvVar());
                 System.out.println(equ);
+                BufferedWriter writer = new BufferedWriter(new java.io.FileWriter("equation.ces"));
+                writer.write(equ);
+                writer.close();
+                String osName= System.getProperty("os.name");
+                Process p;
+                if(osName.contains("Windows"))
+                    p = new ProcessBuilder("wsl", "./pubs_static", "-file", "equation.ces").inheritIO().start();
+                else
+                    p= new ProcessBuilder( "./pubs_static", "-file", "equation.ces").inheritIO().start();
+
                 return Results.PASS;
             }
         }catch (Exception e) {

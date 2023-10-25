@@ -111,7 +111,10 @@ public class LetInNode implements Node {
         if(statement != null && statement instanceof IfNode)
             return String.valueOf(pre.append(statement.toEquation(e)));
         if(statement != null && !(statement instanceof CallNode)){
-            return pre.append(statement.toEquation(e)) + ",[],[]).";
+            String stm = statement.toEquation(e);
+            if(String.valueOf(pre).endsWith("+") && stm.startsWith("+"))
+                pre.deleteCharAt(pre.length() - 1);
+            return pre.append(stm) + ",[],[]).";
         }else if (statement != null ) {
             pre.append(statement.toEquation(e));
             return " 0,[" + String.valueOf(pre) + "],[]).";
