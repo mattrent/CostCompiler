@@ -21,8 +21,7 @@ import static java.lang.Thread.sleep;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        String fi = "src/Example/Listing7";
-        CostCompiler(fi);
+        CostCompiler(args[0]);
     }
 
     public static Results CostCompiler(String file) throws IOException{
