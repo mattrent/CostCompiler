@@ -51,7 +51,7 @@ public class FunDeclarationNode implements Node {
     public ArrayList<String> checkSemantics(Environment env) {
         ArrayList<String> errors = new ArrayList<>();
         if(env.containsDeclaration(id.getId()))
-            errors.add(id.getId()+"is already declared");
+            errors.add(id.getId()+" is already declared");
         else
             env.addDeclaration(id.getId(),this);
         env.openScope();

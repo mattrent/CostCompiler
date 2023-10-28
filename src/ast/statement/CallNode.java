@@ -8,15 +8,19 @@ import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
+import static utilities.Utils.getFunDecNodeByLine;
 
 public class CallNode implements Node {
 
     IdNode id;
     ArrayList<Node> listCount;
-
-    public CallNode(IdNode id, ArrayList<Node> listCount) {
+    int line;
+    public CallNode(IdNode id, ArrayList<Node> listCount, int line) {
         this.id = id;
         this.listCount = listCount;
+        this.line = line;
     }
 
 
@@ -52,6 +56,7 @@ public class CallNode implements Node {
             error.add(id.getId() +" is not declared");
         }
 
+
         return error;
 
     }
@@ -59,6 +64,11 @@ public class CallNode implements Node {
     @Override
     public String toEquation(EnvVar e) {
         FunDeclarationNode fun = (FunDeclarationNode) e.getFunDecNode(id.getId());
+
+        if (getFunDecNodeByLine(e, line) != null && Objects.equals(id.getId(), getFunDecNodeByLine(e, line).getId())) {
+            System.err.println("Recursive call not supported");
+            System.exit(1);
+        }
 
         assert fun != null;
         return this.id.getId() + "("+ fun.getParFun()+")";

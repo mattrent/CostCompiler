@@ -155,7 +155,7 @@ public class HLCostLanBaseVisitorImpl extends HLCostLanBaseVisitor<Node> {
         for (ExpContext expContext : ctx.exp()) {
             listExp.add(visit(expContext));
         }
-        return new CallNode(new IdNode(id),listExp);
+        return new CallNode(new IdNode(id),listExp, ctx.start.getLine());
     }
 
     @Override

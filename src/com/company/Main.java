@@ -63,9 +63,9 @@ public class Main {
                 String osName= System.getProperty("os.name");
                 Process p;
                 if(osName.contains("Windows"))
-                    p = new ProcessBuilder("wsl", "./pubs_static", "-file", "equation.ces").inheritIO().start();
+                    p = new ProcessBuilder("wsl", "./src/com/company/pubs_static", "-file", "equation.ces").inheritIO().start();
                 else
-                    p= new ProcessBuilder( "./pubs_static", "-file", "equation.ces").inheritIO().start();
+                    p= new ProcessBuilder( "./src/com/company/pubs_static", "-file", "equation.ces").inheritIO().start();
 
                 return Results.PASS;
             }
