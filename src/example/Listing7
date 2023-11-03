@@ -1,9 +1,0 @@
-arr :int[5]
-service PremiumService : (string) -> arr;
-service BasicService : (any) -> void;
-(isPremiumUser: bool, par: any) => {
-	let
-	    i = call PremiumService(par)
-	in
-    	return i
-}
