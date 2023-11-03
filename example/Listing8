@@ -1,0 +1,14 @@
+struct Params {
+	address: array[int],
+	payload: any,
+	sender: string
+}
+service PremiumService : (string) -> void;
+service BasicService : (any) -> void;
+(isPremiumUser: bool, par: any) => {
+	if ( isPremiumUser ) {
+		call PremiumService("test");
+	} else {
+		call BasicService( par);
+	}
+}

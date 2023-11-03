@@ -1,0 +1,19 @@
+struct Params {
+	address: array[int],
+	payload: any,
+	sender: string
+}
+service PremiumService : (string) -> void;
+service BasicService : (any) -> void;
+(isPremiumUser: bool, par: any) => {
+	if ( isPremiumUser ) {
+		call PremiumService("pippo");
+	} else {
+		call BasicService( par);
+	}
+}
+
+//eq(function(X,O,L),0, [if9(O,L,X)],[]).
+//  eq(if9(O,L,X), nat(L),[],[O = 1]).
+//  eq(if9(O,L,X), nat(X),[],[O = 0]).
+

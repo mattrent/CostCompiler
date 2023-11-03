@@ -1,0 +1,35 @@
+struct Params {
+	name:string
+}
+
+struct Result {
+	payload: string
+}
+
+service PremiumService: (Params) -> Result;
+service BasicService: (Params) -> Result;
+service IsPremiumUser : () -> bool;
+service RandomService: (any) -> bool;
+fn function(isPremiumUser: bool, par: any) -> Result{
+	if ( isPremiumUser ) {
+		call PremiumService(par)
+	} else {
+		call BasicService( par)
+	}
+}
+
+fn svc(isPremiumUser: bool, par: Params) -> Result{
+	if ( call IsPremiumUser() ) {
+		call PremiumService( par )
+	} else {
+		call BasicService( par )
+	}
+}
+
+(isPremiumUser: bool, par: Params) => {
+	if(call RandomService(par)) {
+        svc(isPremiumUser, par)
+    } else {
+        function(isPremiumUser, par)
+    }
+}
