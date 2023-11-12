@@ -4,7 +4,6 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{layout}
-%\usepackage{ulem} crea problemi con l'indentazione dell'indice
 \usepackage{multicol} 
 \usepackage{newlfont}
 \usepackage{hyperref}
@@ -43,6 +42,39 @@
     showtabs=false,                  
     tabsize=2
 }
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{antlrcomment}{RGB}{63,127,95}
+\definecolor{antlrstring}{RGB}{42,0,255}
+\definecolor{antlrkeyword}{RGB}{127,0,85}
+\definecolor{antlrbackground}{RGB}{255,255,255}
+
+\lstdefinelanguage{ANTLR}{
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]",
+    morestring=[b]',
+    keywords={grammar, options, tokens, import, fragment, returns, locals, throws, catch, finally, mode, channel, skip, more, lexer, parser, tree, grammar},
+    keywordstyle=\color{antlrkeyword}\bfseries,
+    sensitive=true,
+    basicstyle=\ttfamily,
+    commentstyle=\color{antlrcomment},
+    stringstyle=\color{antlrstring},
+    backgroundcolor=\color{antlrbackground},
+    showstringspaces=false,
+    breaklines=true,
+    tabsize=2,
+    literate={->}{$\rightarrow$}{2}
+                     {>=}{$\geq$}{2}
+                     {<=}{$\leq$}{2}
+                     {!=}{$\neq$}{2}
+                     {==}{$\equiv$}{2}
+                     {|}{$\mid$}{1}
+                     {epsilon}{$\epsilon$}{1}
+}
+
 \lstset{style=mystyle}
 \graphicspath{ {./img/} }
 
@@ -54,22 +86,13 @@
 
 %\listoffigures
 
-\subfile{chapter/Introduzione.tex}
+\subfile{chapter/introduzione/Introduzione.tex}
 
-\chapter{Linguaggio e semantica}
-\section{Grammatica}
-\section{Equazioni di Costo}
-\section{Regole di Inferenza}
+\subfile{chapter/analisi_linguaggio/analisi_linguaggio.tex}
+ 
+\subfile{chapter/interprete/interprete.tex}
 
-\chapter{Interprete}
-\section{Antlr}
-\section{Generazione delle Equazioni di costo}
-
-\chapter{Analisi delle Equazioni di costo}
-\section{PUBS}
-\section{CoFloCo}
-
-\chapter{Conclusioni}
+\subfile{chapter/conclusioni/conclusioni.tex}
 
 \addcontentsline{toc}{chapter}{Bibliografia}
 

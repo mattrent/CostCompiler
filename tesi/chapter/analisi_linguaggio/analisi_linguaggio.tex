@@ -1,0 +1,128 @@
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+\chapter{Linguaggio e semantica}
+
+In questo capitolo introdurremo il linguaggio che andremo ad utilizzare per descrivere i programmi e la semantica che gli daremo. Il linguaggio è stato pensato per essere comprensibile e allo stesso tempo espressivo, in modo da poter descrivere programmi complessi. La semantica è stata pensata per essere semplice da implementare e allo stesso tempo potente, in modo da poter descrivere programmi complessi.
+Per fare un ripasso, un linguaggio viene definito da una grammatica $G = (N, T ,\rightarrow, S)$ dove:
+\begin{itemize}
+    \item $N$ é l'insieme dei \textbf{non terminali}
+    \item $T$ é l'insieme dei \textbf{terminali}
+    \item $\rightarrow$ é l'insieme delle \textbf{produzioni}
+    \item $S$ é il \textbf{simbolo iniziale}
+\end{itemize}
+
+Mentre il linguaggio generato da una grammatica $G$ é definito come:
+\begin{equation}
+    \mathcal{L}(G) = \{\gamma | \gamma \in T^* \land \Rightarrow^+ w\}
+\end{equation}
+e $T^*$ é la chiusura di Kleene.\\
+Questa grammatica (che descriveremo nel dettaglio nel capitolo successivo), é riconosciuta dal plugin ANTLR che ci permette di generare un parser per il linguaggio. Il parser generato da ANTLR é un parser LL(*), ovvero un parser che riconosce linguaggi non ambigui e che non richiede backtracking. Questo ci permette di avere un parser efficiente ottimizzando il riconoscimento del linguaggio.
+\glossary{LL(*)}{Left to right, Leftmost derivation, * lookahead symbols}
+
+\section{Grammatica}
+
+\subsection{Grammatica del linguaggio}
+Di seguito troviamo la grammatica del linguaggio \textbf{HLCostLan} che descrive il linguaggio che andremo ad utilizzare per descrivere i programmi.\\
+Verranno riportate le produzioni della grammatica che descrivono il linguaggio, mentre per visualizzare il file g4 nella sua totalitá si rimanda alla \href{https://github.com/minosse99/CostCompiler/blob/master/src/HLCostLan.g4}{Repo}
+\label{sec:grammatica}
+
+\begin{lstlisting}[language=ANTLR, caption={Grammatica del linguaggio HLCostLan}, label={lst:grammatica}]
+prg : complexType* serviceDecl* functionDecl* init;
+    
+init: '('formalParams? ')''=''>' '{' stm '}';
+    
+serviceDecl:'service'ID':''('(type(','type)*)?')''->''type';
+    
+functionDecl:'fn'ID'('formalParams?')''->'(type)'{'stm'}' ;
+    
+stm :
+    | serviceCall
+    |'if''('expOrCall')''{'stm'}''else''{'stm'}'
+    |'for''('ID'in''('NUMBER','exp ')'')''{'stm'}'  
+    | letIn
+    | functionCall
+    | 'return' expPlus ;
+    
+serviceCall:'call'ID'('(exp(','exp)*)?')'(';'stm)?;
+
+functionCall : ID'('( exp (','exp)* )? ')';
+
+letIn: 'let' (ID '=' expPlus)+ 'in' stm;
+                                   
+    
+    \end{lstlisting}
+Il non terminale \textbf{prg} e' il terminale iniziale della grammatica, e descrive un programma. Un programma e' composto da una sequenza di dichiarazioni di tipi complessi, dichiarazioni di servizi(che possono avere un overhead in termini di invocazioni che influiscono sul costo), dichiarazioni di funzioni, e infine l'init. L'init e' la funzione che viene invocata all'avvio del programma.
+Il non terminale \textbf{init} descrive la funzione init, che deve essere dichiarata una sola volta ed e' composta da una sequenza di parametri formali, e da una istruzioni.\\
+La \textbf{serviceDecl} descrive la dichiarazione di un servizio, che deve essere dichiarato una sola volta. Un servizio e' composto da un nome, una sequenza di parametri formali, e un tipo di ritorno.\\
+La \textbf{functionDecl} descrive la dichiarazione di una funzione, una funzione e' composta da un nome(univoco), una sequenza di parametri formali, e un tipo di ritorno.
+Nel checking semantico controlliamo che non vengano dichiarate due volte funzioni o servizi con lo stesso nome.\\
+Inoltre il Type checking controlla che i tipi di ritorno delle funzioni e dei servizi siano corretti.\\
+
+
+\section{Another Tool for Language Recognition}
+ANTLR (Another Tool for Language Recognition) è uno strumento potente e flessibile per l'analisi di linguaggi di programmazione, linguaggi di markup e dati strutturati. È ampiamente utilizzato per generare parser e lexer per vari linguaggi di programmazione e per costruire compilatori, interpreti, traduttori di linguaggi e altre applicazioni che necessitano di analisi di linguaggi.
+Ecco alcuni usi comuni di ANTLR:
+\begin{enumerate}
+    \item Generazione di parser e lexer: ANTLR può generare parser e lexer per molti linguaggi di programmazione, rendendo più semplice l'analisi sintattica e lessicale.
+    \item Costruzione di compilatori e interpreti: ANTLR è spesso utilizzato nella costruzione di compilatori e interpreti, poiché fornisce gli strumenti per analizzare il codice sorgente e costruire l'albero di sintassi astratta.
+    \item Traduzione di linguaggi: ANTLR può essere utilizzato per tradurre codice da un linguaggio di programmazione a un altro. Questo è utile per la migrazione del codice, la refactoring e altre attività di manutenzione del software.
+    \item Analisi di dati strutturati: ANTLR può essere utilizzato per analizzare dati strutturati, come file XML o JSON, rendendo più semplice l'estrazione e la manipolazione dei dati.
+\end{enumerate}
+
+ANTLR data una grammatica in input, che avrá estensione \textit{.g4}, andrá a generare una cartella \textit{gen} contenente i file necessari per generare il parser.\\
+La cartella \textit{gen} il codice sorgente del parser e lexel, generati automaticamente; é presente anche un file \textit{.tokens} che contiene i token riconosciuti dal lexer, e un file \textit{.interp} che contiene la tabella di interpretazione del parser.\\
+Il lexer sostanzialmente si occupa di riconoscere i token, in ANTLR viene generato un lexer DFA, ovvero un lexer che riconosce linguaggi non ambigui e che non richiede backtracking. Questo ci permette di avere un lexer efficiente ottimizzando il riconoscimento del linguaggio.
+Il parser invece data una sequenza di token, andrá a riconoscere la grammatica, e generare un albero di parsing(noto anche come albero di derivazione), rappresenta la derivazione secondo le regole della grammatica libera da contesto. 
+Nell'albero di parsing ogni nodo interno corrisponde a una regola della grammatica e ogni foglia corrisponde a un token del linguaggio.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{example_lexer_parser.png}
+    \caption{Funzione di parsing e lexing}
+\end{figure}
+Una volta ottenuto l'albero di parsing possiamo andare a visitarlo, e generare un albero di sintassi astratta, che rappresenta il significato del programma.
+L'albero di sintassi astratta(AST) é un albero che rappresenta il significato del programma, e viene utilizzato per eseguire il programma.
+Mentre se volessimo, come nel nostro caso andare a costruire un albero di sintassi astratta, dovremmo andare ad estendere l'interfaccia \textit{BaseListener} e implementare i metodi che ci interessano.\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{visit-tree.png}
+    \caption{Esempio di albero di AST}
+    \label{fig:visit_tree}
+\end{figure}
+
+Facciamo un esempio di un frammento di codice realmente generato da ANTLR, per la grammatica \textit{HLCostLan}:
+\begin{lstlisting}[language=Java, caption={Esempio di codice HLCostLan: example/Listing6}, label={lst:example_code}]
+service BasicService: (int) -> void;
+fn svc(i: int) -> void{
+    for(m in (0,10)){
+        call BasicService(i)
+    }
+
+}
+(len : int) => {
+	svc(len)
+}
+\end{lstlisting}
+
+Come abbiamo visto nella grammatica \ref{sec:grammatica}, il non terminale \textbf{prg} e' il terminale iniziale della grammatica, in questo caso prg, prende un parametro len di tipo intero, ed avrá un CallNode ad una funzione \textit{svc} che prende un parametro di tipo intero, e ritorna void.\\
+La funzione \textit{svc} invece, contiene un for, che itera da 0 a 10, e ad ogni iterazione effettuata una chiamata al servizio \textit{BasicService} con parametro \textit{i}.\\
+\section{Semantica del Linguaggio}\label{sec:semantica}
+La semantica di un linguaggio di programmazione è l'insieme delle regole che definiscono il significato delle istruzioni, delle espressioni e delle strutture di controllo del flusso nel linguaggio. In altre parole, la semantica definisce "cosa fa" un programma scritto in quel linguaggio.
+
+Ad esempio, se definiamo un linguaggio che permette l'assegnamento(non é il nostro caso perché la grammatica HLCostLan non lo permette) dovremmo andare a controllare che la variabile assegnata sia stata dichiarata altrimenti dovrá generare un errore.
+Nel nostro compilatore effettuiamo altri controlli semantici come:
+\begin{itemize}
+    \item Controllare che non vengano dichiarate due volte funzioni o servizi con lo stesso nome.
+    \item Controllare che i parametri utilizzati nelle chiamate di funzioni o servizi siano corretti e quindi giá stati precedentemente dichiarati
+    \item Controllare che i tipi di ritorno delle funzioni e dei servizi siano corretti.
+\end{itemize}
+Inoltre effettuiamo il type checking, che é un sottoinsieme del controllo semantico, che controlla che i tipi delle espressioni siano corretti.\\
+\begin{itemize}
+    \item I tipi delle chiamate devono essere corretti, ovvero i parametri attuali devono essere dello stesso tipo dei parametri formali.
+    \item In un costrutto \textit{let} le espressioni devono essere dello stesso tipo della variabile a cui vengono assegnate.
+    \item In un costrutto \textit{if} l'espressione deve essere di tipo booleano, mentre i valori di ritorno degli statemente \textit{then} e \textit{else} devono essere dello stesso tipo.
+    \item La funzione deve tornare il tipo dichiarato.
+\end{itemize}
+
+\end{document}
+ 
