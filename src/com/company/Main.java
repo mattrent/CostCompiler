@@ -24,8 +24,8 @@ public class Main {
     }
 
     public static Results CostCompiler(String file) throws IOException{
-        String pathToDebug = "/src/com/company"; //comments this line to run the compiler by command line
-        //String path = "";
+        //String pathToDebug = "/src/com/company"; //comments this line to run the compiler by command line
+        String path = "";
 
         try {
             CharStream input = CharStreams.fromFileName(file);
@@ -65,9 +65,9 @@ public class Main {
                 String osName= System.getProperty("os.name");
                 Process p;
                 if(osName.contains("Windows"))
-                    p = new ProcessBuilder("wsl", "."+pathToDebug+"/pubs_static", "-file", "equation.ces").inheritIO().start();
+                    p = new ProcessBuilder("wsl", "."+path+"/pubs_static", "-file", "equation.ces").inheritIO().start();
                 else
-                    p= new ProcessBuilder( "."+pathToDebug+"/pubs_static", "-file", "equation.ces").inheritIO().start();
+                    p= new ProcessBuilder( "."+path+"/pubs_static", "-file", "equation.ces").inheritIO().start();
 
                 return Results.PASS;
             }

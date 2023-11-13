@@ -65,11 +65,6 @@ public class CallNode implements Node {
     public String toEquation(EnvVar e) {
         FunDeclarationNode fun = (FunDeclarationNode) e.getFunDecNode(id.getId());
 
-        if (getFunDecNodeByLine(e, line) != null && Objects.equals(id.getId(), getFunDecNodeByLine(e, line).getId())) {
-            System.err.println("Recursive call not supported");
-            System.exit(1);
-        }
-
         assert fun != null;
         return this.id.getId() + "("+ fun.getParFun()+")";
     }
