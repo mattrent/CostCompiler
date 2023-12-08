@@ -91,11 +91,11 @@ public class ProgramNode implements Node {
             n.checkVarEQ(e);
         }
         StringBuilder equ = new StringBuilder();
+
         for(Node n : funDec){
             equ.append(n.toEquation(e));
         }
-        equ.append(main.toEquation(e));
-        return equ.toString();
+        return main.toEquation(e) + equ;
 
 
 

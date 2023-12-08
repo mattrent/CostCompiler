@@ -102,7 +102,7 @@ public class FunDeclarationNode implements Node {
 
 
         this.parFun = String.valueOf(new StringBuilder(par.substring(0, par.length() - 1)));
-        return "eq("+ pre + this.parFun + post ;
+        return "\neq("+ pre + this.parFun + post ;
 
     }
 
