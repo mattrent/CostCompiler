@@ -36,4 +36,9 @@ public class IdNode implements Node{
     public String toEquation(EnvVar e) {
         return id;
     }
+
+    @Override
+    public String codeGeneration() {
+        return "local.get $"+id+"\n";
+    }
 }

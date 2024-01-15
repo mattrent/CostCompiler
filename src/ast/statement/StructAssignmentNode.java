@@ -69,4 +69,9 @@ public class StructAssignmentNode implements Node {
 
         return "0,["+callFunction+"],[]).";
     }
+
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
 }

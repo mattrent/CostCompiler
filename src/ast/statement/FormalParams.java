@@ -55,7 +55,16 @@ public class FormalParams implements Node {
         return "";
     }
 
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
+
     public int size(){
         return formalParams.size();
+    }
+
+    public ArrayList<Pair<String, TypeNode>> getFormalParams() {
+        return formalParams;
     }
 }

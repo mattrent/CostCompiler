@@ -101,4 +101,16 @@ public class ProgramNode implements Node {
 
 
     }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder codeGen = new StringBuilder();
+        for (Node n : decServices){
+            codeGen.append(n.codeGeneration());
+        }
+        for(Node n : funDec){
+            codeGen.append(n.codeGeneration());
+        }
+        return codeGen + main.codeGeneration();
+    }
 }

@@ -32,6 +32,11 @@ public class NullType implements TypeNode {
     }
 
     @Override
+    public String codeGeneration() {
+        return null;
+    }
+
+    @Override
     public TypeNode getType() {
         return this;
     }

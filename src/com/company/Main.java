@@ -62,6 +62,11 @@ public class Main {
                 BufferedWriter writer = new BufferedWriter(new java.io.FileWriter("equation.ces"));
                 writer.write(equ);
                 writer.close();
+
+                String wasmCode = ast.codeGeneration();
+                BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter("equation.wasm"));
+                System.out.println(wasmCode);
+
                 String osName= System.getProperty("os.name");
                 Process p;
                 if(osName.contains("Windows"))

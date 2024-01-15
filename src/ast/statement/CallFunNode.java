@@ -84,4 +84,9 @@ public class CallFunNode implements Node {
         return "1";
     }
 
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
+
 }

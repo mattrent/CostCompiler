@@ -56,4 +56,9 @@ public class ListAssignmentMain implements Node {
 
         return String.valueOf(pre);
     }
+
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
 }

@@ -121,6 +121,11 @@ public class LetInNode implements Node {
         }
         return null;
     }
+
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
 }
 
 

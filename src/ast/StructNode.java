@@ -60,6 +60,11 @@ public class StructNode implements Node {
         return null;
     }
 
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
+
     public TypeNode getParamsId(IdNode id){
         for(Pair<IdNode,TypeNode> p : params){
             if(p.a.getId().equals(id.getId())){

@@ -40,4 +40,9 @@ public class StringNode implements Node {
     public String toEquation(EnvVar e) {
         return null;
     }
+
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
 }

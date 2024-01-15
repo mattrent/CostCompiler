@@ -34,6 +34,11 @@ public class IdType implements TypeNode{
     }
 
     @Override
+    public String codeGeneration() {
+        return null;
+    }
+
+    @Override
     public Node typeCheck(Environment e) throws TypeErrorException {
         if(e.containsDeclaration(id)){
             return e.getDeclaration(id).typeCheck(e);

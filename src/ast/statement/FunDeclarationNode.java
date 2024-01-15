@@ -2,6 +2,8 @@ package ast.statement;
 
 import ast.IdNode;
 import ast.Node;
+import ast.typeNode.TypeNode;
+import org.antlr.v4.runtime.misc.Pair;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
@@ -104,6 +106,18 @@ public class FunDeclarationNode implements Node {
         this.parFun = String.valueOf(new StringBuilder(par.substring(0, par.length() - 1)));
         return "\neq("+ pre + this.parFun + post ;
 
+    }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder code = new StringBuilder("(func $" + id.getId());
+        for (Pair<String, TypeNode> n : formalParams.getFormalParams()) {
+            code.append(" (param $").append(n.a).append(" i32)");
+        }
+        code.append(" (result i32)\n");
+        code.append(stm.codeGeneration());
+        code.append(")\n");
+        return code.toString();
     }
 
     public int getLine() {

@@ -42,6 +42,11 @@ public class DerExpNode implements Node {
         }else return "+1";
     }
 
+    @Override
+    public String codeGeneration() {
+        return "local.get $"+id.getId()+"\n";
+    }
+
     public String getId() {
     	return id.getId();
     }

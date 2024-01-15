@@ -76,6 +76,11 @@ public class CallServiceNode implements Node {
 
     }
 
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
+
     public String getId() {
     	return idCall;
     }

@@ -14,4 +14,5 @@ public interface Node {
     ArrayList<String> checkSemantics(Environment env);
     String toEquation(EnvVar e);
 
+    String codeGeneration();
 }

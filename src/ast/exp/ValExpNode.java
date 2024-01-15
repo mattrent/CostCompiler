@@ -34,4 +34,9 @@ public class ValExpNode implements Node {
     public String toEquation(EnvVar e) {
         return String.valueOf(val);
     }
+
+    @Override
+    public String codeGeneration() {
+        return "i32.const "+val+"\n";
+    }
 }

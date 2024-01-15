@@ -69,6 +69,10 @@ public class LetAssignmentNode implements Node {
         else return "";
     }
 
+    @Override
+    public String codeGeneration() {
+        return ass.codeGeneration()+"\nload.set $"+id.getId();
+    }
 
     public Node getAss() {
         return this.ass;

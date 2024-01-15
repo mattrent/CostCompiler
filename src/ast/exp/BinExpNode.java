@@ -78,6 +78,42 @@ public class BinExpNode implements Node {
         return left.toEquation(e) + (Objects.equals(op, "==") ? "=" : op) + right.toEquation(e);
     }
 
+    @Override
+    public String codeGeneration() {
+        String code = "local.get 0\n" +
+                        "local.get 1\n" ;
+        switch (op){
+            case "+" :
+                code += "i32.add\n";
+                break;
+            case "-" :
+                code += "i32.sub\n";
+                break;
+            case ">" :
+                code += "i32.gt_s\n";
+                break;
+            case "==":
+                code += "i32.eq\n";
+                break;
+            case "!=":
+                code += "i32.ne\n";
+                break;
+            case "&&":
+                code += "i32.and\n";
+                break;
+            case ">=":
+                code += "i32.ge_s\n";
+                break;
+            case "/":
+                code += "f32.div\n";
+                break;
+            case "*":
+                code += "f32.mul\n";
+                break;
+        }
+        return code;
+    }
+
     public String getEquation(EnvVar e) {
         if(e.get(this)== null){
             if(e.get(left) != null)

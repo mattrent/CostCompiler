@@ -104,4 +104,9 @@ public class IfNode implements Node {
         }
         return decCall + ").\neq(" + dec + ","+ valStmT+valExpT+").\neq(" + dec +","+ valStmF+valExpF + ").\n";
     }
+
+    @Override
+    public String codeGeneration() {
+        return "\n(if "+exp.codeGeneration()+"(then\n"+stmT.codeGeneration()+")(else\n"+stmT.codeGeneration()+")\n";
+    }
 }

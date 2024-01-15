@@ -69,6 +69,14 @@ public class CallNode implements Node {
         return this.id.getId() + "("+ fun.getParFun()+")";
     }
 
+    @Override
+    public String codeGeneration() {
+        for (Node n : listCount) {
+            n.codeGeneration();
+        }
+        return "call $"+id.getId()+"\n";
+    }
+
     public String getId() {
         return id.getId();
     }

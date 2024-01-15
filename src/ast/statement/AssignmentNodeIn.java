@@ -68,4 +68,10 @@ public class AssignmentNodeIn implements Node {
         else return " ";
     }
 
+    public String codeGeneration(){
+        return null;
+    }
+
+
+
 }

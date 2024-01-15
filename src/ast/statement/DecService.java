@@ -50,6 +50,11 @@ public class DecService implements Node {
         return "";
     }
 
+    @Override
+    public String codeGeneration() {
+        return null;
+    }
+
     public ArrayList<Pair<IdNode, TypeNode>> getParams() {
         return params;
     }
