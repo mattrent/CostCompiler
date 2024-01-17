@@ -64,8 +64,11 @@ public class Main {
                 writer.close();
 
                 String wasmCode = ast.codeGeneration();
-                BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter("equation.wasm"));
                 System.out.println(wasmCode);
+
+                BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter("equation.wasm"));
+                writerWasm.write(wasmCode);
+                writerWasm.close();
 
                 String osName= System.getProperty("os.name");
                 Process p;

@@ -107,6 +107,6 @@ public class IfNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return "\n(if "+exp.codeGeneration()+"(then\n"+stmT.codeGeneration()+")(else\n"+stmT.codeGeneration()+")\n";
+        return "(if\n"+exp.codeGeneration()+"(then\n"+stmT.codeGeneration()+")(else\n"+stmF.codeGeneration()+"\n)";
     }
 }

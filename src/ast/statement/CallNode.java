@@ -71,10 +71,11 @@ public class CallNode implements Node {
 
     @Override
     public String codeGeneration() {
-        for (Node n : listCount) {
-            n.codeGeneration();
+        StringBuilder params = new StringBuilder();
+        for (int i= listCount.size()-1; i>=0; i--){
+             params.append(listCount.get(i).codeGeneration()).append("\n");
         }
-        return "call $"+id.getId()+"\n";
+        return params + "call $"+id.getId()+"\n";
     }
 
     public String getId() {

@@ -102,15 +102,19 @@ public class ForNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return  exp.codeGeneration() +  //         Inizializza il contatore del ciclo (variabile locale)
-                " i32.const 0\n" +      //Inizializza il valore di partenza del contatore
-                " i32.lt_s\n if "       //Controlla se il contatore è minore del valore di fine
+
+        return  "(loop $for"+line+"\n" +
+                exp.codeGeneration() +  //         Inizializza il contatore del ciclo (variabile locale)
+                " i32.const $for"+line+"counter\n" +      //Inizializza il valore di partenza del contatore
+                " i32.lt_s\n (if "       //Controlla se il contatore è minore del valore di fine
                 + stm.codeGeneration()  //Esegue il corpo del ciclo
-                +"local.get 0\n" +      //Prende il valore del contatore
+                +"local.get $for"+line+"counter\n" +      //Prende il valore del contatore
                 "i32.const 1\n" +       //Incrementa il contatore
                 "i32.add\n" +           //Incrementa il contatore
-                "local.set 0\n" +       //Salva il valore del contatore
-                "br 0 \n" +             //Ritorna all'inizio del ciclo
-                "end \nend";            //Fine del ciclo
+                "local.set $for"+line+"counter\n" +       //Salva il valore del contatore
+
+                "br $for"+line +"\n)"+            //Ritorna all'inizio del ciclo
+                "(then nop )\n)";
+                // Fine del ciclo
     }
 }
