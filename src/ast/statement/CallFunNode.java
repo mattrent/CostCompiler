@@ -87,6 +87,7 @@ public class CallFunNode implements Node {
     @Override
     public String codeGeneration() {
         return null;
+        //struct params
     }
 
 }

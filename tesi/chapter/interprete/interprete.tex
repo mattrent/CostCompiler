@@ -66,7 +66,36 @@ I giudizi avranno forma:
     \item $\varGamma \vdash e : Nat$ che significa che il valore di E in $e$ é rappresentato dalla costEspression $E$
     \item $\varGamma \vdash S : e ; C; Q $ significa che il costo di S nell'ambiente $\varGamma$ é $e + C$ dato un insieme di equazioni Q
 \end{itemize}
-%%%allegare immagine delle regole di inferenza
+
+
+\begin{align}
+    &\mathrule{main}{
+        \begin{aligned} \varGamma \vdash S : e ; C; Q  \quad \quad
+        \overline{w} = \text{Var}(\overline{p},e) \cup \text{Var(C)}
+        \end{aligned}
+        }{\varGamma \vdash \overline{p}  \rightarrow \{S\}: 0 ;\emptyset;Q';C} \\
+    &\mathrule{call}{\varGamma \vdash S : e ; C; Q}{\varGamma \vdash \text{call h}(\overline{E}) S : e + e' ; C; Q}\\
+    &\mathrule{if}{
+    \begin{aligned}
+        &\varGamma \vdash E : \varphi  \quad \quad \varGamma \vdash S : e'; C; Q \quad \varGamma \vdash S : e"; C'; Q'\\
+        &W = Var(e, e', e") \cup Var(C) \quad \quad \quad Q" =\big[ \begin{aligned}
+            &\text{if}_l(\overline{w})  = e'+c[\varphi]\\
+            &\text{if}_l(\overline{w})  = e"+c[\neg \varphi]\\
+        \end{aligned}\big] \\
+    \end{aligned}    
+    }{\varGamma \vdash \text{if } E \text{ then } S_1 \text{ else } S_2 : 0; if_l(\overline{w}); Q; Q'; Q"}\\
+    &\mathrule{let}{\varGamma + i : Not \quad \quad \quad \quad \overline{w} = Var(E) \cup Var(c)}{\varGamma \vdash \text{let } i = e \text{ in } S : S;e ; C; Q}\\
+    &\mathrule{for}{
+        \begin{aligned}
+            &\varGamma \vdash M: e \quad \quad \quad \quad \varGamma \vdash i : Not\quad \quad \quad \quad \varGamma \vdash S : e'; C; Q\\
+            &\overline{w} = Var(e, e') \cup Var(C) \ i \quad \quad \quad \quad Q' = \big[ \begin{aligned}
+                &\text{for}_l(i,\overline{w}) = e + c\quad [i \lq e]\\
+                &\text{for}_l(i,\overline{w}) = 0 \quad \quad [i \geq e]\\
+            \end{aligned}\big]
+        \end{aligned}
+    }{\varGamma \vdash \text{for i in (0,M) } \text{ { S } } : 0; for_l(0,\overline{w}); Q; Q'}\\
+\end{align}
+
 Riassumiamo le regole descritte in precedenza:\\
 \begin{itemize}
     \item Regola$[$call$]$ gestisce l'invocazione di un servizio; il costo della call sará il costo di $S$ piú il costo per l'accesso al servizio $h$ 

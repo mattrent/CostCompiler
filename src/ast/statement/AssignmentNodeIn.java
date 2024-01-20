@@ -70,6 +70,7 @@ public class AssignmentNodeIn implements Node {
 
     public String codeGeneration(){
         return null;
+        //assign to struct
     }
 
 

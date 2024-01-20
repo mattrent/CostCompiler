@@ -15,7 +15,8 @@
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage[toc,page]{appendix}
-\usepackage{biblatex}
+\usepackage{biblatex}\usepackage{listings}
+\usepackage{color}
 \bibliography{Bibliography.bib}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -42,9 +43,25 @@
     tabsize=2
 }
 
-\usepackage{listings}
-\usepackage{color}
+\newcommand{\bigfract}[2]{\frac{^{\textstyle #1}}{_{\textstyle #2}}}
+\newcommand{\rulename}[1]{{\small {\sc[#1]}}}
+%\newcommand{\rulenamex}[1]{\text{\upshape\scriptsize[\textsc{#1}]}}
 
+\newcommand{\rulenamex}[1]{\mbox{\tiny [{\sc #1}]}}
+
+\def\mathrule#1#2#3{\begin{array}{l} 
+                       	\rulenamex{#1}
+                       	\\ 
+                      	 \bigfract{#2}{#3}	
+                       	\end{array}
+					 }
+
+\def\mathax#1#2{\begin{array}{l} 
+                  \rulenamex{#1} 
+                  \\ 
+                  #2
+                  \end{array}
+                  }
 \definecolor{antlrcomment}{RGB}{63,127,95}
 \definecolor{antlrstring}{RGB}{42,0,255}
 \definecolor{antlrkeyword}{RGB}{127,0,85}

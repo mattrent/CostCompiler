@@ -1,0 +1,25 @@
+(module
+null(func $svc (param $i i32) (result i32)
+(if
+local.get 0
+local.get 1
+i32.eq
+(then
+i32.const 0
+)(else
+(loop $for7
+i32.const 32
+ i32.const $for7counter
+ i32.lt_s
+ if nulllocal.get $for7counter
+i32.const 1
+i32.add
+local.set $for7counter
+br $for7
+
+))
+(func $main (param $len i32) (result i32)
+local.get $len
+call $svc
+)
+)
