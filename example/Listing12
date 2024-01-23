@@ -1,4 +1,4 @@
-payload : any[32]
+payload : any[5]
 service BasicService: (int) -> any;
 fn svc(i: int) -> any{
     if(i == 0){

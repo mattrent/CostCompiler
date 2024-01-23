@@ -33,5 +33,16 @@ public class StructType extends AnyType{
         return this;
     }
 
+    @Override
+    public String codeGeneration() {
+        StringBuilder str = new StringBuilder();
+        for(Pair<IdNode,TypeNode> p : params){
+            if (p.b instanceof ArrayType)
+                    str.append("(global.store " + "$").append(id).append("_").append(p.a.getId()).append(" (i32.const 0))\n");
+            else
+                str.append("(global.store $").append(id).append("_").append(p.a.getId()).append(" (i32.const 0)\n");
+        }
+        return str.toString();
+    }
 
 }

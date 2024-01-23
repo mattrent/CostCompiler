@@ -62,7 +62,12 @@ public class StructNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return null;
+        StringBuilder str = new StringBuilder();
+        for(Pair<IdNode,TypeNode> p : params){
+            str.append("i32.const 0");
+            str.append("load.store $").append(id.getId()).append("_").append(p.a.getId()).append("\n");
+        }
+        return str.toString();
     }
 
     public TypeNode getParamsId(IdNode id){

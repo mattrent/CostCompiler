@@ -74,4 +74,6 @@ public class StructAssignmentNode implements Node {
     public String codeGeneration() {
         return null;
     }
+
+
 }

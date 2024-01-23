@@ -171,10 +171,10 @@ In PUBS peró abbiamo una grammatica da rispettare, tenuta in considerazione da 
     <call> ::= <function>(<listOfParameters>).
     <listOfParameters> ::= [] | <variable> <listOfParameters>.
 \end{lstlisting}
-Dove <Head> é il nome della entry che andremo ad analizzare insieme a i suoi parametri.
+Dove $<$Head$>$ é il nome della entry che andremo ad analizzare insieme a i suoi parametri.
 CostExpression é l'espressione di costo che rappresenta il costo della entry, come notiamo rispetta la grammatica della aritmetica di Presburger.
-ListOfCall é la lista delle chiamate alle altre entry, che saranno rappresentate come <call> e <listOfCall> sará la lista di queste chiamate; in questo modo PUBS riesce a costruire un grafo delle dipendenze tra le entry.
-Infine abbiamo <listOfSizeRelation> che sará la lista delle relazioni di costo che dipendono dalla entry che stiamo analizzando, e che PUBS andrá a calcolare.
+ListOfCall é la lista delle chiamate alle altre entry, che saranno rappresentate come $<$call$>$ e $<$listOfCall$>$ sará la lista di queste chiamate; in questo modo PUBS riesce a costruire un grafo delle dipendenze tra le entry.
+Infine abbiamo $<$listOfSizeRelation$>$ che sará la lista delle relazioni di costo che dipendono dalla entry che stiamo analizzando, e che PUBS andrá a calcolare.
 Riportiamo Listing1 come esempio di equazione di costo generata da CostCompiler, dove troviamo l'analisi alla pagine precedente:
 \begin{lstlisting}[caption={Equazione di costo PUBS per Listing6}]
     eq(main(B),1,[svc(B)],[]).

@@ -53,4 +53,17 @@ public class ArrayType extends AnyType {
     public TypeNode getType() {
         return this;
     }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            str.append("(global.store $").append(id.getId()).append("[").append(i).append("] (i32.const 0))\n");
+        }
+        return str.toString();
+
+    }
+    public int getlen(){
+        return len;
+    }
 }

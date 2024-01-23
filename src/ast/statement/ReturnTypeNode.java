@@ -54,6 +54,6 @@ public class ReturnTypeNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return null;
+        return "local.get $"+id.getId()+"\n";
     }
 }
