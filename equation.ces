@@ -1,7 +1,5 @@
 
-eq(main(W,U,L,B,I0),1,[svc(W,U,L,B,I0)],[]).
-eq(svc(W,U,L,B,I0),0,[if4(L,W,U)],[]).
-eq(if4(L,W,U),0,[],[L=1]).
-eq(if4(L,W,U),0,[for7(0, B)],[L=0] ).
-eq(for7(J, B) ,nat(B),[for7(J+1, B)], [32>= J]).
-eq(for7(J, B) ,0,[],[J >= 32+ 1]).
+eq(main(S,J,I0,N1,G),1,[svc(S,J,I0,N1,G)],[]).
+eq(svc(S,J,I0,N1,G),0,[if3(J,S,G)],[]).
+eq(if3(J,S,G),1,[],[J=1]).
+eq(if3(J,S,G),0,[],[J=0]).

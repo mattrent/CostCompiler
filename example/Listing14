@@ -1,0 +1,11 @@
+fn increment(num:int)->int{
+    return num + 1
+}
+fn svc(i: int, n:int) -> any{
+       for (j in (0,10)){
+            return increment(n + j)
+       }
+}
+(len : int) => {
+	return svc(len,0)
+}

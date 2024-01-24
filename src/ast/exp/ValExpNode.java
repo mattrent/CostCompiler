@@ -37,6 +37,6 @@ public class ValExpNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return "i32.const "+val+"\n";
+        return "(i32.const "+val+")\n";
     }
 }

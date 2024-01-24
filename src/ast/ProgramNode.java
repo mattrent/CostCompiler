@@ -114,6 +114,6 @@ public class ProgramNode implements Node {
         for(Node n : funDec){
             codeGen.append(n.codeGeneration());
         }
-        return "(module\n"+codeGen + main.codeGeneration()+"\n)";
+        return "(module\n"+codeGen + main.codeGeneration()+")";
     }
 }

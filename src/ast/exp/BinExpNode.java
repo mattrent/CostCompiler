@@ -80,8 +80,7 @@ public class BinExpNode implements Node {
 
     @Override
     public String codeGeneration() {
-        String code = "local.get 0\n" +
-                        "local.get 1\n" ;
+        String code = "";
         switch (op){
             case "+" :
                 code += "i32.add\n";
@@ -111,7 +110,7 @@ public class BinExpNode implements Node {
                 code += "f32.mul\n";
                 break;
         }
-        return code;
+        return "("+code+ right.codeGeneration() + left.codeGeneration()+")\n";
     }
 
     public String getEquation(EnvVar e) {

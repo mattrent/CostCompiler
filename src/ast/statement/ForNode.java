@@ -103,18 +103,23 @@ public class ForNode implements Node {
     @Override
     public String codeGeneration() {
 
-        return  "(loop $for"+line+"\n" +
+        return  "(local $"+id+" i32)\n" +
+                "(local $"+id+"_max i32)\n" +
                 exp.codeGeneration() +  //         Inizializza il contatore del ciclo (variabile locale)
-                " i32.const $for"+line+"counter\n" +      //Inizializza il valore di partenza del contatore
-                " i32.lt_s\n (if "       //Controlla se il contatore è minore del valore di fine
+                "(local.set $"+id+"_max)\n" +      //Inizializza il valore di partenza del contatore
+                "(local.get $"+id+"_max)\n" +      //Inizializza il valore di partenza del contatore
+                "(loop $for"+line+"\n" +       //Inizio del ciclo
+                "(if (i32.lt_u (local.get $"+id+"_max) (local.get $"+id+"))\n"+ //Controlla se il contatore è minore del valore di fine
+                "(then"
                 + stm.codeGeneration()  //Esegue il corpo del ciclo
-                +"local.get $for"+line+"counter\n" +      //Prende il valore del contatore
-                "i32.const 1\n" +       //Incrementa il contatore
-                "i32.add\n" +           //Incrementa il contatore
-                "local.set $for"+line+"counter\n" +       //Salva il valore del contatore
-
-                "br $for"+line +"\n)"+            //Ritorna all'inizio del ciclo
-                "(then nop )\n)";
+                +"(local.get $"+id+"\n)" +      //Prende il valore del contatore
+                "(i32.const 1)\n" +       //Incrementa il contatore
+                "(i32.add)\n" +           //Incrementa il contatore
+                "(local.set $"+id+")\n" +       //Salva il valore del contatore
+                "(br $for"+line +")\n)"            //Ritorna all'inizio del ciclo
+                + "(else\n" +               //Se il contatore è maggiore del valore di fine
+                "(local.get $"+id+"_max)\n" +   //Prende il valore di fine
+                "(local.set $"+id+"))\n))" ;       //Salva il valore di fine nel contatore
                 // Fine del ciclo
     }
 }

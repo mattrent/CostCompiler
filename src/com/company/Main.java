@@ -66,7 +66,7 @@ public class Main {
                 String wasmCode = ast.codeGeneration();
                 System.out.println(wasmCode);
 
-                BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter("equation.wasm"));
+                BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter("program.wat"));
                 writerWasm.write(wasmCode);
                 writerWasm.close();
 

@@ -44,7 +44,7 @@ public class DerExpNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return "local.get $"+id.getId()+"\n";
+        return "(local.get $"+id.getId()+")\n";
     }
 
     public String getId() {

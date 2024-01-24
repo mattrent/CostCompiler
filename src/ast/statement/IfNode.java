@@ -107,6 +107,15 @@ public class IfNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return "(if\n"+exp.codeGeneration()+"(then\n"+stmT.codeGeneration()+")(else\n"+stmF.codeGeneration()+"\n)";
+        return "(local $res i32)\n" +
+                "(if"+exp.codeGeneration()+
+                "(then\n"+stmT.codeGeneration()+
+                "(local.set $res)" +
+                "\n)" +
+                "(else\n"+stmF.codeGeneration()+
+                "(local.set $res)" +
+                "\n)" +
+                "\n)" +
+                "(local.get $res)\n";
     }
 }

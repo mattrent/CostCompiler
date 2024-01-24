@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempio WebAssembly</title>
+</head>
+<body>
+<script>
+    const memory = new WebAssembly.Memory({ initial: 1 });
+
+    const importObject = {
+        js: { mem: memory }
+    };
+
+    fetch("output.wasm")
+        .then(response => response.arrayBuffer())
+        .then(bytes => WebAssembly.instantiate(bytes, importObject))
+        .then(obj => {
+            console.log(obj.instance.exports.main(10));
+        })
+        .catch(error => console.error(error));
+</script>
+</body>
+</html>

@@ -58,7 +58,7 @@ public class ArrayType extends AnyType {
     public String codeGeneration() {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < len; i++) {
-            str.append("(global.store $").append(id.getId()).append("[").append(i).append("] (i32.const 0))\n");
+            str.append("(local.set $").append(id.getId()).append("_").append(i).append(" (i32.const 0))\n");
         }
         return str.toString();
 

@@ -73,9 +73,9 @@ public class CallNode implements Node {
     public String codeGeneration() {
         StringBuilder params = new StringBuilder();
         for (int i= listCount.size()-1; i>=0; i--){
-             params.append(listCount.get(i).codeGeneration()).append("\n");
+             params.append(listCount.get(i).codeGeneration());
         }
-        return params + "call $"+id.getId()+"\n";
+        return params + "(call $"+id.getId()+")\n ";
     }
 
     public String getId() {
