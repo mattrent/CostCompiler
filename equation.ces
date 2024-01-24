@@ -1,5 +1,6 @@
 
-eq(main(S,J,I0,N1,G),1,[svc(S,J,I0,N1,G)],[]).
-eq(svc(S,J,I0,N1,G),0,[if3(J,S,G)],[]).
-eq(if3(J,S,G),1,[],[J=1]).
-eq(if3(J,S,G),0,[],[J=0]).
+eq(main(NUM),1,[svc(NUM)],[]).
+eq(increment(NUM),NUM+1
+eq(svc(NUM),0,[for5(0,)],[] ).
+eq(for5(J,) ,increment(NUM),[for5(J+1,)], [10>= J]).
+eq(for5(J,) ,0,[],[J >= 10+ 1]).

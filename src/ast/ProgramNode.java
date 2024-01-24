@@ -114,6 +114,8 @@ public class ProgramNode implements Node {
         for(Node n : funDec){
             codeGen.append(n.codeGeneration());
         }
-        return "(module\n"+codeGen + main.codeGeneration()+")";
+        StringBuilder mainFun = new StringBuilder(main.codeGeneration());
+        mainFun.insert(11, " (export \"main\")");
+        return "(module\n"+codeGen + mainFun+")";
     }
 }
