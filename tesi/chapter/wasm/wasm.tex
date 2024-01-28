@@ -1,14 +1,5 @@
 \documentclass[../../main.tex]{subfiles}
 
-\lstdefinelanguage{WebAssembly}{
-    keywords={func, param, result},
-    keywordstyle=\color{blue}\bfseries,
-    morecomment=[l]{;},
-    morecomment=[s]{/*}{*/},
-    morestring=[b]",
-    sensitive=true
-}
-
 \begin{document}
 \chapter{Generazione di WebAssembly}
 La ricerca di soluzioni efficienti e portabili per eseguire codice in ambienti diversi è diventata una priorità fondamentale. In questo contesto, WebAssembly (Wasm) emerge come una tecnologia chiave, fornendo un formato binario sicuro, veloce e indipendente dalla piattaforma. Nel corso di questo capitolo, esploreremo il processo di generazione di codice WebAssembly attraverso un compilatore dedicato a un linguaggio personalizzato.
@@ -24,7 +15,6 @@ Le istruzioni Wasm si differiscono dalle istruzioni di un processore reale, in q
 Il formato di testo WebAssembly (WAT) \cite{WebAssemblyTextFormat} è un formato di testo leggibile dall'uomo per la rappresentazione di moduli WebAssembly. Il formato è stato progettato per essere utilizzato come rappresentazione intermedia durante il processo di compilazione, fornendo un'astrazione leggibile dall'uomo per il codice Wasm.
 Il compilatore che abbiamo sviluppato generiamo un file .wat ed in seguito il tool wat2wasm \cite{jain2022webassembly} genera il file .wasm, che a sua volta potrá essere eseguito da un motore di runtime.
 
-\subsection{WebAssembly Text Format }
 I tipi di dati che troviamo in wat sono:
 \begin{itemize}
     \item \textbf{i32} 32-bit integer
@@ -53,7 +43,100 @@ Possiamo usare anche l'operatore \$ per accedere ai parametri locali, in maniera
 \end{lstlisting}
 Come vediamo in questo esempio la funzione \$fun prende in input due parametri di tipo intero e ritorna un valore di tipo float. Inoltre all'interno della funzione vengono dichiarati tre parametri locali, due di tipo intero e uno di tipo float.
 
+\subsubsection{Stack Machine}
+L'esecuzione del WebAssembly é definita in termini di Stack-Machine, dove l'idea generale é che ogni tipo di istruzione esegue operazioni di tipo \textit{push/pop} dallo stack.
+Quando viene chiamata una funzione, inizia con uno stack vuoto che viene gradualmente riempito e svuotato man mano che le istruzioni del corpo vengono eseguite. Quindi, ad esempio, dopo aver eseguito la seguente funzione:
+\begin{lstlisting}[language=WebAssembly]
+    (func $somma(param $p1 i32)(param $p2 i32)
+        (result i32)
+        local.get $p1
+        local.get $p2
+        i32.add)
+\end{lstlisting}
+Quando viene chiamata la funzione \$somma, viene passato il precedente valore nella pila come parametro \$p1. La prima istruzione \textit{local.get} copia il valore di \$p1 nello stack, e la seconda istruzione \textit{local.get} copia il valore di \$p2 nello stack. Infine, l'istruzione \textit{i32.add} rimuove i due valori superiori dello stack, li somma e inserisce il risultato nello stack. Alla fine dell'esecuzione della funzione, lo stack contiene il risultato della somma dei due valori passati come parametro.
+Per eseguire la \textbf{chiamata della funzione} precedente, vediamo il codice seguente:
+\begin{lstlisting}[language=WebAssembly]
+    (func $main
+        (result i32)
+        i32.const 10
+        i32.const 5
+        call $somma)
+\end{lstlisting}
+La prima istruzione \textit{i32.const} inserisce il valore constante 10 nello stack, e la seconda istruzione \textit{call} chiama la funzione \$somma. La funzione \$somma viene eseguita, e il risultato viene inserito nello stack. Alla fine dell'esecuzione della funzione, lo stack contiene il risultato della somma dei due valori passati come parametro.
+Dobbiamo inoltre aggiungere una dichiarazione di esportazione per fare in modo che la funzione sia visibile all'esterno del modulo(per esempio anche dal codice javascript).
+\begin{lstlisting}[language=WebAssembly]
+    (export "main"(func $main))
+\end{lstlisting}
+La prima stringa ``main'' é il nome della funzione che vogliamo esportare e che sara visibile anche all'esterno del modulo, mentre la seconda é l'identificativo della funzione a cui fa riferimento.
 
+\section{CostCompiler to WAT}
+Il compilatore che abbiamo sviluppato genera un file .wat, questo file .wat andrá poi convertito in un file .wasm, che a sua volta potrá essere eseguito da un motore di runtime.
+Questa conversione viene fatta tramite il tool wat2wasm \cite{jain2022webassembly}.
+Attraverso il comando:
+\begin{lstlisting}[language=bash]
+    wat2wasm file.wat -o file.wasm
+\end{lstlisting}
+Il tool wat2wasm prende in input un file .wat e genera un file .wasm.
+Andando piú nel dettaglio di come viene generato il file .wat dal compilatore, vediamo che per ogni nodo dell'ast che abbiamo parlato nei capitoli precedenti viene creata un'ulteriore funzione ``codeGeneration()'' che ritorna una stringa.
+Ricorsivamente andremo a chiamare la funzione ``codeGeneration()'' per ogni nodo dell'ast che ritorna una stringa che mano a mano verrá concatenata con la precedente andando a ottenere il codice wat.
+Andremo a vedere nello specifico due implementazioni della funzione ``codeGeneration()'' durante la generazione del codice wat, la codeGeneration per l'if Node e la codeGeneration per il for Node.
 
+\begin{lstlisting}[language=Java, caption={codeGeneration() per l'if Node}, label={lst:codeGenerationIf}]
+    @Override
+    public String codeGeneration() {
+        return "(local $res i32)\n" +
+                "(if"+exp.codeGeneration()+
+                "(then\n"+stmT.codeGeneration()+
+                "(local.set $res)" +
+                "\n)" +
+                "(else\n"+stmF.codeGeneration()+
+                "(local.set $res)" +
+                "\n)" +
+                "\n)" +
+                "(local.get $res)\n";
+    }
+    
+\end{lstlisting}
+Andiamo a descrivere il funzionamento della codeGeneration per l'if Node, come vediamo nel listato \ref{lst:codeGenerationIf} la funzione ritorna una stringa che contiene il codice wat per l'if Node.
+La prima istruzione \textit{(local \$res i32)} dichiara una variabile locale di nome \$res di tipo i32, che servirá da accumulatore per il risultato del ramo then e il risultato del ramo else.
+La seconda istruzione \textit{if} richiama la funzione codeGeneration() dell'exp Node, che ritorna una stringa che contiene il codice wat per l'exp Node.
+Verrá valutata l'espressione e se il risultato é 1 allora verrá eseguito il ramo then, altrimenti verrá eseguito il ramo else.
+La terza istruzione \textit{then} richiama la funzione codeGeneration() del ramo then, che ritorna una stringa che contiene il codice wat per il ramo then.
+Al termine di quella codeGeneration ci aspettiamo di avere un elemento della pila che contenga il risultato di quella espressione, con il local.set \$res andiamo a salvare il risultato nella variabile locale \$res, e togliendolo da quella pila, mantenendo cosi l'invariante.
+La quarta istruzione \textit{else} richiama la funzione codeGeneration() del ramo else, che ritorna una stringa che contiene il codice wat per il ramo else, in maniera simmetrica a ció che abbiamo fatto per il ramo then.
+La quinta istruzione \textit{local.get} prende il valore della variabile locale \$res e lo inserisce nello stack, e lo ritorna.\\
 
+Andremo di seguito a vedere lo stesso ragionamento per la codeGeneration del for Node:
+    
+\begin{lstlisting}[language=Java, caption={codeGeneration() per il for Node}, label={lst:codeGenerationFor}]
+    @Override
+    public String codeGeneration() {
+        return  "(local $"+id+" i32)\n" +
+                "(local $"+id+"_max i32)\n" +
+                exp.codeGeneration() +  
+                "(local.set $"+id+"_max)\n" +      
+                "(local.get $"+id+"_max)\n" +      
+                "(loop $for"+line+"\n"+
+                "(if (i32.lt_u (local.get $"+id+"_max) (local.get $"+id+"))\n"+ 
+                "(then"
+                + stm.codeGeneration()  
+                +"(local.get $"+id+"\n)" +      
+                "(i32.const 1)\n" +       
+                "(i32.add)\n" +           
+                "(local.set $"+id+")\n" +      
+                "(br $for"+line +")\n)"            
+                + "(else\n" +               
+                "(local.get $"+id+"_max)\n" +   
+                "(local.set $"+id+"))\n))" ;       
+    }
+\end{lstlisting}
+
+La prima istruzione \textit{(local \$id i32)} dichiara una variabile locale di nome \$id di tipo i32, che servirá da iteratore, e la seconda istruzione \textit{(local \$id\_max i32)} dichiara una variabile locale di nome \$id\_max di tipo i32, che servirá da limite superiore per l'iteratore.
+La terza istruzione \textit{exp.codeGeneration()} richiama la funzione codeGeneration() dell'exp Node, che ritorna una stringa che contiene il codice wat per l'exp Node.
+Questo valore appena valutato, verrá salvato nella variabile locale \$id\_max, con la quarta istruzione \textit{(local.set \$id\_max)}.
+La quinta istruzione \textit{(local.get \$id\_max)} prende il valore della variabile locale \$id\_max e lo inserisce nello stack, e lo ritorna.
+successivamente viene eseguito un loop, che viene eseguito finché il valore della variabile locale \$id\_max é minore del valore della variabile locale \$id.
+Questo é reso possibile attraverso la definizione della label \textit{(loop \$for+line)} che ci permette di definire l'inizio del loop.
+L'istruzione \textit{(if (i32.lt\_u (local.get \$id\_max) (local.get \$id))} prende i due valori \$id\_max e \$id e li confronta, se il secondo é minore del primo allora esegue il ramo then,eseguendo il corpo del ciclo, altrimenti esce dal loop e passa al nodo successivo.
+Dentro il ramo then viene eseguito il corpo del ciclo, richiamando la funzione codeGeneration() del corpo del ciclo, che ritorna una stringa che contiene il codice wat per il corpo del ciclo.Inoltre verra preso il contatore \$id, verrá incrementato di 1, e verrá salvato nella variabile locale \$id, con l'istruzione \textit{(local.set \$id)} e salta alla label definita in precedenza\textit{(br \$for+line)}.
 \end{document}

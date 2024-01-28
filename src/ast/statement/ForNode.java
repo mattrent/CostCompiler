@@ -102,7 +102,6 @@ public class ForNode implements Node {
 
     @Override
     public String codeGeneration() {
-
         return  "(local $"+id+" i32)\n" +
                 "(local $"+id+"_max i32)\n" +
                 exp.codeGeneration() +  //         Inizializza il contatore del ciclo (variabile locale)

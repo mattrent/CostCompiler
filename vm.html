@@ -20,6 +20,13 @@
             console.log(obj.instance.exports.main(10));
         })
         .catch(error => console.error(error));
+
+        /**
+         * const wasmInstance =
+                new WebAssembly.Instance(wasmModule, {});
+            const { main } = wasmInstance.exports;
+            console.log(main())
+        */
 </script>
 </body>
 </html>
