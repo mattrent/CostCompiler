@@ -38,3 +38,17 @@
         abstract = {In the past few years, Function as a Service (FaaS) solutions, and Serverless computing in general, have become a significant topic both in terms of general interest and research effort. Allowing users to run stateless code in the cloud without worrying about the underlying infrastructure for scheduling, management and scaling, the ease of use of these approaches still comes with various trade-offs and challenges. In this thesis, the issue of data locality is observed, using an extension of the Apache OpenWhisk framework to provide users the ability to select the node they wish to use to schedule some of their functions, allowing the code to be run closer to the data it manipulates. Additionally, a topology-based scheduling approach is implemented for the framework, where load balancers are instructed to prioritize nodes in their same topological zone; this way, users can specify a preferred load balancer for different functions, with no need to know the position and name of all other nodes in the cluster. This modified version of the OpenWhisk framework is then compared with the standard OpenWhisk implementation, along with two other serverless frameworks, Fission and OpenFaaS, using a test suite composed of different use cases, using both existing projects from the Wonderless dataset and custom-built functions targeting different aspects of the paradigm. The role of data locality considerations and topology-based policies is analyzed, showing their importance in a multi-zone cluster with nodes in various geographical locations, where latency between them and the remote data used by the functions can be significant.}
 }
 
+
+@site{WebAssemblyDoc,
+  title={WebAssembly Doc},
+  url={https://developer.mozilla.org/en-US/docs/WebAssembly}
+}
+
+@article{jain2022webassembly,
+  title={WebAssembly Text Toolkit and Other Utilities},
+  author={Jain, Shashank Mohan and Jain, Shashank Mohan},
+  journal={WebAssembly for Cloud: A Basic Guide for Wasm-Based Cloud Apps},
+  pages={33--55},
+  year={2022},
+  publisher={Springer}
+}
