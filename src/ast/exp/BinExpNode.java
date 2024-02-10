@@ -107,7 +107,7 @@ public class BinExpNode implements Node {
                 code += "f32.div\n";
                 break;
             case "*":
-                code += "f32.mul\n";
+                code += "i32.mul\n";
                 break;
         }
         return "("+code+ right.codeGeneration() + left.codeGeneration()+")\n";

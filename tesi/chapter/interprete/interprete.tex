@@ -4,14 +4,14 @@
 
 \chapter{CostCompiler}
 CostCompiler é un interprete per il linguaggio di programmazione definito nel capitolo precedente Grammatica \ref{sec:grammatica}. Una volta ricevuto il programma, CostCompiler procede alla verifica e correttezza sintattica e semantica del programma, successivamente si occupa della generazione dell'albero di sintassi astratta. 
-Questo albero rappresenta una versione astratta del programma, che astrae i dettagli sintattici del codice e si concentra sulla sua struttura logica, associando ad ogni costrutto (eg.\textit{if-then-else} un unico nodo, \textit{IfNode} presente nel omonimo file in src/ast).
-Dopo aver generato l'albero di sintassi astratta,CostCompiler si della verifica Semantica \ref{sec:semantica} del linguaggio andando ad effettuare dei controlli semantici e di tipo sul programma in input, andando a garantire alcune invarianti.
+Questo albero rappresenta una versione astratta del programma, che astrae i dettagli sintattici del codice e si concentra sulla sua struttura logica, associando ad ogni costrutto (eg.\textit{if-then-else} un unico nodo, \textit{IfNode} presente nel omonimo file in src/ast) i rispettivi sottonodi(nel caso di \textit{IfNode} conterrá la guardia condizionale e i due statement).
+Dopo aver generato l'albero di sintassi astratta,CostCompiler si occupa della verifica Semantica \ref{sec:semantica} del linguaggio andando ad effettuare i controlli semantici e di tipo sul programma in input, andando a garantire alcune invarianti (eq. Le chiamate di funzioni devono rispettare i tipi di ritorno).
 
-Una volta effettuata la verifica semantica, CostCompiler procede con la generazione delle equazioni di costo, andando a visitare l'AST secondo determinati criteri, e che ad ogni nodo figlio verrá mandato una Map che contiene la mappatura di ogni variabile in una stringa che sará la stessa stringa che apparirá nelle equazioni di costo.\\
-Ogni nodo figlio tornerá al padre attraverso la funzione \textit{toEquation()} che ritorna una stringa, rappresentante l'equazione di costo del nodo figlio, e il padre andrá a concatenare le stringhe dei figli(anche in base al tipo di figlio da cui ricevere l'equazione), ad esempio la \textit{return $<$EXP$>$ } sará diverso dal \textit{return }$<$function$(Par)>$.
+Una volta effettuata la verifica semantica, CostCompiler procede con la generazione delle equazioni di costo, andando a visitare l'AST secondo determinati criteri, ad ogni nodo figlio verrá passata una Mappa che contiene la mappatura di ogni variabile in una stringa che sará la stessa stringa che compare nelle equazioni di costo.\\
+Ogni nodo figlio invocato attraverso la funzione \textit{toEquation()} ritorna una stringa, rappresentante l'equazione di costo del nodo figlio, e il padre va a concatenare le stringhe dei figli(anche in base al tipo di figlio da cui ricevere l'equazione), ad esempio la \textit{return $<$EXP$>$ } sará diverso dal \textit{return }$<$function$(Par)>$.
 
-Il risultato finale di questo processo di concatenazione attraverso determinati nodi dell'AST è la generazione delle equazioni di costo. 
-Una volta generate le equazioni di costo, CostCompiler le stampa in un file \textit{equation.txt} inoltre lancerá il risolutore PUBS \ref{sec:pubs} che andrá a calcolare gli upper bound del programma da stampare a video.
+Il risultato finale di questo processo di concatenazione attraverso determinati nodi dell'AST é la generazione delle equazioni di costo. 
+Una volta generate le equazioni di costo, CostCompiler le stampa in un file \textit{equation.txt} inoltre lancia il risolutore PUBS \ref{sec:pubs} che va a calcolare gli upper bound del programma da stampare a video.
 Riportiamo un esempio di equazione di costo generata da CostCompiler dato un programma scritto in HLCostLang:
     \begin{lstlisting}[language=Java, caption={Listing8}]
     struct Params {
@@ -35,21 +35,21 @@ eq(main(P,ISPREMIUMUSER0,B),0,[if9(ISPREMIUMUSER0,P,B)],[]).
 eq(if9(ISPREMIUMUSER0,P,B),nat(P),[],[ISPREMIUMUSER0=1]).
 eq(if9(ISPREMIUMUSER0,P,B),nat(B),[],[ISPREMIUMUSER0=0]).
 \end{lstlisting}
-Andando a descriverle ci troveremo ad avere una equazione per la regola \textit{init}, dove vediamo che \textit{main} viene chiamata con costo 0 e verrá chiamata \textit{if9} con parametri \textit{ISPREMIUMUSER0,P,B}.
-$P$ e $B$ sará il costo costante delle chiamate ai servizi \textit{isPremiumUser} e \textit{BasicService}, mentre \textit{ISPREMIUMUSER0} sará la valutazione del parametro \textit{isPremiumUser} che sará 1 se sará vero, 0 altrimenti; in altri termini \textit{ISPREMIUMUSER0} sará la valutazione della guardia del costrutto \textit{if-then-else} e verrá eseguita la chiamata al servizio \textit{PremiumService} se \textit{ISPREMIUMUSER0} sará 1 con costo $nat(B)$, altrimenti verrá eseguita la chiamata al servizio \textit{BasicService} con costo $nat(B)$. 
+Andando a descriverle ci troveremo ad avere una equazione per la regola \textit{init}, dove vediamo che \textit{main} viene chiamata con costo 0 e verrá chiamata \textit{if9} con parametri \textit{ISPREMIUMUSER0,P,B}.\\
+$P$ e $B$ sono il costo costante delle chiamate ai servizi \textit{isPremiumUser} e \textit{BasicService}, mentre \textit{ISPREMIUMUSER0} sará la valutazione del parametro \textit{isPremiumUser} che sará 1 se vero, 0 altrimenti; in altri termini \textit{ISPREMIUMUSER0} sará la valutazione della guardia del costrutto \textit{if-then-else} e verrá eseguita la chiamata al servizio \textit{PremiumService} se \textit{ISPREMIUMUSER0} sará 1 con costo $nat(P)$, altrimenti verrá eseguita la chiamata al servizio \textit{BasicService} con costo $nat(B)$. 
 Una volta avere generato l'equazioni di costo dal programma, lo stampiamo in un file \textit{equation.txt}, cosi da poter eseguire PUBS(A Practical Upper Bounds Solver), per determinarci l'Upper Bound del programma.
-L'obiettivo di PUBS(come vedremo in seguito \ref{sec:pubs}) è quello di ottenere automaticamente upper bound in forma chiusa per i sistemi di equazioni di costo, di conseguenza calcola i limiti superiori per la relazione di costo indicata come "Entry", oltre che per tutte le altre relazioni di costo di cui tale "Entry" dipende.
+L'obiettivo di PUBS(come vedremo in seguito \ref{sec:pubs}) é quello di ottenere automaticamente upper bound in forma chiusa per i sistemi di equazioni di costo, di conseguenza calcola i limiti superiori per la relazione di costo indicata come "Entry", oltre che per tutte le altre relazioni di costo di cui tale "Entry" dipende.
 \section{Regole di Inferenza}
 \label{sec:inference_rule}
 
 I programmi di costo sono elenchi di equazioni che hanno termini:
 $$f(\overline{x} ) = e + \sum_{i \in 0..n} f_i (\overline{e_i}) \quad \quad \quad \quad[\varphi ]$$
 Dove le variabili si presentano nel lato destro e in $\varphi $ sono un sottoinsieme di $\overline{x}$; mentre $f$ e $f_i$ sono i simboli delle funzioni.
-Ogni funzione ha un right-hand-side che è un'espressione aritmetica che può contenere:
+Ogni funzione ha un right-hand-side che é un'espressione aritmetica che può contenere:
 \begin{itemize}
     \item Un'espressione in Presburger aritmetica (PA):
     $$e ::= x \quad | \quad q \quad | \quad e + e \quad | \quad e - e \quad | \quad q \cdot e \quad |  max(e_1,\dots,e_n)$$
-    Dove $x$ è una variabile, $q$ è una costante intera, $e_1,\dots,e_n$ sono espressioni aritmetiche e $max$ è un operatore che restituisce il massimo valore tra le sue espressioni.
+    Dove $x$ é una variabile, $q$ é una costante intera, $e_1,\dots,e_n$ sono espressioni aritmetiche e $max$ é un operatore che restituisce il massimo valore tra le sue espressioni.
     \item Un numero di invocazioni di funzioni di costo: $f_i (\overline{e_i})$.
     \item La guardia $varphi$ é un vincolo congiuntivo lineare nella forma: $e_1 \geq e_2$ dove $e_1$ e $e_2$ sono espressioni aritmetiche di Presburger.
 \end{itemize} 
@@ -61,7 +61,7 @@ Usiamo una variabile di ambiente $ \varGamma $ come dizionari:
     \item $\varGamma$ prende un servizio o un parametro e ritorna un espressione aritmetica di Presburger che di solito é una variabile.
     \item Quando scriviamo $\varGamma + i : \quad Nat $, assumiamo che i non appartenga al dominio di $\varGamma$.
 \end{itemize}
-I giudizi avranno forma:
+I giudizi hanno forma:
 \begin{itemize}
     \item $\varGamma \vdash e : Nat$ che significa che il valore di E in $e$ é rappresentato dalla costEspression $E$
     \item $\varGamma \vdash S : e ; C; Q $ significa che il costo di S nell'ambiente $\varGamma$ é $e + C$ dato un insieme di equazioni Q
@@ -105,7 +105,7 @@ Riassumiamo le regole descritte in precedenza:\\
 \end{itemize}
 \section{Generazione delle Equazioni di costo}
 La generazione delle equazioni di costo viene eseguita andando a implementare le regole di inferenza viste in precedenza.
-Ogni nodo all'interno del nostro AST conterrá il metodo \textit{toEquation()} che prende come argomento la variabile che nostro ambiente $\varGamma$ e sará appunto un dizionario.
+Ogni nodo all'interno del nostro AST contiene il metodo \textit{toEquation()} che prende come argomento la variabile del nostro ambiente $\varGamma$ e sará appunto un dizionario.
 Questo dizionario di tipo $EnvVar$ é un HashMap che contiene come chiave l'oggetto Nodo della variabile e come valore la stringa rappresentante.
 Abbiamo deciso di utilizzare questo approccio per focalizzarci sull'efficienza del farci restituire la variabile che mappa quel determinato Nodo, senza dover andare a cercare all'interno dell'HashMap la chiave che mappa quel valore, cosa che viene fatta all'inserimento di un Nodo.
 L'inserimento del nodo peró non sempre é un operazione onerosa per il fatto che abbiamo gia il controllo semantico che ci garantisce che non ci saranno variabili non dichiarate oppure variabili non dichiarate prima del loro utilizzo.
@@ -120,7 +120,7 @@ Andiamo ad analizzare un esempio semplice, all'interno del Nodo di tipo \textit{
     }
 \end{lstlisting}
 
-La sezione $e.get(this)$ ritorna la variabile mappata per quel determinato nodo, che sará una stringa che rappresenta la variabile all'interno dell'equazione di costo, mentre la sezione $stm.toEquation(e)$ é la chiamata sul metodo \textit{toEquation()} del nodo figlio, che restituirá la stringa che rappresenta l'equazione di costo del nodo figlio.
+La sezione $e.get(this)$ ritorna la variabile mappata per quel determinato nodo, che é una stringa che rappresenta la variabile all'interno dell'equazione di costo, mentre la sezione $stm.toEquation(e)$ é la chiamata sul metodo \textit{toEquation()} del nodo figlio, che restituirá la stringa che rappresenta l'equazione di costo del nodo, andando a richiamare il medesimo metodo sui sottonodi contenuti all'interno del nodo figlio.
 
 Per avere una panoramica completa del processo di generazione delle equazioni di costo, riportiamo il frammento di codice di $toEquation()$ del $programNode$:
 \begin{lstlisting}[language=Java]
@@ -138,7 +138,7 @@ Per avere una panoramica completa del processo di generazione delle equazioni di
     }
 \end{lstlisting}
 
-Come possiamo vedere, prima di generare le equazioni di costo del programma, andiamo a controllare che le variabili dichiarate all'interno dei servizi siano presenti all'interno dell'ambiente $\varGamma$ e le mappiamo con determinate stringhe che appariranno nelle equazioni, successivamente andiamo a iterativamente all'interno delle singole funzioni le generiamo e le concateniamo alla stringa che rappresenta le equazioni di costo del programma.
+Come possiamo vedere, prima di generare le equazioni di costo del programma, andiamo a controllare che le variabili dichiarate all'interno dei servizi siano presenti all'interno dell'ambiente $\varGamma$ e le mappiamo con determinate stringhe che appariranno nelle equazioni. Successivamente andiamo a iterativamente all'interno delle singole funzioni le generiamo e le concateniamo alla stringa che rappresenta le equazioni di costo del programma.
 Infine ci occupiamo di generare le equazioni di costo della funzione main, che saranno concatenate anch'esse con la stringa che rappresenta le equazioni di costo del programma.
 
 
@@ -171,9 +171,9 @@ In PUBS peró abbiamo una grammatica da rispettare, tenuta in considerazione da 
     <call> ::= <function>(<listOfParameters>).
     <listOfParameters> ::= [] | <variable> <listOfParameters>.
 \end{lstlisting}
-Dove $<$Head$>$ é il nome della entry che andremo ad analizzare insieme a i suoi parametri.
-CostExpression é l'espressione di costo che rappresenta il costo della entry, come notiamo rispetta la grammatica della aritmetica di Presburger.
-ListOfCall é la lista delle chiamate alle altre entry, che saranno rappresentate come $<$call$>$ e $<$listOfCall$>$ sará la lista di queste chiamate; in questo modo PUBS riesce a costruire un grafo delle dipendenze tra le entry.
+Dove $<$Head$>$ é il nome della entry che andremo ad analizzare insieme ai suoi parametri.
+CostExpression é l'espressione di costo che rappresenta il costo della entry e rispetta la grammatica della aritmetica di Presburger.
+ListOfCall é la lista delle chiamate alle altre entry, che sono rappresentate come $<$call$>$ e $<$listOfCall$>$, la lista di queste chiamate; in questo modo PUBS riesce a costruire un grafo delle dipendenze tra le entry.
 Infine abbiamo $<$listOfSizeRelation$>$ che sará la lista delle relazioni di costo che dipendono dalla entry che stiamo analizzando, e che PUBS andrá a calcolare.
 Riportiamo Listing1 come esempio di equazione di costo generata da CostCompiler, dove troviamo l'analisi alla pagine precedente:
 \begin{lstlisting}[caption={Equazione di costo PUBS per Listing6}]

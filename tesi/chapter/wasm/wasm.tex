@@ -2,14 +2,17 @@
 
 \begin{document}
 \chapter{Generazione di WebAssembly}
-La ricerca di soluzioni efficienti e portabili per eseguire codice in ambienti diversi è diventata una priorità fondamentale. In questo contesto, WebAssembly (Wasm) emerge come una tecnologia chiave, fornendo un formato binario sicuro, veloce e indipendente dalla piattaforma. Nel corso di questo capitolo, esploreremo il processo di generazione di codice WebAssembly attraverso un compilatore dedicato a un linguaggio personalizzato.
+La ricerca di soluzioni efficienti e portabili per eseguire codice in ambienti diversi è diventata una priorità fondamentale nell'informatica moderna. In questo contesto, WebAssembly (Wasm) emerge come una tecnologia chiave, fornendo un formato binario sicuro, veloce e indipendente dalla piattaforma. Nel corso di questo capitolo, esploriamo il processo di generazione di codice WebAssembly attraverso un compilatore dedicato a un linguaggio personalizzato.
 Il nostro linguaggio, creato per soddisfare specifiche esigenze o paradigmi di programmazione unici, si propone di offrire una flessibilità senza precedenti agli sviluppatori. Attraverso un compilatore appositamente progettato, saremo in grado di tradurre il codice sorgente del nostro linguaggio in istruzioni Wasm, consentendo così l'esecuzione di programmi in un ambiente virtuale altamente performante e sicuro.
 Nel corso di questo capitolo, esamineremo in dettaglio il processo di compilazione, passando attraverso le fasi cruciali che trasformano il nostro codice sorgente in un modulo WebAssembly. Dalla rappresentazione intermedia alla gestione delle dipendenze, esploreremo come il compilatore si adatta alle specificità del nostro linguaggio per garantire una corretta esecuzione e ottimizzazione delle risorse.
 Il capitolo si propone inoltre di approfondire le sfide e le opportunità che emergono durante il processo di generazione di WebAssembly. Analizzeremo le scelte di progettazione del compilatore, l'ottimizzazione del codice e la gestione delle risorse, fornendo un quadro completo delle considerazioni che guidano il nostro approccio alla generazione di codice Wasm.
 
 \section{Introduzione WebAssembly}
-WebAssembly(Wasm) \cite{WebAssemblyDoc} è un formato di istruzioni portabile, sicuro e ad alte prestazioni, progettato per essere eseguito in ambienti virtuali. Il formato è stato sviluppato da un gruppo di lavoro congiunto tra Google, Mozilla, Microsoft e Apple, con l'obiettivo di fornire un formato binario sicuro, veloce e indipendente dalla piattaforma. Il formato è stato progettato per essere eseguito in ambienti virtuali, come browser web, ma può essere utilizzato anche in altri contesti, come ad esempio server, dispositivi IoT e applicazioni desktop.
-Le istruzioni Wasm si differiscono dalle istruzioni di un processore reale, in quanto sono progettate per essere eseguite in un ambiente virtuale. Questo significa che le istruzioni Wasm non sono direttamente eseguibili da un processore fisico, ma devono essere prima tradotte in istruzioni native. Questo processo di traduzione è gestito da un motore di runtime, che si occupa di interpretare le istruzioni Wasm e di tradurle in istruzioni native. Il motore di runtime è responsabile anche di gestire la memoria e le risorse del sistema, fornendo un'astrazione sicura e indipendente dalla piattaforma.
+WebAssembly (Wasm) è un formato di istruzioni altamente performante, portabile e sicuro, progettato per essere eseguito in ambienti virtuali. Originariamente concepito da un gruppo di lavoro congiunto tra Google, Mozilla, Microsoft e Apple, il principale obiettivo di WebAssembly è fornire un formato binario indipendente dalla piattaforma, garantendo al contempo sicurezza e velocità. Sebbene sia stato ideato principalmente per essere eseguito all'interno dei browser web, Wasm trova applicazioni anche in contesti diversi come server, dispositivi IoT e applicazioni desktop.
+
+Le istruzioni Wasm si distinguono dalle istruzioni di un processore reale in quanto sono progettate per l'esecuzione in un ambiente virtuale. Ciò implica che le istruzioni Wasm non possono essere eseguite direttamente da un processore fisico; richiedono invece una traduzione preliminare in istruzioni native. Questo processo di traduzione è gestito da un motore di runtime, il quale interpreta le istruzioni Wasm e le traduce in istruzioni native del sistema ospite. Oltre alla traduzione delle istruzioni, il motore di runtime si occupa anche della gestione della memoria e delle risorse del sistema, fornendo un'astrazione sicura e indipendente dalla piattaforma.
+
+In sintesi, WebAssembly rappresenta una tecnologia versatile e potente che offre un'alternativa efficace alle tradizionali soluzioni di esecuzione di codice, consentendo l'esecuzione di applicazioni web e non solo in modo efficiente, sicuro e indipendente dalla piattaforma di destinazione.\cite{WebAssemblyDoc}
 
 \section{WebAssembly Text Format}
 Il formato di testo WebAssembly (WAT) \cite{WebAssemblyTextFormat} è un formato di testo leggibile dall'uomo per la rappresentazione di moduli WebAssembly. Il formato è stato progettato per essere utilizzato come rappresentazione intermedia durante il processo di compilazione, fornendo un'astrazione leggibile dall'uomo per il codice Wasm.
@@ -97,10 +100,10 @@ Andremo a vedere nello specifico due implementazioni della funzione ``codeGenera
     }
     
 \end{lstlisting}
-Andiamo a descrivere il funzionamento della codeGeneration per l'if Node, come vediamo nel listato \ref{lst:codeGenerationIf} la funzione ritorna una stringa che contiene il codice wat per l'if Node.
-La prima istruzione \textit{(local \$res i32)} dichiara una variabile locale di nome \$res di tipo i32, che servirá da accumulatore per il risultato del ramo then e il risultato del ramo else.
+Descriviamo il funzionamento della codeGeneration per l'if Node. Come vediamo nel listato \ref{lst:codeGenerationIf} la funzione ritorna una stringa che contiene il codice wat per l'if Node.
+La prima istruzione \textit{(local \$res i32)} dichiara una variabile locale di nome \$res di tipo i32, che serve da accumulatore per il risultato del ramo then e il risultato del ramo else.
 La seconda istruzione \textit{if} richiama la funzione codeGeneration() dell'exp Node, che ritorna una stringa che contiene il codice wat per l'exp Node.
-Verrá valutata l'espressione e se il risultato é 1 allora verrá eseguito il ramo then, altrimenti verrá eseguito il ramo else.
+Viene valutata l'espressione e se il risultato é 1 allora viene eseguito il ramo then, altrimenti viene eseguito il ramo else.
 La terza istruzione \textit{then} richiama la funzione codeGeneration() del ramo then, che ritorna una stringa che contiene il codice wat per il ramo then.
 Al termine di quella codeGeneration ci aspettiamo di avere un elemento della pila che contenga il risultato di quella espressione, con il local.set \$res andiamo a salvare il risultato nella variabile locale \$res, e togliendolo da quella pila, mantenendo cosi l'invariante.
 La quarta istruzione \textit{else} richiama la funzione codeGeneration() del ramo else, che ritorna una stringa che contiene il codice wat per il ramo else, in maniera simmetrica a ció che abbiamo fatto per il ramo then.
@@ -113,25 +116,29 @@ Andremo di seguito a vedere lo stesso ragionamento per la codeGeneration del for
     public String codeGeneration() {
         return  "(local $"+id+" i32)\n" +
                 "(local $"+id+"_max i32)\n" +
+                "(local $res i32)\n" +
                 exp.codeGeneration() +  
-                "(local.set $"+id+"_max)\n" +      
-                "(local.get $"+id+"_max)\n" +      
-                "(loop $for"+line+"\n"+
-                "(if (i32.lt_u (local.get $"+id+"_max) (local.get $"+id+"))\n"+ 
+                "(local.set $"+id+"_max)\n" +
+                "(loop $for"+line+"\n" +      
+                "(if (i32.lt_u (local.get $"+id+")(local.get $"+id+"_max) )\n"+ 
                 "(then"
-                + stm.codeGeneration()  
-                +"(local.get $"+id+"\n)" +      
-                "(i32.const 1)\n" +       
-                "(i32.add)\n" +           
-                "(local.set $"+id+")\n" +      
-                "(br $for"+line +")\n)"            
-                + "(else\n" +               
+                + stm.codeGeneration()          
+                +"(local.set $res)\n"           
+                +"(local.get $"+id+"\n)" +     
+                "(i32.const 1)\n" +             
+                "(i32.add)\n" +                 
+                "(local.set $"+id+")\n" +       
+                "(br $for"+line +")\n)"  +
+                "(else\n" +                       
                 "(local.get $"+id+"_max)\n" +   
-                "(local.set $"+id+"))\n))" ;       
+                "(local.set $"+id+"))\n))\n +
+                (local.get $res)" ;      
+
     }
+
 \end{lstlisting}
 
-La prima istruzione \textit{(local \$id i32)} dichiara una variabile locale di nome \$id di tipo i32, che servirá da iteratore, e la seconda istruzione \textit{(local \$id\_max i32)} dichiara una variabile locale di nome \$id\_max di tipo i32, che servirá da limite superiore per l'iteratore.
+La prima istruzione \textit{(local \$id i32)} dichiara una variabile locale di nome \$id di tipo i32, che servirá da iteratore, e la seconda istruzione \textit{(local \$id\_max i32)} dichiara una variabile locale di nome \$id\_max di tipo i32, che serve da limite superiore per l'iteratore, infine viene dichiarata una variabile \$res per memorizzare il risultato del corpo del ciclo, in caso di ritorno.
 La terza istruzione \textit{exp.codeGeneration()} richiama la funzione codeGeneration() dell'exp Node, che ritorna una stringa che contiene il codice wat per l'exp Node.
 Questo valore appena valutato, verrá salvato nella variabile locale \$id\_max, con la quarta istruzione \textit{(local.set \$id\_max)}.
 La quinta istruzione \textit{(local.get \$id\_max)} prende il valore della variabile locale \$id\_max e lo inserisce nello stack, e lo ritorna.
@@ -139,4 +146,38 @@ successivamente viene eseguito un loop, che viene eseguito finché il valore del
 Questo é reso possibile attraverso la definizione della label \textit{(loop \$for+line)} che ci permette di definire l'inizio del loop.
 L'istruzione \textit{(if (i32.lt\_u (local.get \$id\_max) (local.get \$id))} prende i due valori \$id\_max e \$id e li confronta, se il secondo é minore del primo allora esegue il ramo then,eseguendo il corpo del ciclo, altrimenti esce dal loop e passa al nodo successivo.
 Dentro il ramo then viene eseguito il corpo del ciclo, richiamando la funzione codeGeneration() del corpo del ciclo, che ritorna una stringa che contiene il codice wat per il corpo del ciclo.Inoltre verra preso il contatore \$id, verrá incrementato di 1, e verrá salvato nella variabile locale \$id, con l'istruzione \textit{(local.set \$id)} e salta alla label definita in precedenza\textit{(br \$for+line)}.
+
+\section{Esecuzione del modulo WebAssembly}
+Una volta generato il file .wasm, possiamo eseguirlo attraverso un motore di runtime. Nel nostro specifico caso di debug utilizziamo un file html che contiene il seguente codice javascript:
+\begin{lstlisting}[language=Javascript, caption={Esecuzione del modulo WebAssembly}, label={lst:esecuzioneWasm}]
+    const memory = new WebAssembly.Memory({ initial: 1 });
+
+    const importObject = {
+        js: { mem: memory }
+    };
+
+    fetch("output.wasm")
+        .then(response => response.arrayBuffer())
+        .then(bytes => WebAssembly.instantiate(bytes, importObject))
+        .then(obj => {
+            console.log(obj.instance.exports.main(10));
+        })
+        .catch(error => console.error(error));
+
+\end{lstlisting}
+
+La prima istruzione \textit{const memory = new WebAssembly.Memory({ initial: 1 });} definisce un oggetto memory che rappresenta la memoria del modulo WebAssembly. In questo caso, la memoria è inizializzata con una dimensione iniziale di 1 pagina.
+La seconda istruzione \textit{const importObject = \{ js: \{ mem: memory \} \};} definisce un oggetto di importazione che contiene la memoria del modulo WebAssembly. Questo oggetto di importazione verrà utilizzato per fornire l'accesso alla memoria del modulo WebAssembly.
+La terza istruzione \textit{fetch("output.wasm")} carica il file .wasm e restituisce una Promise che contiene i byte del file .wasm.
+Andando nella console di chrome é possibile vedere il file .wasm caricato, e debuggarlo come vediamo in questo snippet:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wasm_debug.png}
+    \caption{Debug del file output.wasm}
+    \label{fig:wasm_debug}
+\end{figure}
+Come notiamo il file .wasm é stato caricato correttamente, e possiamo andare a vedere il suo contenuto, inserire breakpoint e andare ad analizzare il runtime del nostro codice.
+Notiamo inoltre che il formato WAT a confronto é molto piú leggibile, sopratutto per quanto riguarda il nome delle variabili, Wasm contiene il programma mappando le variabili in $var_0,\dots, var_n$.
+A destra troviamo sia lo stack, mentre altre di sotto le variabili che interagiscono in un determinato scope locale, e lo stack di chiamate delle funzioni.
+
 \end{document}

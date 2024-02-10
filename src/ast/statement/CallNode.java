@@ -72,7 +72,7 @@ public class CallNode implements Node {
     @Override
     public String codeGeneration() {
         StringBuilder params = new StringBuilder();
-        for (int i= listCount.size()-1; i>=0; i--){
+        for (int i = 0; i < listCount.size(); i++) {
              params.append(listCount.get(i).codeGeneration());
         }
         return params + "(call $"+id.getId()+")\n ";

@@ -104,13 +104,14 @@ public class ForNode implements Node {
     public String codeGeneration() {
         return  "(local $"+id+" i32)\n" +
                 "(local $"+id+"_max i32)\n" +
+                "(local $res i32)\n" +
                 exp.codeGeneration() +  //         Inizializza il contatore del ciclo (variabile locale)
                 "(local.set $"+id+"_max)\n" +      //Inizializza il valore di partenza del contatore
-                "(local.get $"+id+"_max)\n" +      //Inizializza il valore di partenza del contatore
                 "(loop $for"+line+"\n" +       //Inizio del ciclo
-                "(if (i32.lt_u (local.get $"+id+"_max) (local.get $"+id+"))\n"+ //Controlla se il contatore è minore del valore di fine
+                "(if (i32.lt_u (local.get $"+id+")(local.get $"+id+"_max) )\n"+ //Controlla se il contatore è minore del valore di fine
                 "(then"
                 + stm.codeGeneration()  //Esegue il corpo del ciclo
+                +"(local.set $res)\n" //Prende il valore risultante
                 +"(local.get $"+id+"\n)" +      //Prende il valore del contatore
                 "(i32.const 1)\n" +       //Incrementa il contatore
                 "(i32.add)\n" +           //Incrementa il contatore
@@ -118,7 +119,7 @@ public class ForNode implements Node {
                 "(br $for"+line +")\n)"            //Ritorna all'inizio del ciclo
                 + "(else\n" +               //Se il contatore è maggiore del valore di fine
                 "(local.get $"+id+"_max)\n" +   //Prende il valore di fine
-                "(local.set $"+id+"))\n))" ;       //Salva il valore di fine nel contatore
+                "(local.set $"+id+"))\n))\n(local.get $res)" ;       //Salva il valore di fine nel contatore
                 // Fine del ciclo
     }
 }
