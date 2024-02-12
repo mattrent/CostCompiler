@@ -8,6 +8,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 
@@ -101,16 +102,16 @@ public class ForNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return  "(local $"+id+" i32)\n" +
                 "(local $"+id+"_max i32)\n" +
                 "(local $res i32)\n" +
-                exp.codeGeneration() +  //         Inizializza il contatore del ciclo (variabile locale)
+                exp.codeGeneration(offset_idx) +  //         Inizializza il contatore del ciclo (variabile locale)
                 "(local.set $"+id+"_max)\n" +      //Inizializza il valore di partenza del contatore
                 "(loop $for"+line+"\n" +       //Inizio del ciclo
                 "(if (i32.lt_u (local.get $"+id+")(local.get $"+id+"_max) )\n"+ //Controlla se il contatore è minore del valore di fine
                 "(then"
-                + stm.codeGeneration()  //Esegue il corpo del ciclo
+                + stm.codeGeneration(offset_idx)  //Esegue il corpo del ciclo
                 +"(local.set $res)\n" //Prende il valore risultante
                 +"(local.get $"+id+"\n)" +      //Prende il valore del contatore
                 "(i32.const 1)\n" +       //Incrementa il contatore

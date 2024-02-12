@@ -6,6 +6,7 @@ import ast.Node;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ValExpNode implements Node {
     private int val;
@@ -36,7 +37,7 @@ public class ValExpNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return "(i32.const "+val+")\n";
     }
 }

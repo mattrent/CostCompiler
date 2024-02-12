@@ -6,6 +6,10 @@ import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static utilities.Utils.getMax;
 
 public class ArrayType extends AnyType {
     TypeNode type;
@@ -55,15 +59,15 @@ public class ArrayType extends AnyType {
     }
 
     @Override
-    public String codeGeneration() {
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < len; i++) {
-            str.append("(local.set $").append(id.getId()).append("_").append(i).append(" (i32.const 0))\n");
-        }
-        return str.toString();
+    public String codeGeneration(HashMap<Node, Integer> map) {
+        int offset_actual = getMax(map.values());
+        map.put(this, offset_actual+len);
+
+        return "";
 
     }
     public int getlen(){
         return len;
     }
+
 }

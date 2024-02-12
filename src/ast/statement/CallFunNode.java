@@ -11,6 +11,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class CallFunNode implements Node {
@@ -85,7 +86,7 @@ public class CallFunNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return null;
         //struct params
     }

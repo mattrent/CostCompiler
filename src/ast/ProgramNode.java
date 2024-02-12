@@ -1,12 +1,18 @@
 package ast;
 
-import ast.statement.FunDeclarationNode;
+import ast.typeNode.ArrayType;
+import ast.typeNode.StructType;
 import ast.typeNode.VoidType;
+import javafx.util.Pair;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static utilities.Utils.getMax;
 
 public class ProgramNode implements Node {
     ArrayList<Node> complexType;
@@ -14,6 +20,7 @@ public class ProgramNode implements Node {
     ArrayList<Node> funDec;
     Node main;
 
+    HashMap<String, Node> complex_type = new HashMap<>();
     public ProgramNode(ArrayList<Node> complexType, ArrayList<Node> decServices, ArrayList<Node> funDec, Node main) {
         this.complexType = complexType;
         this.decServices = decServices;
@@ -70,6 +77,7 @@ public class ProgramNode implements Node {
                 errors.addAll(n.checkSemantics(env));
             }
         }
+        complex_type = env.clone().getSymTable(0);
         if(decServices != null) {
             for (Node n : decServices) {
                 errors.addAll(n.checkSemantics(env));
@@ -96,26 +104,36 @@ public class ProgramNode implements Node {
             equ.append(n.toEquation(e));
         }
         return main.toEquation(e) + equ;
-
-
-
-
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         StringBuilder codeGen = new StringBuilder();
+        codeGen.append("\n(memory 1)\n(data (i32.const 0)\n");
         for (Node n : complexType){
-            codeGen.append(n.codeGeneration());
+            n.codeGeneration(offset_idx);
         }
-        for (Node n : decServices){
-            codeGen.append(n.codeGeneration());
+        //Per accedere alla posizione dedicata in memoria, se ArrayType ,
+        // il dato inizia é occupato in |offset - len|...|offset|
+        // se StructType, il dato inizia in |offset - len|...|offset|
+
+        for(int i = 1; i < getMax(offset_idx.values())+1; i++){
+            String value = (i < 10) ? ('0' + String.valueOf(i)) :  String.valueOf(i);
+            codeGen.append("\"\\").append(value ).append("\\00\\00\\00\"\n");
         }
+        codeGen.append(")\n");
+
         for(Node n : funDec){
-            codeGen.append(n.codeGeneration());
+            codeGen.append(n.codeGeneration(offset_idx));
         }
-        StringBuilder mainFun = new StringBuilder(main.codeGeneration());
+        StringBuilder mainFun = new StringBuilder(main.codeGeneration(offset_idx));
         mainFun.insert(11, " (export \"main\")");
+        for (Node n : decServices){
+            codeGen.append(n.codeGeneration(offset_idx));
+        }
         return "(module\n"+codeGen + mainFun+")";
     }
+
 }
+
+

@@ -7,6 +7,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListAssignmentMain implements Node {
 //Assegnamento struct senza let in in main
@@ -58,7 +59,7 @@ public class ListAssignmentMain implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return null;
     }
 }

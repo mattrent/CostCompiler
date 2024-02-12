@@ -5,6 +5,7 @@ import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AnyType implements TypeNode{
     @Override
@@ -28,7 +29,7 @@ public class AnyType implements TypeNode{
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return null;
     }
 

@@ -12,6 +12,7 @@ import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static utilities.Utils.getFunDecNodeByLine;
@@ -106,13 +107,13 @@ public class IfNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return "(local $res i32)\n" +
-                "(if"+exp.codeGeneration()+
-                "(then\n"+stmT.codeGeneration()+
+                "(if"+exp.codeGeneration(offset_idx)+
+                "(then\n"+stmT.codeGeneration(offset_idx)+
                 "(local.set $res)" +
                 "\n)" +
-                "(else\n"+stmF.codeGeneration()+
+                "(else\n"+stmF.codeGeneration(offset_idx)+
                 "(local.set $res)" +
                 "\n)" +
                 "\n)" +

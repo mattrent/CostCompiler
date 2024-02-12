@@ -7,6 +7,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DerExpNode implements Node {
     private IdNode id;
@@ -43,7 +44,7 @@ public class DerExpNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return "(local.get $"+id.getId()+")\n";
     }
 

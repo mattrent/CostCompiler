@@ -8,6 +8,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ReturnTypeNode implements Node {
     TypeNode type;
@@ -53,7 +54,7 @@ public class ReturnTypeNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return "( local.get $"+id.getId()+")\nreturn\n";
     }
 }

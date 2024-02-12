@@ -6,6 +6,7 @@ import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StringNode implements Node {
     String text;
@@ -42,7 +43,7 @@ public class StringNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         StringBuilder sb = new StringBuilder();
         for (char c : text.toCharArray()) {
             sb.append("i32.const ").append((int) c).append("\n");

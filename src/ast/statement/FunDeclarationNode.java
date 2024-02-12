@@ -2,6 +2,7 @@ package ast.statement;
 
 import ast.IdNode;
 import ast.Node;
+import ast.exp.BinExpNode;
 import ast.typeNode.TypeNode;
 import org.antlr.v4.runtime.misc.Pair;
 import utilities.EnvVar;
@@ -9,6 +10,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 import ast.statement.CallNode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Set;
 
@@ -90,6 +92,8 @@ public class FunDeclarationNode implements Node {
         String post = "";
         if(stm instanceof CallNode || stm instanceof ListAssignmentMain){
             post =  "),1,[" + stm.toEquation(e) + "],[]).";
+        }else if (stm instanceof BinExpNode){
+            post = "),"+ stm.toEquation(e) + ",[],[]).";
         }
         else post =  ")," + stm.toEquation(e) ;
 
@@ -109,13 +113,15 @@ public class FunDeclarationNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         StringBuilder code = new StringBuilder("(func $" + id.getId());
-        for (Pair<String, TypeNode> n : formalParams.getFormalParams()) {
-            code.append(" (param $").append(n.a).append(" i32)");
+        if (formalParams != null) {
+            for (Pair<String, TypeNode> n : formalParams.getFormalParams()) {
+                code.append(" (param $").append(n.a).append(" i32)");
+            }
         }
         code.append(" (result i32)\n");
-        code.append(stm.codeGeneration());
+        code.append(stm.codeGeneration(offset_idx));
         code.append(")\n");
         return code.toString();
     }

@@ -1,0 +1,11 @@
+fn svc(i: int, n:int) -> any{
+    if (n == 0) {
+        return 0
+    }
+    else {
+        return svc(i+1,n-1)
+    }
+}
+(len : int) => {
+	return svc(len,4)
+}

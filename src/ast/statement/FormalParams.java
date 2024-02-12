@@ -7,6 +7,7 @@ import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FormalParams implements Node {
     ArrayList<Pair<String, TypeNode>> formalParams;
@@ -56,7 +57,7 @@ public class FormalParams implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return null;
     }
 

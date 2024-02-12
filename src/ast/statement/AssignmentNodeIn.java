@@ -10,6 +10,7 @@ import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AssignmentNodeIn implements Node {
     IdNode type;
@@ -68,7 +69,7 @@ public class AssignmentNodeIn implements Node {
         else return " ";
     }
 
-    public String codeGeneration(){
+    public String codeGeneration(HashMap<Node, Integer> offset_idx){
         return null;
         //assign to struct
     }

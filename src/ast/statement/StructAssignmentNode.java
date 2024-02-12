@@ -12,6 +12,7 @@ import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StructAssignmentNode implements Node {
 
@@ -71,7 +72,7 @@ public class StructAssignmentNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return null;
     }
 

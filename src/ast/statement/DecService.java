@@ -8,6 +8,7 @@ import utilities.EnvVar;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DecService implements Node {
     IdNode id;
@@ -51,7 +52,7 @@ public class DecService implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return null;
     }
 

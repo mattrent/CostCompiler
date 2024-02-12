@@ -10,6 +10,7 @@ import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CallServiceNode implements Node {
     String idCall;
@@ -77,7 +78,7 @@ public class CallServiceNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return null;
     }
 

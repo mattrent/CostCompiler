@@ -70,4 +70,8 @@ public class Environment {
     public boolean checkHeadDeclaration(String id){
         return symTable.get(level-1).containsKey(id);
     }
+
+    public HashMap<String, Node> getSymTable(int level){
+        return symTable.get(level);
+    }
 }

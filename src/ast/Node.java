@@ -5,6 +5,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface Node {
     EnvVar checkVarEQ(EnvVar e);
@@ -14,5 +15,5 @@ public interface Node {
     ArrayList<String> checkSemantics(Environment env);
     String toEquation(EnvVar e);
 
-    String codeGeneration();
+    String codeGeneration(HashMap<Node, Integer> offset_idx);
 }

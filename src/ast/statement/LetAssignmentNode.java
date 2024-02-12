@@ -9,6 +9,7 @@ import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LetAssignmentNode implements Node {
 //Can be used to AssignmentNode and StructAssignment
@@ -70,8 +71,8 @@ public class LetAssignmentNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
-        return ass.codeGeneration()+"\nload.set $"+id.getId();
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
+        return ass.codeGeneration(offset_idx)+"\nload.set $"+id.getId();
     }
 
     public Node getAss() {

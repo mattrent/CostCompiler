@@ -6,6 +6,10 @@ import org.antlr.v4.runtime.misc.Pair;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static utilities.Utils.getMax;
 
 public class StructType extends AnyType{
     String id;
@@ -34,15 +38,16 @@ public class StructType extends AnyType{
     }
 
     @Override
-    public String codeGeneration() {
-        StringBuilder str = new StringBuilder();
+    public String codeGeneration(HashMap<Node, Integer> map) {
         for(Pair<IdNode,TypeNode> p : params){
             if (p.b instanceof ArrayType)
-                    str.append("(global.store " + "$").append(id).append("_").append(p.a.getId()).append(" (i32.const 0))\n");
-            else
-                str.append("(global.store $").append(id).append("_").append(p.a.getId()).append(" (i32.const 0)\n");
+                (p.b).codeGeneration(map);
+            else map.put(p.a, getMax(map.values())+1);
         }
-        return str.toString();
+        return "";
     }
+
+
+
 
 }

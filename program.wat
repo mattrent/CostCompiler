@@ -1,37 +1,8 @@
 (module
-(func $increment (param $num i32) (result i32)
-(i32.add
-(i32.const 1)
-(local.get $num)
+
+(memory 1)
+(data (i32.const 0)
 )
-)
-(func $svc (param $i i32) (param $n i32) (result i32)
-(local $j i32)
-(local $j_max i32)
-(local $res i32)
-(i32.const 10)
-(local.set $j_max)
-(loop $for5
-(if (i32.lt_u (local.get $j)(local.get $j_max) )
-(then(i32.add
-(local.get $j)
-(local.get $n)
-)
-(call $increment)
- (local.set $res)
-(local.get $j
-)(i32.const 1)
-(i32.add)
-(local.set $j)
-(br $for5)
-)(else
-(local.get $j_max)
-(local.set $j))
-))
-(local.get $res))
-(func $main (export "main") (param $len i32) (result i32)
-(local.get $len)
-(i32.const 0)
-(call $svc)
- )
+null(func $main (export "main") (result i32)
+null)
 )

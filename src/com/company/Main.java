@@ -11,6 +11,7 @@ import utilities.Environment;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 import test.Results;
@@ -63,7 +64,7 @@ public class Main {
                 writer.write(equ);
                 writer.close();
 
-                String wasmCode = ast.codeGeneration();
+                String wasmCode = ast.codeGeneration(new HashMap<>());
                 System.out.println(wasmCode);
 
                 BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter("program.wat"));

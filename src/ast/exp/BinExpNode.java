@@ -11,6 +11,7 @@ import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class BinExpNode implements Node {
@@ -27,6 +28,7 @@ public class BinExpNode implements Node {
 
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
+        e.add(this);
         e = left.checkVarEQ(e);
         e = right.checkVarEQ(e);
         return e;
@@ -79,7 +81,7 @@ public class BinExpNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         String code = "";
         switch (op){
             case "+" :
@@ -110,7 +112,7 @@ public class BinExpNode implements Node {
                 code += "i32.mul\n";
                 break;
         }
-        return "("+code+ right.codeGeneration() + left.codeGeneration()+")\n";
+        return "("+code+ left.codeGeneration(offset_idx) + right.codeGeneration(offset_idx)+")\n";
     }
 
     public String getEquation(EnvVar e) {

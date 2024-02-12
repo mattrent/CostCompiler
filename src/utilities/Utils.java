@@ -7,6 +7,7 @@ import ast.typeNode.*;
 import ast.typeNode.TypeNode;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -92,5 +93,15 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static int getMax(Collection<Integer> values) {
+        int max = 0;
+        for (int value : values) {
+            if (value > max) {
+                max = value;
+            }
+        }
+        return max;
     }
 }

@@ -6,6 +6,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IdType implements TypeNode{
 
@@ -34,7 +35,7 @@ public class IdType implements TypeNode{
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return null;
     }
 

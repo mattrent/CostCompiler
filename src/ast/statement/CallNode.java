@@ -8,6 +8,7 @@ import utilities.TypeErrorException;
 import utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static utilities.Utils.getFunDecNodeByLine;
@@ -70,10 +71,10 @@ public class CallNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         StringBuilder params = new StringBuilder();
         for (int i = 0; i < listCount.size(); i++) {
-             params.append(listCount.get(i).codeGeneration());
+             params.append(listCount.get(i).codeGeneration(offset_idx));
         }
         return params + "(call $"+id.getId()+")\n ";
     }

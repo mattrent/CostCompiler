@@ -5,6 +5,7 @@ import utilities.Environment;
 import utilities.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IdNode implements Node{
     String id;
@@ -38,7 +39,7 @@ public class IdNode implements Node{
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         return "local.get $"+id+"\n";
     }
 }
