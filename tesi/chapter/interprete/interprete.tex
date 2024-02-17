@@ -110,7 +110,7 @@ Questo dizionario di tipo $EnvVar$ é un HashMap che contiene come chiave l'ogge
 Abbiamo deciso di utilizzare questo approccio per focalizzarci sull'efficienza del farci restituire la variabile che mappa quel determinato Nodo, senza dover andare a cercare all'interno dell'HashMap la chiave che mappa quel valore, cosa che viene fatta all'inserimento di un Nodo.
 L'inserimento del nodo peró non sempre é un operazione onerosa per il fatto che abbiamo gia il controllo semantico che ci garantisce che non ci saranno variabili non dichiarate oppure variabili non dichiarate prima del loro utilizzo.
 
-Andiamo ad analizzare un esempio semplice, all'interno del Nodo di tipo \textit{CallService.java} che rappresenta l'invocazione di un servizio, abbiamo il metodo \textit{toEquation()} che prende come argomento l'ambiente $\varGamma$ e restituisce una stringa che rappresenta l'equazione di costo del nodo, che sará un stringa riportata all'interno dell'equazione di costo del padre.
+Andiamo ad analizzare un esempio semplice, all'interno del Nodo di tipo \textit{CallService.java} che rappresenta l'invocazione di un servizio: abbiamo il metodo \textit{toEquation()} che prende come argomento l'ambiente $\varGamma$ e restituisce una stringa che rappresenta l'equazione di costo del nodo. Questa sottostringa sará poi riportata all'interno dell'equazione di costo del nodo padre.
 
 \begin{lstlisting}[language=Java]
     @Override
@@ -120,10 +120,10 @@ Andiamo ad analizzare un esempio semplice, all'interno del Nodo di tipo \textit{
     }
 \end{lstlisting}
 
-La sezione $e.get(this)$ ritorna la variabile mappata per quel determinato nodo, che é una stringa che rappresenta la variabile all'interno dell'equazione di costo, mentre la sezione $stm.toEquation(e)$ é la chiamata sul metodo \textit{toEquation()} del nodo figlio, che restituirá la stringa che rappresenta l'equazione di costo del nodo, andando a richiamare il medesimo metodo sui sottonodi contenuti all'interno del nodo figlio.
+La funzione $e.get(this)$ ritorna la variabile mappata per quel determinato nodo, ritorna quindi una stringa che rappresenta la variabile all'interno dell'equazione di costo. La funzione $stm.toEquation(e)$ é la chiamata sul metodo \textit{toEquation()} del nodo figlio, che restituirá la stringa rappresentante l'equazione di costo del nodo, andando a richiamare il medesimo metodo sui sottonodi contenuti all'interno del nodo figlio, e così via.
 
-Per avere una panoramica completa del processo di generazione delle equazioni di costo, riportiamo il frammento di codice di $toEquation()$ del $programNode$:
-\begin{lstlisting}[language=Java]
+Per avere una panoramica completa del processo di generazione delle equazioni di costo, riportiamo il frammento di codice della funzione $toEquation()$ del $programNode$, che rappresenta il nodo principale del nostro AST, che andrá a richiamare il metodo $toEquation()$ su tutti i nodi figli e andrá a concatenare le stringhe risultanti al fine di generare l'equazione finale.
+\begin{lstlisting}[language=Java, caption={toEquation() del ProgramNode}]
     public String toEquation(EnvVar e){
 
         for (Node n : decServices){
@@ -145,8 +145,26 @@ Infine ci occupiamo di generare le equazioni di costo della funzione main, che s
 \section{PUBS}
 \label{sec:pubs}
 Pubs é un risolutore di vincoli di costo, che prende in input un file di equazioni di costo e restituisce un file con i limiti superiori per ogni relazione di costo.
+Prendiamo in considerazione il seguente esempio di programma dato in input a CostCompiler:
+\begin{lstlisting}[caption={Listing 1}]
+struct Params {
+	address: array[int],
+	payload: any,
+	sender: string
+}
+service PremiumService : (string) -> void;
+service BasicService : (any) -> void;
+(isPremiumUser: bool, par: any) => {
+	if ( isPremiumUser ) {
+		call PremiumService("pippo");
+	} else {
+		call BasicService( par);
+	}
+}
+\end{lstlisting}
+
 PUBS (Pratical Upper Bounds Solver) ha l'obiettivo di ottenere automaticamente upper bound in forma chiusa per i sistemi di equazioni di costo, di conseguenza calcola i limiti superiori per la relazione di costo indicata come "Entry", oltre che per tutte le altre relazioni di costo di cui tale "Entry" dipende.
-Nell'output di pubs vengono mostrati anche i passaggi intermedi eseguiti che coinvolgono il calcolo delle funzioni di classificazione e degli invarianti di ciclo.
+Nell'output di PUBS vengono mostrati anche i passaggi intermedi eseguiti che coinvolgono il calcolo delle funzioni di classificazione e degli invarianti di ciclo.
 
 \begin{figure}[H]
     \centering
@@ -175,8 +193,21 @@ Dove $<$Head$>$ é il nome della entry che andremo ad analizzare insieme ai suoi
 CostExpression é l'espressione di costo che rappresenta il costo della entry e rispetta la grammatica della aritmetica di Presburger.
 ListOfCall é la lista delle chiamate alle altre entry, che sono rappresentate come $<$call$>$ e $<$listOfCall$>$, la lista di queste chiamate; in questo modo PUBS riesce a costruire un grafo delle dipendenze tra le entry.
 Infine abbiamo $<$listOfSizeRelation$>$ che sará la lista delle relazioni di costo che dipendono dalla entry che stiamo analizzando, e che PUBS andrá a calcolare.
-Riportiamo Listing1 come esempio di equazione di costo generata da CostCompiler, dove troviamo l'analisi alla pagine precedente:
-\begin{lstlisting}[caption={Equazione di costo PUBS per Listing6}]
+Riportiamo un'altro esempio di equazione di costo generata da CostCompiler, questa volta per il programma scritto in Listing6:
+\begin{lstlisting}[caption={Listing 6}, language=Java]
+    service BasicService: (int) -> void;
+    fn svc(i: int) -> void{
+        for(m in (0,10)){
+            call BasicService(i)
+        }
+    }
+    (len : int) => {
+        svc(len)
+    }
+\end{lstlisting}
+Come vediamo, la funzione init chiamerá la funzione svc con parametro len, che a sua volta chiamerá la funzione BasicService per 10 volte, quindi il costo del programma sará l'invocazione della funzione $svc + 10 \cdot nat(B)$, dove $nat(B)$ é l'invocazione del servizio \textit{BasicService}.
+L'equazione di costo risultante sará la seguente:
+\begin{lstlisting}[language=Java,caption={Equazione di costo PUBS per Listing6}]
     eq(main(B),1,[svc(B)],[]).
     eq(svc(B),0,[for3(0, B)],[] ).
     eq(for3(M, B) ,nat(B),[for3(M+1, B)], [10>= M]).
@@ -184,5 +215,11 @@ Riportiamo Listing1 come esempio di equazione di costo generata da CostCompiler,
 \end{lstlisting}
 
 Nella prima riga troviamo l'entry $main$ che prende in input B, con costo 1, chiama la funzione $svc$.
-Quest'ultima andrá a chiamare la funzione $for3$ inserendo un'ulteriore parametro che sará il counter del ciclo con parametro 0 e B, che avrá costo 0 in caso $M >= 10 + 1$ altrimenti avrá costo $nat(B)$. 
+Quest'ultima andrá a chiamare la funzione $for3$ inserendo un'ulteriore parametro che sará il counter del ciclo con parametro 0 e B, che avrá costo 0 in caso $M >= 10 + 1$ altrimenti avrá costo $nat(B)$.
+E come controprova mostriamo ora il risultato di PUBS su Listing6:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{pubs_example2.png}
+    \caption{Esempio di output PUBS su Listing 6}
+\end{figure}
 \end{document}

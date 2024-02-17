@@ -2,7 +2,7 @@
 
 \begin{document}
 \chapter{Linguaggio e semantica}
-
+Un linguaggio di programmazione é un linguaggio formale, ovvero un insieme di simboli e regole che definiscono la struttura e il significato delle istruzioni che compongono un programma.
 In questo capitolo definisco il linguaggio che andremo ad utilizzare per descrivere i programmi e la semantica che gli daremo. Il linguaggio é stato pensato per essere comprensibile e allo stesso tempo espressivo, in modo da poter descrivere programmi complessi. La semantica é stata pensata per essere semplice da implementare e allo stesso tempo potente, in modo da poter descrivere programmi complessi.
 Un linguaggio viene definito da una grammatica $G = (N, T ,\rightarrow, S)$ dove:
 \begin{itemize}
@@ -17,8 +17,7 @@ Mentre il linguaggio generato da una grammatica $G$ é definito come:
     \mathcal{L}(G) = \{\gamma | \gamma \in T^* \land \Rightarrow^+ w\}
 \end{equation}
 e $T^*$ é la chiusura di Kleene.\\
-La grammatica (che descriveremo nel dettaglio nel capitolo successivo), é riconosciuta dal plugin ANTLR che ci permette di generare un parser per il linguaggio. Il parser generato da ANTLR é un parser LL(*), ovvero un parser che riconosce linguaggi non ambigui e che non richiede backtracking. Questo ci permette di avere un parser efficiente ottimizzando il riconoscimento del linguaggio.
-\glossary{LL(*)}{Left to right, Leftmost derivation, * lookahead symbols}
+La grammatica (che descriveremo nel dettaglio nel capitolo successivo), é riconosciuta dal plugin ANTLR che ci permette di generare un parser per il linguaggio. Il parser generato da ANTLR é un parser LL(*), ovvero un parser che riconosce linguaggi non ambigui e che non richiede backtracking, utilizzando un numero arbitrario di lookahead symbols, questo ci permette di avere un parser efficiente ottimizzando il riconoscimento del linguaggio.
 
 \section{Grammatica}
 
@@ -106,6 +105,7 @@ fn svc(i: int) -> void{
 
 Come abbiamo visto nella grammatica \ref{sec:grammatica}, il non terminale \textbf{prg} e' il terminale iniziale della grammatica. In questo caso prg, prende un parametro len di tipo intero, ed avrá un CallNode ad una funzione \textit{svc} che prende un parametro di tipo intero, e ritorna void.\\
 La funzione \textit{svc} invece, contiene un for, che itera da 0 a 10, e ad ogni iterazione effettuata una chiamata al servizio \textit{BasicService} con parametro \textit{i}.\\
+
 \section{Semantica del Linguaggio}\label{sec:semantica}
 La semantica di un linguaggio di programmazione é l'insieme delle regole che definiscono il significato delle istruzioni, delle espressioni e delle strutture di controllo del flusso nel linguaggio. In altre parole, la semantica definisce ``cosa fa'' un programma scritto in quel linguaggio.
 

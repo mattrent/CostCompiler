@@ -15,8 +15,10 @@
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage[toc,page]{appendix}
-\usepackage{biblatex}\usepackage{listings}
+\usepackage{biblatex}
+\usepackage{listings}
 \usepackage{color}
+
 \bibliography{Bibliography.bib}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -42,6 +44,7 @@
     showtabs=false,                  
     tabsize=2
 }
+
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
   keywordstyle=\color{blue}\bfseries,
@@ -120,11 +123,15 @@
 
 \begin{document}
 
-%\subfile{chapter/frontespizio.tex}
+\subfile{chapter/frontespizio.tex}
+
+\clearpage
 
 \tableofcontents
 
-%\listoffigures
+\listoffigures
+
+\lstlistoflistings[title={List of Code}]
 
 \subfile{chapter/introduzione/Introduzione.tex}
 
@@ -135,6 +142,7 @@
 \subfile{chapter/wasm/wasm.tex}
 
 \subfile{chapter/conclusioni/conclusioni.tex}
+
 
 \addcontentsline{toc}{chapter}{Bibliografia}
 
