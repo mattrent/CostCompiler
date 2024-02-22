@@ -77,14 +77,12 @@ public class ForNode implements Node {
         }
         linestm = linestm.substring(0,linestm.length()-1);
         String s = ")";
-        String decStart = "0,[for"+line+"(0,"+linestm + ((!expList.isEmpty()) ? (","+ linexp) : "")
-                                            +")],[] ";
+        String s_par = "," + linestm + ((!expList.isEmpty()) ? ("," + linexp) : "");
+        s_par =  s_par.equals(",")? "" : s_par ;
+        String decStart = "0,[for" + line + "(0" + s_par + ")],[] ";
 
-        String dec = "for"+line+"("+id.toUpperCase()+","+linestm +
-                                                    ((!expList.isEmpty()) ? (","+ linexp) : "") +") ";
+        String dec = "for"+line+"("+id.toUpperCase()+ s_par +") ";
         String stmStr = stm.toEquation(e);
-
-
 
         String condLoop ="["+exp.toEquation(e)+">= "+id.toUpperCase()+"]";
         String condNoLoop = "["+id.toUpperCase()+" >= "+exp.toEquation(e)+"+ 1]";
@@ -97,8 +95,11 @@ public class ForNode implements Node {
                     + dec + ",0,[]," + condNoLoop + ").\n" + stmStr2;
         }
 
-       return  decStart + ").\neq(" + dec +","+ stmStr + ",[for"+line+"("+id.toUpperCase()+"+1,"+linestm+
-               ((!expList.isEmpty()) ? (","+ linexp) : "") +")], "+ condLoop + ").\neq(" + dec + ",0,[]," + condNoLoop + ").\n";
+        if(stm instanceof CallNode) {
+            return decStart + ").\neq(" + dec + "," + "0" + ",[for" + line + "(" + id.toUpperCase() + "+1" +s_par+ "),"+stmStr+"], " + condLoop + ").\neq(" + dec + ",0,[]," + condNoLoop + ").\n";
+        }else{
+            return  decStart + ").\neq(" + dec +","+ stmStr + ",[for"+line+"("+id.toUpperCase()+"+1"+s_par +")], "+ condLoop + ").\neq(" + dec + ",0,[]," + condNoLoop + ").\n";
+        }
     }
 
     @Override

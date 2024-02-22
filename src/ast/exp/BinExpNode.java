@@ -77,7 +77,7 @@ public class BinExpNode implements Node {
 
     @Override
     public String toEquation(EnvVar e) {
-        return left.toEquation(e) + (Objects.equals(op, "==") ? "=" : op) + right.toEquation(e);
+        return "nat("+left.toEquation(e) +")"+ (Objects.equals(op, "==") ? "=" : op) + "nat("+right.toEquation(e)+")";
     }
 
     @Override

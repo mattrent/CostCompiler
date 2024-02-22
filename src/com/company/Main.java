@@ -8,8 +8,10 @@ import gen.HLCostLanParser;
 import org.antlr.v4.runtime.*;
 import utilities.Environment;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -65,7 +67,7 @@ public class Main {
                 writer.close();
 
                 String wasmCode = ast.codeGeneration(new HashMap<>());
-                System.out.println(wasmCode);
+                //System.out.println(wasmCode);
 
                 BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter("program.wat"));
                 writerWasm.write(wasmCode);
@@ -73,11 +75,22 @@ public class Main {
 
                 String osName= System.getProperty("os.name");
                 Process p;
-                if(osName.contains("Windows"))
-                    p = new ProcessBuilder("wsl", "."+path+"/pubs_static", "-file", "equation.ces").inheritIO().start();
-                else
-                    p= new ProcessBuilder( "."+path+"/pubs_static", "-file", "equation.ces").inheritIO().start();
 
+                if(osName.contains("Windows"))
+                    p = new ProcessBuilder("wsl", "."+path+"/pubs_static", "-file", "equation.ces").start();
+                else
+                    p= new ProcessBuilder( "."+path+"/pubs_static", "-file", "equation.ces").start();
+                InputStream is = p.getInputStream();
+                BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(is));
+                p.waitFor();
+                String line;
+                while((line = reader.readLine()) != null){
+                    if (line.contains("Non Asymptotic Upper Bound:")) {
+                        line = line.replace("  * Non Asymptotic Upper Bound:","");
+                        System.out.println(line);
+                        break;
+                    }
+                }
                 return Results.PASS;
             }
         }catch (Exception e) {

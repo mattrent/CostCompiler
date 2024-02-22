@@ -70,8 +70,10 @@ public class IfNode implements Node {
     public String toEquation(EnvVar e) {
 
         exp.checkVarEQ(e);
-        if(e.get(stmT) == null &&  e.get(stmF)==null) {
+        if(e.get(stmT) == null){
             e.add(stmT);
+        }
+        if (e.get(stmF) == null){
             e.add(stmF);
         }
         if(e.get(exp)==null){

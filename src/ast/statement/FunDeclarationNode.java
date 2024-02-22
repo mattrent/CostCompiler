@@ -89,14 +89,6 @@ public class FunDeclarationNode implements Node {
         if(nodeToRemove != null)
             e.remove(nodeToRemove);
 
-        String post = "";
-        if(stm instanceof CallNode || stm instanceof ListAssignmentMain){
-            post =  "),1,[" + stm.toEquation(e) + "],[]).";
-        }else if (stm instanceof BinExpNode){
-            post = "),"+ stm.toEquation(e) + ",[],[]).";
-        }
-        else post =  ")," + stm.toEquation(e) ;
-
         Set<Node> set = e.getSet();
         StringBuilder par = new StringBuilder();
         for(Node n : set){
@@ -106,8 +98,16 @@ public class FunDeclarationNode implements Node {
             }
         }
 
-
         this.parFun = String.valueOf(new StringBuilder(par.substring(0, par.length() - 1)));
+
+        String post = "";
+        if(stm instanceof CallNode || stm instanceof ListAssignmentMain){
+            post =  "),1,[" + stm.toEquation(e) + "],[]).";
+        }else if (stm instanceof BinExpNode){
+            post = "),"+ stm.toEquation(e) + ",[],[]).";
+        }
+        else post =  ")," + stm.toEquation(e) ;
+
         return "\neq("+ pre + this.parFun + post ;
 
     }
