@@ -39,6 +39,7 @@ Serverless computing rappresenta un paradigma che va oltre il semplice Function-
 Nel serverless computing, il provider cloud si occuperá di allocare le risorse necessarie per eseguire il codice e di deallocarle una volta terminata l'esecuzione. Questo facilita la distribuzione e la scalabilitá del sistema, cercando di automatizzare quest'ultima fase.
 Focalizzandoci in questa gestione delle risorse, viene introdotto un linguaggio cApp che ci permetterá di sincronizzare le risorse attraverso determinate politiche.
 \subsection{cApp}
+\label{cApp}
 Partiamo da un linguaggio dichiarativo APP(\textit{Allocation Priority Policies}) che ci permette di definire politiche di allocazione delle risorse per le funzioni serverless, derivato da un estensione dello scheduler di OpenWhisk.
 cApp é un estensione di App, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili.
 \autocite{de2020allocation}.
