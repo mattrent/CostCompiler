@@ -145,6 +145,54 @@ Infine ci occupiamo di generare le equazioni di costo della funzione main, che s
 \section{PUBS}
 \label{sec:pubs}
 Pubs é un risolutore di vincoli di costo, che prende in input un file di equazioni di costo e restituisce un file con i limiti superiori per ogni relazione di costo.
+
+\subsection{Relazione di Costo}
+Un'espressione di costo di base é un'espressione simbolica che indica le risorse accumulate e i blocchi fondamentali non ricorsivi per la definizione delle \textit{relazioni di costo}.
+\newtheorem{definition}{Definizione}
+\begin{definition}(Espressione di costo di base)
+Le espressioni di costo sono della forma $$exp :: = a | nat(l) | exp + exp | exp * exp |exp^a |log _a (exp) | max(s) | \frac{exp}{a} | exp - a   $$
+dove $a \geq 1$, $l$ é un'espressione lineare, $S$ é un insieme non vuoto di espressioni di costo, $nat : \mathbb{Z}  \rightarrow \mathbb{Q} ^+$ é definita come $nat(v) = max({v,0})$ e $exp$ soddisfa per qualsiasi assegnamento di $\overline{v}$ per vars($exp$) si ha $exp[ vars(\frac{exp}{\overline{v}})]$
+\end{definition}
+Le espressione di costo di base godono di due proprietá:
+\begin{itemize}
+    \item Sono sempre valutate per valori non negativi
+    \item Rimpiazzando una sottoespressione $nat(l)$ con $nat(l')$ tale che $l \geq l'$ , il risultato é un upper bound per l'espressione originale.
+\end{itemize}
+L'analisi dei costi di un programma produce multiple relazioni interconnesse, generando un \textit{sistema di relazioni di costo}(CRS)
+
+\begin{definition}(Sistema di relazioni di costo)
+    Un sistema di relazioni di costo S é un set di equazioni della forma $\langle C(\overline{x}) = exp + \sum_{i = 0}^n D_i(\overline{y_i}), \varphi \rangle$  dove $C$ e $D_{0,\dots, i}$ sono relazioni di costo; tutte le variabili in $\overline{x}$ e $\overline{y_i}$ sono variabili distinte, e $\varphi$ é una relazione di dimensione tra  $\overline{x} \cup vars(exp) \cup \overline{y_i}$.
+\end{definition}
+Dato $S$ sistema di relazioni di costo, $rel(S)$ indica l'insieme delle relazioni di costo definite in S, $def(S,C)$ indica il sottoinsieme di equazioni in S il cui lato sinistro é della forma $C(\overline{x})$.
+Possiamo supporre che tutte le equazioni definite in $def(S,C)$ abbiano variabili con lo stesso nome nella parte sinistra.
+Inoltre si supponre che ogni relazione di costo che appare nella parte sinistra dell'equazione $S$ deve essere in $rel(S)$.
+\subsubsection{Semantica per CRS}
+Data una CRS $S$, una call é della forma $C(\overline{v})$ dove $C \in rel(S)$ e $\overline{v}$ sono valori interi.
+Le \textit{call} sono valutate in in due fasi, in cui la prima permette la costruzione un albero di evoluzione, mentre la seconda ottiene un valore di $\mathbb{R}^+$ da aggiungere alla costante che appare nell'albero di valutazione.
+Gli alberi di evoluzione sono costruiti espandendo iterativamente i nodi che includono chiamate alle relazioni. Ogni espansione avviene rispetto a un'istanza appropriata della parte destra di un'equazione applicabile. Se tutte le foglie dell'albero contengono un'espressione di costo di base, allora non ci sono più nodi da espandere e il processo termina. Questi alberi sono rappresentati utilizzando termini annidati, del tipo node(Call; Local\_Cost; Children), in cui Local\_Cost è una costante in $\mathbb{R}^+$ e Children è una sequenza di alberi di evoluzione.
+
+\begin{definition}(\textbf{Albero di evoluzione})
+    Data una CRS $S$, una call $C(\overline{v})$, un albero node $(C(\overline{v}); e; \overline{t})$ é un albero di evoluzione per $C(\overline{v})$ in S, indicato con $Tree (C(\overline{v},S))$, se:
+    \begin{enumerate}
+        \item c'é una denominazione parziale dell'equazione $\langle C(\overline{x}) = exp + \sum_{i = 0}^k D_i(\overline{y_i}), \varphi \rangle$
+        \item esiste un assegnamento di valori interi $\overline{w}$ a $\overline{v_i}$ per $var(exp), \overline{y_i}$ rispettivamente tali che $\varphi[vars(exp)/\overline{w}, \overline{y_i}/\overline{v_i}]$ é soddisfacibile in $\mathbb{Z}$
+        \item $e = exp[vars(exp)/\overline{w}]$, $T_i$ é un albero di evoluzione  $tree(D_i (\overline{v_i}, S))$ with $i \in 0,\dots,k$ 
+    \end{enumerate}
+\end{definition}
+
+Nel processo di risoluzione di $C(\overline{v})$ notiamo che ci possono essere diverse equazioni applicabili, e quindi diversi alberi di evoluzione.
+Al passo 2 si cerca un assegnamento per le variabili nella parte destra di $\epsilon$. Al passo 3 gli assegnamenti sono applicati ad exp e si continua ricorsivamente valutando le call.
+$Tree(C(\overline{v}, S))$ viene usato per denotare l'insieme di tutti gli alberi di evoluzione per $C(\overline{v})$.
+\subsection{Stima del costo per Nodo}
+Notiamo che tutte le espressioni nei nodi sono istanze delle espressioni che compaiono nelle equazioni corrispondenti. Pertanto, il calcolo di $costr^+(\overline{x})$ e $costnr^+(\overline{x})$ può essere effettuato trovando innanzitutto un limite superiore di tali espressioni e quindi combinandoli attraverso un operatore di massimo. Prima calcoliamo gli invarianti per i valori che le variabili delle espressioni possono assumere rispetto ai valori iniziali e li utilizziamo per derivare limiti superiori per tali espressioni.
+
+Calcolare le invarianti(in termini di vincoli lineari), contiene tutte le chiamate ai contesti di una relazione $C$, tra gli argomenti di una chiamata iniziale e ogni chiamata durante la valutazione che può essere fatta usando $Loops(C)$
+Logicamente, se é presente un vincolo lineare $\psi$ tra gli argomenti di una chiamata iniziale $C(\overline{x_0})$, quelli di una chiamata ricorsiva $C(\overline{x})$, indicato con $\langle C(\overline{x_0})\rightsquigarrow  (\overline{x}, \psi)\rangle$, e se esiste il ciclo $C(\overline{x_0}) \rightsquigarrow (\overline{y},\varphi)\in Loops(C)$ allora é possibile applicare il ciclo a uno o piú step e prende un nuovo calling context $\langle C(\overline{x_0})  \rightsquigarrow (\overline{y}), \overline{\exists} \cup \overline{y_i}\dot \psi \land \varphi\rangle$
+
+Una volta che le invarianti sono state stabilite, è possibile determinare il limite superiore delle equazioni di costo massimizzando la loro parte nat indipendentemente. Questo approccio è reso possibile grazie alla proprietà di monotonia delle espressioni di costo. Considerando un'equazione di costo nella forma $\langle  C(\overline{x}) = exp + \sum_{i=0}^k C(\overline{y_i}), \varphi \rangle$ e un invariante $C(\overline{x_0})\rightsquigarrow C(\overline{x}, \varPsi) $ ,una funzione può calcolare un limite superiore $f'$ per ogni $f$ che compare nell'operatore $nat$. Tale funzione sostituisce $f$ con un limite superiore nelle espressioni $exp$ in cui non è possibile determinare un limite superiore e la funzione tornerà $\infty$. Se questa funzione è completa, ovvero se i $\varPsi$ e $\varphi$implicano che esiste un limite superiore per un dato $nat(f)$, allora possiamo trovare uno limite superiore su $\varPsi '$.
+\cite{albert2008automatic}\cite{amslaurea3135}
+
+\subsection{PUBS in pratica}
 Prendiamo in considerazione il seguente esempio di programma dato in input a CostCompiler:
 \begin{lstlisting}[caption={Listing 1}]
 struct Params {
@@ -222,4 +270,5 @@ E come controprova mostriamo ora il risultato di PUBS su Listing6:
     \includegraphics[width=0.9\textwidth]{pubs_example2.png}
     \caption{Esempio di output PUBS su Listing 6}
 \end{figure}
+
 \end{document}
