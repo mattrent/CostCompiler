@@ -85,7 +85,7 @@ I simboli utilizzati da ANTLR, rispettano la notazione EBNF(Extended Backus-Naur
     \item \textbf{..} - Il simbolo Range definisce un intervallo di token.
 \end{itemize}
 L'uso di lettere maiuscole e minuscole é importante, in quanto ANTLR distingue tra token maiuscoli e minuscoli.\\
-\cite{amslaurea2372}
+\autocite{amslaurea2372}
 
 \subsection{Differenza tra Lexer e Parser in ANTLR}
 I linguaggi di programmazione sono costituiti da parole chiavi(keywords) e costrutti definiti in modo preciso.
@@ -98,15 +98,15 @@ Il parser, invece, data una sequenza di token, riconosce la grammatica, e genera
 Nell'albero di parsing ogni nodo interno corrisponde a una regola della grammatica e ogni foglia corrisponde a un token del linguaggio.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{example_lexer_parser.png}
+    \includegraphics[width=0.9\textwidth]{example_lexer_parser.png}
     \caption{Funzione di parsing e lexing}
 \end{figure}
 Una volta ottenuto l'albero di parsing possiamo andare a visitarlo, e generare un albero di sintassi astratta, che rappresenta il significato del programma.
 L'albero di sintassi astratta(AST) é un albero che rappresenta il significato del programma, e viene utilizzato per eseguire il programma.
-A questo punto si estende l'interfaccia \textit{BaseListener} per costruire un albero di sintassi astratta per implementare i metodi necessari per visitare l'albero di parsing e generare l'albero di sintassi astratta.\cite{antlrllkparser}
+A questo punto si estende l'interfaccia \textit{BaseListener} per costruire un albero di sintassi astratta per implementare i metodi necessari per visitare l'albero di parsing e generare l'albero di sintassi astratta.\autocite{antlrllkparser}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{visit-tree.png}
+    \includegraphics[width=0.9\textwidth]{visit-tree.png}
     \caption{Esempio di albero di AST}
     \label{fig:visit_tree}
 \end{figure}
@@ -147,6 +147,16 @@ Inoltre effettuiamo il type checking, che é un sottoinsieme del controllo seman
     \item In un costrutto \textit{if} l'espressione deve essere di tipo booleano, mentre i valori di ritorno degli statemente \textit{then} e \textit{else} devono essere dello stesso tipo.
     \item La funzione deve tornare il tipo dichiarato.
 \end{itemize}
+\section{Compilatore o Interprete?}
+Nel processo di traduzione del codice sorgente in istruzioni eseguibili, due approcci predominanti emergono: il compilatore e l'interprete. Mentre entrambi condividono l'obiettivo di rendere il codice sorgente eseguibile, le loro metodologie differiscono significativamente, portando a implicazioni distinte per le prestazioni, la portabilità e lo sviluppo delle applicazioni software.
+
+Il compilatore adotta un approccio ``one-shot'', traducendo l'intero codice sorgente in un'unica fase e producendo un file eseguibile indipendente dal codice originale. Questo file può essere eseguito più volte senza la necessità di ulteriori traduzioni, garantendo una maggiore efficienza nell'esecuzione del programma. Tuttavia, il processo di compilazione può richiedere più tempo e risorse iniziali, poiché l'intero codice deve essere tradotto prima dell'esecuzione.
+
+D'altra parte, l'interprete adotta un approccio ``line-by-line'', traducendo e eseguendo istruzioni del codice sorgente una alla volta. Questo significa che il codice viene tradotto e eseguito in tempo reale durante l'esecuzione del programma. Sebbene questo approccio possa ridurre il tempo di avvio e la memoria richiesta per l'esecuzione, può comportare una minore efficienza durante l'esecuzione effettiva, poiché le istruzioni devono essere interpretate ad ogni esecuzione.
+
+Nel nostro il plug-in ANTLR diamo in input l'intero file per fare il paring, ma allo stesso tempo generiamo un albero di parsing che viene visitato per generare l'albero di sintassi astratta, che rappresenta il significato del programma, generando però un codice ``intermedio'' per la fase di WebAssembly, mentre per la generazione dell'equazioni di costo, l'output puó essere direttamente un input per un CostAnalyzer come PUBS e CoFloCo.
+\autocite{DBLP:books/aw/AhoSU86}
+
 
 \end{document}
  

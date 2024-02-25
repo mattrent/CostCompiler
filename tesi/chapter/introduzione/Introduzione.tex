@@ -38,11 +38,8 @@ Serverless computing rappresenta un paradigma che va oltre il semplice Function-
 
 Nel serverless computing, il provider cloud si occuperá di allocare le risorse necessarie per eseguire il codice e di deallocarle una volta terminata l'esecuzione. Questo facilita la distribuzione e la scalabilitá del sistema, cercando di automatizzare quest'ultima fase.
 Focalizzandoci in questa gestione delle risorse, viene introdotto un linguaggio cApp che ci permetterá di sincronizzare le risorse attraverso determinate politiche.
-\subsection{cApp}
-\label{cApp}
+\section{Allocation Priority Policies}
 Partiamo da un linguaggio dichiarativo APP(\textit{Allocation Priority Policies}) che ci permette di definire politiche di allocazione delle risorse per le funzioni serverless, derivato da un estensione dello scheduler di OpenWhisk.
-cApp é un estensione di App, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili.
-\autocite{de2020allocation}.
 Vediamo qui di seguito un esempio del funzionamento:
 \begin{figure}[H]
    \centering
@@ -94,7 +91,10 @@ Il parametro jobs descrive una sequenza di lavori map-reduce, dove il numero dei
 La fase di \textit{Map} che genera m sottotask ``ridotti'' é implementata da un servizio esterno \textit{Map} che riceve jobs e un indice i che indica il job mappato.
 Per ogni i, ci sono j sottotask.
 In questo caso ci aspettiamo che la latenza dell'intera funzione é data dalla somma di m volte la latenza di \textit{Map} e m $x$ r volte la latenza di \textit{Reduce}.\\
-
+\subsection{cApp}
+\label{cApp}
+cApp é un estensione di App, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili.
+\autocite{de2020allocation}.
 cApp é stato modificato al fine di implementare nuovi costrutti quali \textit{min\_latency} e \textit{max\_latency} che ci permettono di definire un upper bound e un lower bound per la latenza di una funzione.
 \begin{multicols}{2}
     \begin{lstlisting}[caption={cAPP for Listing \ref{lst:1} e \ref{lst:2}},label={lst:4}]
@@ -130,10 +130,10 @@ Invece nel caso del Listing \ref{lst:5} invece abbiamo una strategia di invalida
     \caption{From Deploy to Scheduling for Listing \ref{lst:1} e \ref{lst:2} }
 \end{figure}
 \newpage
-\subsubsection{Obiettivo della tesi}
-L'obiettivo della tesi è quello di concentrarsi sullo studio delle tecniche che consentono di analizzare la semantica di una funzione scritta in un linguaggio specifico, il quale verrà definito in dettaglio nei capitoli successivi. Questa analisi della semantica è fondamentale per generare le equazioni di costo associate a ciascuna funzione. Le equazioni di costo forniscono informazioni cruciali come la complessità, che rappresenta un upper bound della funzione in questione. Questi dati sono essenziali per ottimizzare lo scheduling dell'esecuzione delle funzioni serverless una volta richieste, consentendo di allocare risorse in modo efficiente e di ridurre i tempi di esecuzione.
+\section{Obiettivo della tesi}
+L'obiettivo principale della tesi è approfondire le tecniche utilizzate per analizzare la semantica delle funzioni scritte in un linguaggio specifico, il quale sarà dettagliatamente delineato nei capitoli successivi. Tale analisi semantica è cruciale per generare le equazioni di costo associate a ciascuna funzione. Queste equazioni di costo forniscono dati fondamentali, come la complessità, che rappresenta un limite superiore delle prestazioni della funzione stessa. Queste informazioni sono essenziali per ottimizzare l'esecuzione delle funzioni serverless una volta richieste, consentendo un'allocazione efficiente delle risorse e una riduzione dei tempi di esecuzione.
 
-Il percorso di ricerca prevede diverse fasi. Inizieremo definendo una grammatica specifica per il linguaggio di programmazione considerato. Successivamente, svilupperemo un interprete per tale linguaggio, il quale analizzerà un programma scritto in un linguaggio ad alto livello e restituirà le equazioni di costo associate a ciascuna funzione. In aggiunta, sarà generato il codice WebAssembly corrispondente, che potrà essere eseguito in un ambiente serverless.
-
-Una volta ottenute le equazioni di costo, procederemo all'analisi dettagliata di ciascuna funzione attraverso l'utilizzo di tool specifici come PUBS (Publications on Upper Bounds Synthesis) e CoFloCo (Cost Flow Complexity Analysis). Questi strumenti, citati rispettivamente in letteratura \autocite{albert2008automatic} e \autocite{flores2014resource}, sono progettati per calcolare l'upper bound delle funzioni date le loro equazioni di costo. Tale analisi ci fornirà una comprensione più approfondita delle prestazioni delle funzioni, consentendoci di ottimizzare ulteriormente l'allocazione delle risorse e migliorare il processo di scheduling delle esecuzioni.
+Il percorso di ricerca si articola in diverse fasi. Innanzitutto, sarà definita una grammatica specifica per il linguaggio di programmazione in questione. Successivamente, verrà sviluppato un interprete per tale linguaggio, in grado di analizzare un programma scritto in un linguaggio ad alto livello e di restituire le relative equazioni di costo per ciascuna funzione. Inoltre, verrà generato il corrispondente codice WebAssembly, pronto per essere eseguito in un ambiente serverless.
+WebAssembly svolge un ruolo cruciale come ambiente di esecuzione per il codice generato dalle nostre analisi di costo. Utilizzando il WebAssembly come target per le nostre ottimizzazioni, possiamo garantire una maggiore portabilità e interoperabilità delle nostre soluzioni, consentendo l'esecuzione efficiente delle funzioni serverless in una varietà di ambienti di runtime.
+Una volta ottenute le equazioni di costo, ci concentreremo sull'analisi dettagliata di ciascuna funzione, impiegando strumenti specifici come PUBS (Publications on Upper Bounds Synthesis) e CoFloCo (Cost Flow Complexity Analysis). Tali strumenti, menzionati rispettivamente nella letteratura \autocite{albert2008automatic} e \autocite{flores2014resource}, sono progettati per calcolare il limite superiore delle prestazioni delle funzioni, dato il loro costo. Quest'analisi approfondita ci fornirà una comprensione più dettagliata delle prestazioni delle funzioni, permettendoci di ottimizzare ulteriormente l'allocazione delle risorse e il processo di scheduling delle esecuzioni.
 \end{document}
