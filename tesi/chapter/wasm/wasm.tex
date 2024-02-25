@@ -49,7 +49,7 @@ Come vediamo in questo esempio la funzione \$fun prende in input due parametri d
 \subsubsection{Stack Machine}
 L'esecuzione del WebAssembly é definita in termini di Stack-Machine, dove l'idea generale é che ogni tipo di istruzione esegue operazioni di tipo \textit{push/pop} dallo stack.
 Quando viene chiamata una funzione, inizia con uno stack vuoto che viene gradualmente riempito e svuotato man mano che le istruzioni del corpo vengono eseguite. Quindi, ad esempio, dopo aver eseguito la seguente funzione:
-\begin{lstlisting}[language=WebAssembly]
+\begin{lstlisting}[language=WebAssembly, label={lst:funzioneSomma}]
     (func $somma(param $p1 i32)(param $p2 i32)
         (result i32)
         local.get $p1
@@ -57,7 +57,15 @@ Quando viene chiamata una funzione, inizia con uno stack vuoto che viene gradual
         i32.add)
 \end{lstlisting}
 Quando viene chiamata la funzione \$somma, viene passato il precedente valore nella pila come parametro \$p1. La prima istruzione \textit{local.get} copia il valore di \$p1 nello stack, e la seconda istruzione \textit{local.get} copia il valore di \$p2 nello stack. Infine, l'istruzione \textit{i32.add} rimuove i due valori superiori dello stack, li somma e inserisce il risultato nello stack. Alla fine dell'esecuzione della funzione, lo stack contiene il risultato della somma dei due valori passati come parametro.
-Per eseguire la \textbf{chiamata della funzione} precedente, vediamo il codice seguente:
+Come vediamo nello schema seguente:
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{stack_machine_wasm.png}
+    \caption{Stack Machine WASM}
+    \label{fig:stack_machine}
+\end{figure}
+Un puntatore mantiene la posizione di esecuzione all\' interno del codice e uno stack di controllo virtuale tiene traccia dei blocchi e dei costrutti man mano che vengono in input (operazione push) e in output (operazione pop). Le istruzioni tuttavia vengono eseguite senza alcun riferimento a un AST. Pertanto, la parte del formato delle istruzioni binarie della definizione si riferisce a una rappresentazione binaria delle istruzioni che sono in un formato leggibile dallo stack di decodifica nel browser.\cite{amslaurea20464}
+Per eseguire la \textbf{chiamata della funzione} \ref{funzioneSomma}, vediamo il codice seguente:
 \begin{lstlisting}[language=WebAssembly]
     (func $main
         (result i32)
@@ -71,6 +79,40 @@ Dobbiamo inoltre aggiungere una dichiarazione di esportazione per fare in modo c
     (export "main"(func $main))
 \end{lstlisting}
 La prima stringa ``main'' é il nome della funzione che vogliamo esportare e che sara visibile anche all'esterno del modulo, mentre la seconda é l'identificativo della funzione a cui fa riferimento.
+
+\section{Entitá di WebAssembly}
+Le entitá principali di WebAssembly sono:
+\begin{itemize}
+    \item \textbf{Module}: Un modulo WebAssembly è un'unità di codice che può essere caricata e eseguita da un motore di runtime. Un modulo può contenere funzioni, variabili, tabelle e memoria, oltre a definizioni di tipi e importazioni/esportazioni.
+    \item \textbf{Binario}: Il formato binario di WebAssembly è una rappresentazione compatta e ottimizzata del modulo Wasm. Il formato binario è progettato per essere eseguito in modo efficiente da un motore di runtime, consentendo l'esecuzione di codice Wasm in ambienti virtuali.
+    \item \textbf{Embedder}: Un embedder è un'applicazione o un ambiente che incorpora un motore di runtime WebAssembly. Gli embedder possono includere browser web, server, dispositivi IoT e applicazioni desktop, tra gli altri.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{schema_wasm.png}
+    \caption{Schema Entitá WebAssembly}
+    \label{fig:wasm_entity}
+\end{figure}
+
+\subsubsection{Moduli}
+Un modulo WebAssembly è un'unità di codice che può essere caricata e eseguita da un motore di runtime. Un modulo può contenere funzioni, variabili, tabelle e memoria, oltre a definizioni di tipi e importazioni/esportazioni. I moduli Wasm sono progettati per essere indipendenti dalla piattaforma, consentendo l'esecuzione di codice Wasm in ambienti virtuali diversi. I moduli Wasm possono essere creati manualmente o generati da un compilatore, consentendo agli sviluppatori di scrivere codice in un linguaggio ad alto livello e di eseguirlo in un ambiente virtuale altamente performante e sicuro.
+I tipi di valore definiti in wasm come abbiamo visto in precedenza sono \textbf{i32}, \textbf{i64}, \textbf{f32}, \textbf{f64}, e i tipi di funzione \textbf{func}, ognuna delle quali accetta una sequenza di valori come parametri e restituisce una sequenza di valori come risultato.
+Un modulo interagisce con una memoria lineare, considerata come un intervallo contiguo di indirizzi in byte che si estende dall'offset 0 fino a una dimensione variabile. La memoria può essere utilizzata per memorizzare dati e istruzioni, e può essere condivisa tra più moduli.
+Lo stato iniziale di una memoria lineare é definito dalla memoria lineare e dalle sezioni dei dati del modulo. La dimensione della memoria puó essere aumentata dinamicamente dall'operatore grow-memory.
+Una memoria lineare puó essere considerata una matrice non tipizzata di byte ma non é specificato come gli embedder mappino questa matrice nella propria memoria virtuale.
+Simile a una memoria lineare in wasm esiste il concetto di \textbf{tabelle}, che sono valori di un particolare tipo di tabella.
+Una tabella consente di contenere valori come puntatori nativi, a cui il codice Webassembly puó accedere tramite un indice.
+
+\subsubsection{Formatting Binario}
+Le istruzioni in wasm rientrano in due categorie:\textbf{Istruzioni di controllo}, che formano costrutti di controllo e \textbf{Istruzioni di manipolazione dello stack}, che manipolano lo stack di valori.
+Le istruzioni di controllo sono istruzioni che modificano il flusso di controllo del programma, come ad esempio l'istruzione \textit{if}.
+Le istruzioni di manipolazione dello stack sono istruzioni che manipolano lo stack di valori, come ad esempio l'istruzione \textit{i32.const} che inserisce un valore costante nello stack.
+In Wasm le traps sono errori che si verificano durante l'esecuzione di un modulo Wasm, come ad esempio un'overflow aritmetico o un accesso fuori dai limiti della memoria. Le traps possono essere gestite da un motore di runtime, consentendo al modulo Wasm di continuare l'esecuzione in caso di errore.
+
+\subsubsection{Embedder}
+Un embedder è un'applicazione o un ambiente che incorpora un motore di runtime WebAssembly.Un'implementazione di webassembly viene in genere incorporata in un ambiente host.
+Un embedder implementa la connessione tra tale ambiente host e la semantica di webassembly e fornisce un'interfaccia per l'accesso a funzionalità come la memoria, le tabelle e le funzioni esportate da un modulo Wasm.\cite{amslaurea20464}\cite{DBLP:journals/corr/abs-2205-01183}
 
 \section{CostCompiler to WAT}
 Il compilatore che abbiamo sviluppato genera un file .wat, questo file .wat andrá poi convertito in un file .wasm, che a sua volta potrá essere eseguito da un motore di runtime.
