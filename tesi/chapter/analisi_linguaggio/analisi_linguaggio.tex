@@ -3,7 +3,7 @@
 \begin{document}
 \chapter{Linguaggio e semantica}
 Un linguaggio di programmazione é un linguaggio formale, ovvero un insieme di simboli e regole che definiscono la struttura e il significato delle istruzioni che compongono un programma.
-In questo capitolo definisco il linguaggio che andremo ad utilizzare per descrivere i programmi e la semantica che gli daremo. Il linguaggio é stato pensato per essere comprensibile e allo stesso tempo espressivo, in modo da poter descrivere programmi complessi. La semantica é stata pensata per essere semplice da implementare e allo stesso tempo potente, in modo da poter descrivere programmi complessi.
+In questo capitolo definisco il linguaggio che andremo ad utilizzare per descrivere i programmi e la semantica che gli daremo. Il linguaggio é stato pensato per essere comprensibile e allo stesso tempo espressivo, in modo da poter descrivere programmi complessi. La semantica é stata pensata per essere semplice da implementare e allo stesso tempo potente, in modo da poter descrivere programmi complessi.\\
 Un linguaggio viene definito da una grammatica $G = (N, T ,\rightarrow, S)$ dove:
 \begin{itemize}
     \item $N$ é l'insieme dei \textbf{non terminali}
@@ -23,17 +23,20 @@ La grammatica (che descriveremo nel dettaglio nel capitolo successivo), é ricon
 
 \subsection{Grammatica del linguaggio}
 Di seguito espongo la grammatica del linguaggio \textbf{HLCostLan} che descrive il linguaggio che utilizzeró per descrivere i programmi.\\
-Riporto di seguito le produzioni della grammatica che descrivono il linguaggio, mentre per visualizzare il file g4 nella sua totalitá si rimanda alla \href{https://github.com/minosse99/CostCompiler/blob/master/src/HLCostLan.g4}{Repository} del progetto.\\
+Riporto di seguito le produzioni della grammatica che descrivono il linguaggio, mentre per visualizzare il file g4 nella sua totalitá si rimanda alla \href{https://github.com/minosse99/CostCompiler/blob/master/src/HLCostLan.g4}{Repository Git} del progetto.\\
 \label{sec:grammatica}
 
 \begin{lstlisting}[language=ANTLR, caption={Grammatica del linguaggio HLCostLan}, label={lst:grammatica}]
+grammar HLCostLan;
 prg : complexType* serviceDecl* functionDecl* init;
     
 init: '('formalParams? ')''=''>' '{' stm '}';
     
-serviceDecl:'service'ID':''('(type(','type)*)?')''->''type';
+serviceDecl:
+    'service'ID':''('(type(','type)*)?')''->''type';
     
-functionDecl:'fn'ID'('formalParams?')''->'(type)'{'stm'}' ;
+functionDecl:
+    'fn'ID'('formalParams?')''->'(type)'{'stm'}' ;
     
 stm :
     | serviceCall
@@ -49,14 +52,13 @@ functionCall : ID'('( exp (','exp)* )? ')';
 
 letIn: 'let' (ID '=' expPlus)+ 'in' stm;
                                    
-    
-    \end{lstlisting}
-Il non terminale \textbf{prg} e' il terminale iniziale della grammatica, e descrive un programma. Un programma e' composto da una sequenza di dichiarazioni di tipi complessi, dichiarazioni di servizi(che possono avere un overhead in termini di invocazioni che influiscono sul costo), dichiarazioni di funzioni, e infine l'init. L'init e' la funzione che viene invocata all'avvio del programma.
-Il non terminale \textbf{init} descrive la funzione init, che deve essere dichiarata una sola volta ed e' composta da una sequenza di parametri formali, e da una istruzioni.\\
-La \textbf{serviceDecl} descrive la dichiarazione di un servizio, che deve essere dichiarato una sola volta. Un servizio e' composto da un nome, una sequenza di parametri formali, e un tipo di ritorno.\\
-La \textbf{functionDecl} descrive la dichiarazione di una funzione, una funzione e' composta da un nome(univoco), una sequenza di parametri formali, e un tipo di ritorno.
+\end{lstlisting}
+Il non terminale \textbf{prg} è il terminale iniziale della grammatica, e descrive un programma. Un programma è composto da una sequenza di dichiarazioni di tipi complessi, dichiarazioni di servizi(che possono avere un overhead in termini di invocazioni che influiscono sul costo), dichiarazioni di funzioni, e infine l'init. L'init è la funzione che viene invocata all'avvio del programma.
+Il non terminale \textbf{init} descrive la funzione init, che deve essere dichiarata una sola volta ed è composta da una sequenza di parametri formali, e da una istruzioni.\\
+La \textbf{serviceDecl} descrive la dichiarazione di un servizio, che deve essere dichiarato una sola volta. Un servizio è composto da un nome, una sequenza di parametri formali, e un tipo di ritorno.\\
+La \textbf{functionDecl} descrive la dichiarazione di una funzione, una funzione è composta da un nome(univoco), una sequenza di parametri formali, e un tipo di ritorno.
 Nel checking semantico controlliamo che non vengano dichiarate due volte funzioni o servizi con lo stesso nome.\\
-Inoltre il Type checking controlla che i tipi di ritorno delle funzioni e dei servizi siano corretti.\\
+Inoltre il Type checking controlla che i tipi di ritorno delle funzioni e dei servizi siano coerenti con i tipi di ritorno delle chiamate.\\
 
 
 \section{Another Tool for Language Recognition}
@@ -95,7 +97,7 @@ Analogamente al lexer, il parser si occupa di riconoscere la grammatica del ling
 La cartella \textit{gen} contiene il codice sorgente del parser e lexel, generati automaticamente; é presente anche un file \textit{.tokens} che contiene i token riconosciuti dal lexer, e un file \textit{.interp} che contiene la tabella di interpretazione del parser.\\
 Il lexer si occupa di riconoscere i token, in ANTLR viene generato un lexer DFA, ovvero un lexer che riconosce linguaggi non ambigui e che non richiede backtracking. Questo ci permette di avere un lexer efficiente ottimizzando il riconoscimento del linguaggio.
 Il parser, invece, data una sequenza di token, riconosce la grammatica, e genera un albero di parsing(noto anche come albero di derivazione), che rappresenta la derivazione secondo le regole della grammatica libera da contesto. 
-Nell'albero di parsing ogni nodo interno corrisponde a una regola della grammatica e ogni foglia corrisponde a un token del linguaggio.
+Nell'albero di parsing ogni nodo interno corrisponde a una regola della grammatica e ogni foglia corrisponde a un token del linguaggio.\autocite{mogensen2010basics}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{example_lexer_parser.png}

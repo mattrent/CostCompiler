@@ -6,8 +6,9 @@
 \chapter{Introduzione}
 
 Il cloud computing é un modello di distribuzione dei servizi informatici che consente di accedere a risorse e applicazioni tramite Internet, senza doverle mantenere localmente sul proprio computer o server. 
-Attraverso il cloud computing, le risorse come l'archiviazione dei dati, la potenza di calcolo e il software vengono fornite come servizi virtuali da parte di fornitori specializzati noti come provider di cloud(Amazon,Google ecc.).
-Questi provider gestiscono l'infrastruttura fisica e mettono a disposizione degli utenti le risorse necessarie in base alle loro esigenze. In questo modo, le aziende possono evitare di investire in costosi hardware e software, riducendo i costi operativi e aumentando la flessibilitá.
+Attraverso il cloud computing, le risorse come l'archiviazione dei dati, la potenza di calcolo e il software vengono fornite come servizi virtuali da parte di fornitori specializzati noti come provider di cloud(Amazon,Google ecc.).\\
+La peculiarità sta nel fatto che le risorse vengono istanziate su richiesta, generalmente sotto forma di macchine virtuali.
+I provider gestiscono l'infrastruttura fisica e mettono a disposizione degli utenti le risorse necessarie in base alle loro esigenze. In questo modo, le aziende possono evitare di investire in costosi hardware e software, riducendo i costi operativi e aumentando la flessibilitá.
 
 \section{Cloud Computing}
 Possiamo distinguere diverse tipologie di servizi cloud in base al tipo di risorse che vengono fornite:
@@ -33,24 +34,23 @@ FaaS é diventato un'opzione popolare per lo sviluppo di microservizi, serverles
 Alcuni esempi di FaaS li troviamo in AWS Lambda, Google Cloud Functions, Azure Functions.
 
 \subsubsection{Serverless Computing}
-Serverless computing rappresenta un paradigma che va oltre il semplice Function-as-a-Service (FaaS), in cui il fornitore di servizi cloud si occupa completamente della gestione dell'infrastruttura sottostante. Il FaaS é un sottoinsieme del Serverless computing che si concentra specificamente sulla gestione delle singole funzioni come entitá indipendenti. In questo contesto, le funzioni vengono eseguite in modo scalabile e senza che l'utente debba preoccuparsi della gestione diretta dell'infrastruttura sottostante.
-\autocite{amslaurea24930}
-
+Serverless computing rappresenta un paradigma che va oltre il semplice Function-as-a-Service (FaaS), in cui il fornitore di servizi cloud si occupa completamente della gestione dell'infrastruttura sottostante. Il FaaS é un sottoinsieme del Serverless computing che si concentra specificamente sulla gestione delle singole funzioni come entitá indipendenti. In questo contesto, le funzioni vengono eseguite in modo scalabile e senza che l'utente debba preoccuparsi della gestione diretta dell'infrastruttura sottostante.\autocite{amslaurea24930}\\
 Nel serverless computing, il provider cloud si occuperá di allocare le risorse necessarie per eseguire il codice e di deallocarle una volta terminata l'esecuzione. Questo facilita la distribuzione e la scalabilitá del sistema, cercando di automatizzare quest'ultima fase.
-Focalizzandoci in questa gestione delle risorse, viene introdotto un linguaggio cApp che ci permetterá di sincronizzare le risorse attraverso determinate politiche.
+Focalizzandoci in questa gestione delle risorse, viene introdotto un linguaggio cAPP che ci permetterá di sincronizzare le risorse attraverso determinate politiche.
+\newpage
 \section{Allocation Priority Policies}
-Partiamo da un linguaggio dichiarativo APP(\textit{Allocation Priority Policies}) che ci permette di definire politiche di allocazione delle risorse per le funzioni serverless, derivato da un estensione dello scheduler di OpenWhisk.
+Partiamo da un linguaggio dichiarativo APP(\textit{Allocation Priority Policies})\autocite{de2020allocation} che ci permette di definire politiche di allocazione delle risorse per le funzioni serverless, derivato da un estensione dello scheduler di OpenWhisk.
 Vediamo qui di seguito un esempio del funzionamento:
 \begin{figure}[H]
    \centering
     \includegraphics{ServerlessSchedulingPoliciesExample.png}
-    \caption{Esempio di funzionamento di un sistema serverless \autocite{deserverless}}
+    \caption{Esempio di sistema serverless basato su APP}
 \end{figure}
-A destra troviamo il codice dichiarativo App che fornisce le regole per allocare le risorse: abbiamo due \textbf{Workers} che sono disponibili, e una strategia che regola come allocare queste risorse nei rispettivi worker; inoltre una \textbf{Strategy} che determina come allocare le risorse e secondo quale prioritá.
+A destra troviamo il codice dichiarativo APP che fornisce le regole per allocare/invocare le funzioni: abbiamo due \textbf{Workers} che sono disponibili, e una strategia che regola come allocare queste risorse nei rispettivi worker; inoltre una \textbf{Strategy} che determina come allocare le risorse e secondo quale prioritá.
 Attualmente peró la strategy ci permette di allocare secondo poche strategie generiche gia consolidate.
-L'obiettivo diventa ora automatizzare questo processo, adottando procedure automatiche per definire le politiche di allocazione delle risorse basate sulle informazioni derivate dall'analisi statica delle funzioni che dovranno essere eseguite.
-Osserviamo adesso un'altro esempio andando ancor di piú in profonditá:
-Data una grammatica definita nel paper\autocite {deserverless}, osserviamo alcuni esempi di funzioni:
+L'obiettivo diventa ora automatizzare questo processo, definendo le politiche di scheduling utilizzando le informazioni derivate dall'analisi statica delle funzioni che dovranno essere eseguite, per definire le politiche di allocazione delle risorse.
+Osserviamo adesso un'altro esempio andando ancor di piú in profonditá:\\
+Data una grammatica definita nel paper \autocite {deserverless}, osserviamo alcuni esempi di funzioni:
 \begin{lstlisting}[language=Java, caption= La guardia della condizione é un espressione,label={lst:1}]
     (isPremiumUser, par) => {
         if (isPremiumUser) {
@@ -91,11 +91,11 @@ Il parametro jobs descrive una sequenza di lavori map-reduce, dove il numero dei
 La fase di \textit{Map} che genera m sottotask ``ridotti'' é implementata da un servizio esterno \textit{Map} che riceve jobs e un indice i che indica il job mappato.
 Per ogni i, ci sono j sottotask.
 In questo caso ci aspettiamo che la latenza dell'intera funzione é data dalla somma di m volte la latenza di \textit{Map} e m $x$ r volte la latenza di \textit{Reduce}.\\
-\subsection{cApp}
+\subsection{cAPP}
 \label{cApp}
-cApp é un estensione di App, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili.
-\autocite{de2020allocation}.
-cApp é stato modificato al fine di implementare nuovi costrutti quali \textit{min\_latency} e \textit{max\_latency} che ci permettono di definire un upper bound e un lower bound per la latenza di una funzione.
+cAPP é un estensione di APP, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili.
+\autocite {deserverless}
+cAPP é stato modificato al fine di implementare nuovi costrutti quali \textit{min\_latency} e \textit{max\_latency} che ci permettono di definire un upper bound e un lower bound per la latenza di una funzione.
 \begin{multicols}{2}
     \begin{lstlisting}[caption={cAPP for Listing \ref{lst:1} e \ref{lst:2}},label={lst:4}]
 -premUser:
@@ -105,7 +105,7 @@ cApp é stato modificato al fine di implementare nuovi costrutti quali \textit{m
     strategy: min_latency
     \end{lstlisting}
     \columnbreak
-    \begin{lstlisting}[caption={cApp for Listing~\ref{lst:3}}, label={lst:5}]
+    \begin{lstlisting}[caption={cAPP for Listing~\ref{lst:3}}, label={lst:5}]
 -mapReduce:
     -workers:
         -wrk: W1
@@ -117,19 +117,19 @@ cApp é stato modificato al fine di implementare nuovi costrutti quali \textit{m
 \end{multicols}
 
 Nel Listing \ref{lst:4}, osserviamo come diamo la possibilitá di allocare la funzione \textit{premUser} su due workers, e la strategia di allocazione é quella di minimizzare la latenza, ovvero di dare prioritá al worker su cui la soluzione dell'espressione di costo é minima.
-Illustriamo peró meglio le fasi della tecnica di \textit{min\_latency}:
-Quando viene creato lo script cApp, viene creata l'associazione tra il codice delle funzioni e il loro script etichettando le funzioni con \textit{//tag:premUser}.
+Illustriamo peró meglio le fasi della tecnica di \textit{min\_latency}:\\
+Quando viene creato lo script cAPP, viene creata l'associazione tra il codice delle funzioni e il loro script etichettando le funzioni con \textit{//tag:premUser}.
 Successivamente abbiamo bisogno del calcolo delle funzioni di costo, il codice delle funzioni viene utilizzato per dedurre i programmi di costo corrispondenti.
 Quando le funzioni vengono invocate, possiamo calcolare la soluzione del programma di costo data la conoscenza dei parametri di invocazione.
-Quando riceviamo una richiesta ad esempio per il Listing \ref{lst:1} prendiamo il suo programma di costo(rappresentato dal punto di intersezione sinistra) e la corrispondente politica cApp per implementare la politica di schedulazione prevista.
+Quando riceviamo una richiesta ad esempio per il Listing \ref{lst:1} prendiamo il suo programma di costo(rappresentato dal punto di intersezione sinistra) e la corrispondente politica cAPP per implementare la politica di schedulazione prevista.
 Questa politica puo essere ottenuta in due fasi: Calcolando i programmi di costo dal Solver, eseguendoli in ogni worker, e scegliendo il worker che ha latenza minima per contattare il \textit{PremiumService}.
-Invece nel caso del Listing \ref{lst:5} invece abbiamo una strategia di invalidazione \textit{max\_latency}, dopo aver selezionato un worker con una determinata strategia, andiamo a verificare se il worker é in grado di eseguire la funzione andando a risolvere l'espressione di costo corrispondente sostituendo i parametri $m$ e $r$ con la latenza dei servizi \textit{Map} e \textit{Reduce} dal worker selezionato e verifichiamo che la latenza sia inferiore a quella definita nello script.\autocite{deserverless}\\
+Invece nel caso del Listing \ref{lst:5}, abbiamo una strategia di invalidazione \textit{max\_latency}, dopo aver selezionato un worker con una determinata strategia, andiamo a verificare se il worker é in grado di eseguire la funzione andando a risolvere l'espressione di costo corrispondente sostituendo i parametri $m$ e $r$ con la latenza dei servizi \textit{Map} e \textit{Reduce} dal worker selezionato e verifichiamo che la latenza sia inferiore a quella definita nello script.\autocite{deserverless}
 \begin{figure}[H]
     \includegraphics[width=.9\textwidth]{SchedulingDeployFlow.png}
     \centering
     \caption{From Deploy to Scheduling for Listing \ref{lst:1} e \ref{lst:2} }
 \end{figure}
-\newpage
+
 \section{Obiettivo della tesi}
 L'obiettivo principale della tesi è approfondire le tecniche utilizzate per analizzare la semantica delle funzioni scritte in un linguaggio specifico, il quale sarà dettagliatamente delineato nei capitoli successivi. Tale analisi semantica è cruciale per generare le equazioni di costo associate a ciascuna funzione. Queste equazioni di costo forniscono dati fondamentali, come la complessità, che rappresenta un limite superiore delle prestazioni della funzione stessa. Queste informazioni sono essenziali per ottimizzare l'esecuzione delle funzioni serverless una volta richieste, consentendo un'allocazione efficiente delle risorse e una riduzione dei tempi di esecuzione.
 

@@ -9,10 +9,8 @@ Il capitolo si propone inoltre di approfondire le sfide e le opportunità che em
 Forniremo inoltre le istruzione per eseguire il modulo WebAssembly generato, e analizzeremo il processo di esecuzione e di debug dello stesso attraverso un motore di runtime.
 
 \section{Introduzione WebAssembly}
-WebAssembly (Wasm) è un formato di istruzioni altamente performante, portabile e sicuro, progettato per essere eseguito in ambienti virtuali. Originariamente concepito da un gruppo di lavoro congiunto tra Google, Mozilla, Microsoft e Apple, il principale obiettivo di WebAssembly è fornire un formato binario indipendente dalla piattaforma, garantendo al contempo sicurezza e velocità. Sebbene sia stato ideato principalmente per essere eseguito all'interno dei browser web, Wasm trova applicazioni anche in contesti diversi come server, dispositivi IoT e applicazioni desktop.
-
-Le istruzioni Wasm si distinguono dalle istruzioni di un processore reale in quanto sono progettate per l'esecuzione in un ambiente virtuale. Ciò implica che le istruzioni Wasm non possono essere eseguite direttamente da un processore fisico; richiedono invece una traduzione preliminare in istruzioni native. Questo processo di traduzione è gestito da un motore di runtime, il quale interpreta le istruzioni Wasm e le traduce in istruzioni native del sistema ospite. Oltre alla traduzione delle istruzioni, il motore di runtime si occupa anche della gestione della memoria e delle risorse del sistema, fornendo un'astrazione sicura e indipendente dalla piattaforma.
-
+WebAssembly (Wasm) è un formato di istruzioni altamente performante, portabile e sicuro, progettato per essere eseguito in ambienti virtuali. Originariamente concepito da un gruppo di lavoro congiunto tra Google, Mozilla, Microsoft e Apple, il principale obiettivo di WebAssembly è fornire un formato binario indipendente dalla piattaforma, garantendo al contempo sicurezza e velocità. Sebbene sia stato ideato principalmente per essere eseguito all'interno dei browser web, Wasm trova applicazioni anche in contesti diversi come server, dispositivi IoT e applicazioni desktop.\\
+Le istruzioni Wasm si distinguono dalle istruzioni di un processore reale in quanto sono progettate per l'esecuzione in un ambiente virtuale. Ciò implica che le istruzioni Wasm non possono essere eseguite direttamente da un processore fisico; richiedono invece una traduzione preliminare in istruzioni native. Questo processo di traduzione è gestito da un motore di runtime, il quale interpreta le istruzioni Wasm e le traduce in istruzioni native del sistema ospite. Oltre alla traduzione delle istruzioni, il motore di runtime si occupa anche della gestione della memoria e delle risorse del sistema, fornendo un'astrazione sicura e indipendente dalla piattaforma.\\
 In sintesi, WebAssembly rappresenta una tecnologia versatile e potente che offre un'alternativa efficace alle tradizionali soluzioni di esecuzione di codice, poiché il formato binario di WebAssembly è progettato per essere facilmente scaricabile e decodificabile dai browser web. Consente dunque l'esecuzione di codice web a velocità prossime a quelle delle applicazioni native. Questa caratteristica rende Wasm un'opzione attraente per una vasta gamma di applicazioni, inclusi giochi, strumenti di produttività, applicazioni di elaborazione multimediale e molto altro ancora.\autocite{WebAssemblyDoc}
 
 \section{WebAssembly Text Format}
@@ -136,19 +134,19 @@ Ricorsivamente andremo a chiamare la funzione ``codeGeneration()'' per ogni nodo
 Andremo a vedere nello specifico due implementazioni della funzione ``codeGeneration()'' durante la generazione del codice wat, la codeGeneration per l'if Node e la codeGeneration per il for Node.
 
 \begin{lstlisting}[language=Java, caption={codeGeneration() per l'if Node}, label={lst:codeGenerationIf}]
-    @Override
-    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return "(local $res i32)\n" +
-                "(if"+exp.codeGeneration(offset_idx)+
-                "(then\n"+stmT.codeGeneration(offset_idx)+
-                "(local.set $res)" +
-                "\n)" +
-                "(else\n"+stmF.codeGeneration(offset_idx)+
-                "(local.set $res)" +
-                "\n)" +
-                "\n)" +
-                "(local.get $res)\n";
-    }
+@Override
+public String codeGeneration(HashMap<Node, Integer> offset_idx) {
+    return "(local $res i32)\n" +
+            "(if"+exp.codeGeneration(offset_idx)+
+            "(then\n"+stmT.codeGeneration(offset_idx)+
+            "(local.set $res)" +
+            "\n)" +
+            "(else\n"+stmF.codeGeneration(offset_idx)+
+            "(local.set $res)" +
+            "\n)" +
+            "\n)" +
+            "(local.get $res)\n";
+}
     
 \end{lstlisting}
 Descriviamo il funzionamento della codeGeneration per l'if Node. Come vediamo nel listato \ref{lst:codeGenerationIf} la funzione ritorna una stringa che contiene il codice wat per l'if Node e prende come parametro un \textit{offset\_idx}.
@@ -160,7 +158,6 @@ La terza istruzione \textit{then} richiama la funzione codeGeneration() del ramo
 Al termine di quella codeGeneration ci aspettiamo di avere un elemento della pila che contenga il risultato di quella espressione, con il local.set \$res andiamo a salvare il risultato nella variabile locale \$res, e togliendolo da quella pila, mantenendo cosi l'invariante.
 La quarta istruzione \textit{else} richiama la funzione codeGeneration() del ramo else, che ritorna una stringa che contiene il codice wat per il ramo else, in maniera simmetrica a ció che abbiamo fatto per il ramo then.
 La quinta istruzione \textit{local.get} prende il valore della variabile locale \$res e lo inserisce nello stack, e lo ritorna.\\
-
 Andremo di seguito a vedere lo stesso ragionamento per la codeGeneration del for Node:
     
 \begin{lstlisting}[language=Java, caption={codeGeneration() per il for Node}, label={lst:codeGenerationFor}]
@@ -170,10 +167,12 @@ public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         "(local $"+id+" i32)\n" +
         "(local $"+id+"_max i32)\n" +
         "(local $res i32)\n" +
-        exp.codeGeneration(offset_idx) +
+            exp.codeGeneration(offset_idx) +
         "(local.set $"+id+"_max)\n" +   
         "(loop $for"+line+"\n" +       
-        "(if (i32.lt_u (local.get $"+id+")(local.get $"+id+"_max) )"+
+        "(if 
+          (i32.lt_u 
+            (local.get $"+id+")(local.get $"+id+"_max))"+
         "(then"+
             stm.codeGeneration(offset_idx) +
         "(local.set $res)\n" +
@@ -184,7 +183,8 @@ public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         "(br $for"+line +")\n)"  +
         "(else" +
         "(local.get $"+id+"_max)\n" + 
-        "(local.set $"+id+"))\n))\n
+        "(local.set $"+id+")
+        )\n))\n
         (local.get $res)" ;   
     }
 
