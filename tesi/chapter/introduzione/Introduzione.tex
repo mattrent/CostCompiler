@@ -31,6 +31,7 @@ Alcuni esempi piú comuni di SaaS li troviamo in Google Workspace, Microsoft Off
 Function as a Service(FaaS) é un modello di cloud computing che consente agli sviluppatori di eseguire e gestire le proprie funzioni senza dover gestire l'infrastruttura sottostante.
 In FaaS, gli sviluppatori suddividono le loro applicazioni in funzioni modulari e indipendenti. Ogni funzione esegue un'attivitá specifica e puó essere attivata in risposta a eventi o richieste specifiche. Ad esempio, una funzione puó essere scatenata da un evento di caricamento di un file su un sistema di archiviazione cloud, da una richiesta HTTP o da un timer programmato. Quando una funzione viene attivata, il fornitore di servizi cloud gestisce automaticamente la sua esecuzione, inclusa la gestione delle risorse necessarie. Le funzioni vengono eseguite in ambienti isolati e scalati automaticamente in base alle richieste di carico. Una volta completata l'esecuzione della funzione, le risorse vengono deallocate per massimizzare l'efficienza e minimizzare i costi.
 FaaS é diventato un'opzione popolare per lo sviluppo di microservizi, serverless application e scenari di elaborazione event-driven, fornendo un modo flessibile ed efficiente per eseguire singole funzioni di codice.
+L'utente sostanzialmente deve solo fornire la logica aziendale insieme alle sue dipendenze e il fornitore del cloud è responsabile dell'allocazione di risorse, della scalabilità e della disponibilità del servizio. Queste piattaforme vengono generalmente fatturate in base al consumo, consentendo agli sviluppatori di ridurre i costi aumentando al tempo stesso l'agilità.\cite{bhatt2022study}
 Alcuni esempi di FaaS li troviamo in AWS Lambda, Google Cloud Functions, Azure Functions.
 
 \subsubsection{Serverless Computing}
@@ -90,7 +91,7 @@ Quindi possiamo preventivare il ritardo atteso(come tempo di esecuzione peggiore
 Il parametro jobs descrive una sequenza di lavori map-reduce, dove il numero dei jobs é indicato dal parametro m.
 La fase di \textit{Map} che genera m sottotask ``ridotti'' é implementata da un servizio esterno \textit{Map} che riceve jobs e un indice i che indica il job mappato.
 Per ogni i, ci sono j sottotask.
-In questo caso ci aspettiamo che la latenza dell'intera funzione é data dalla somma di m volte la latenza di \textit{Map} e m $x$ r volte la latenza di \textit{Reduce}.\\
+In questo caso ci aspettiamo che la latenza dell'intera funzione é data dalla somma di m volte la latenza di \textit{Map} e m $x$ r volte la latenza di \textit{Reduce}.\autocite{de2023custom}\\
 \subsection{cAPP}
 \label{cApp}
 cAPP é un estensione di APP, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili.

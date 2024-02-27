@@ -14,6 +14,7 @@ Le istruzioni Wasm si distinguono dalle istruzioni di un processore reale in qua
 In sintesi, WebAssembly rappresenta una tecnologia versatile e potente che offre un'alternativa efficace alle tradizionali soluzioni di esecuzione di codice, poiché il formato binario di WebAssembly è progettato per essere facilmente scaricabile e decodificabile dai browser web. Consente dunque l'esecuzione di codice web a velocità prossime a quelle delle applicazioni native. Questa caratteristica rende Wasm un'opzione attraente per una vasta gamma di applicazioni, inclusi giochi, strumenti di produttività, applicazioni di elaborazione multimediale e molto altro ancora.\autocite{WebAssemblyDoc}
 
 \section{WebAssembly Text Format}
+\label{wat}
 Il formato di testo WebAssembly (WAT) \autocite{WebAssemblyTextFormat} è un formato di testo leggibile dall'uomo per la rappresentazione di moduli WebAssembly. Il formato è stato progettato per essere utilizzato come rappresentazione intermedia durante il processo di compilazione, fornendo un'astrazione leggibile dall'uomo per il codice Wasm.
 Consiste in un insieme di istruzioni mnemoniche e direttive che corrispondono direttamente alle istruzioni binarie di WebAssembly.
 Il compilatore che abbiamo sviluppato generiamo un file .wat ed in seguito il tool wat2wasm \autocite{jain2022webassembly} genera il file .wasm, che a sua volta potrá essere eseguito da un motore di runtime.
@@ -47,11 +48,9 @@ Possiamo usare anche l'operatore \$ per accedere ai parametri locali, in maniera
 Come vediamo in questo esempio la funzione \$fun prende in input due parametri di tipo intero e ritorna un valore di tipo float. Inoltre all'interno della funzione vengono dichiarati tre parametri locali, due di tipo intero e uno di tipo float.
 
 \subsection{WebAssembly System Interface}
-Mentre il WebAssembly (Wasm) era inizialmente destinato all'uso nel sandbox del browser web, è progettato in modo tale da poter essere eseguito su qualsiasi piattaforma se esiste un'implementazione del runtime Wasm. Nei browser, il Wasm viene eseguito nell'interprete JavaScript e nel sandbox del browser, ma per eseguire moduli Wasm al di fuori di essi, è necessaria un'interfaccia con il sistema sottostante. Qui entra in gioco WASI (l'interfaccia di sistema WebAssembly).
-
-WASI è un'interfaccia di sistema standardizzata per WebAssembly. 
+Mentre il WebAssembly (Wasm) era inizialmente destinato all'uso nel sandbox del browser web, è progettato in modo tale da poter essere eseguito su qualsiasi piattaforma se esiste un'implementazione del runtime Wasm. Nei browser, il Wasm viene eseguito nell'interprete JavaScript e nel sandbox del browser, ma per eseguire moduli Wasm al di fuori di essi, è necessaria un'interfaccia con il sistema sottostante. Qui entra in gioco WASI (l'interfaccia di sistema WebAssembly).\\
+WASI è un'interfaccia di sistema standardizzata per WebAssembly.\\
 WASI si riferisce a tutti i diversi interpreti del codice Wasm al di fuori del browser. La Bytecode Alliance ha un paio di runtime Wasm di propria produzione: Wasmtime e WAMR (WebAssembly Micro Runtime). WASI promuove linee guida su come dovrebbe essere realizzato un corretto interprete Wasm in modo da mantenere le funzionalità di sicurezza sandbox che ha all'interno dei browser per impostazione predefinita. Wasmtime è un runtime di tipo just-in-time per il codice Wasm e WAMR è un interprete Wasm progettato per dispositivi embedded.\autocite{niemela2021webassembly}
-
 
 \subsubsection{Stack Machine}
 L'esecuzione del WebAssembly é definita in termini di Stack-Machine, dove l'idea generale é che ogni tipo di istruzione esegue operazioni di tipo \textit{push/pop} dallo stack.
@@ -72,7 +71,7 @@ Come vediamo nello schema seguente:
     \label{fig:stack_machine}
 \end{figure}
 Un puntatore mantiene la posizione di esecuzione all\' interno del codice e uno stack di controllo virtuale tiene traccia dei blocchi e dei costrutti man mano che vengono in input (operazione push) e in output (operazione pop). Le istruzioni tuttavia vengono eseguite senza alcun riferimento a un AST. Pertanto, la parte del formato delle istruzioni binarie della definizione si riferisce a una rappresentazione binaria delle istruzioni che sono in un formato leggibile dallo stack di decodifica nel browser.\autocite{amslaurea20464}
-Per eseguire la \textbf{chiamata della funzione} \ref{funzioneSomma}, vediamo il codice seguente:
+Per eseguire la \textbf{chiamata della funzione} \ref{lst:funzioneSomma}, vediamo il codice seguente:
 \begin{lstlisting}[language=WebAssembly]
     (func $main
         (result i32)
@@ -223,7 +222,7 @@ fetch("output.wasm")
 
 La prima istruzione \textit{const memory = new WebAssembly.Memory({ initial: 1 });} definisce un oggetto memory che rappresenta la memoria del modulo WebAssembly. In questo caso, la memoria è inizializzata con una dimensione iniziale di 1 pagina.
 La seconda istruzione \textit{const importObject = \{ js: \{ mem: memory \} \};} definisce un oggetto di importazione che contiene la memoria del modulo WebAssembly. Questo oggetto di importazione verrà utilizzato per fornire l'accesso alla memoria del modulo WebAssembly.
-La terza istruzione \textit{fetch("output.wasm")} carica il file .wasm e restituisce una Promise che contiene i byte del file .wasm.
+La terza istruzione \textit{fetch("output.wasm")} carica il file .wasm e restituisce una Promise che contiene i byte del file .wasm.\\
 Andando nella console di chrome é possibile vedere il file .wasm caricato, e debuggarlo come vediamo in questo snippet:
 \begin{figure}[H]
     \centering
