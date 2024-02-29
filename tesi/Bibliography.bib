@@ -1,218 +1,263 @@
-@inproceedings{de2020allocation,
-  author       = {Giuseppe De Palma and
-                  Saverio Giallorenzo and
-                  Jacopo Mauro and
-                  Gianluigi Zavattaro},
-  editor       = {Eleanna Kafeza and
-                  Boualem Benatallah and
-                  Fabio Martinelli and
-                  Hakim Hacid and
-                  Athman Bouguettaya and
-                  Hamid Motahari},
-  title        = {Allocation Priority Policies for Serverless Function-Execution Scheduling
-                  Optimisation},
-  booktitle    = {Service-Oriented Computing - 18th International Conference, {ICSOC}
-                  2020, Dubai, United Arab Emirates, December 14-17, 2020, Proceedings},
-  series       = {Lecture Notes in Computer Science},
-  volume       = {12571},
-  pages        = {416--430},
-  publisher    = {Springer},
-  year         = {2020},
-  url          = {https://doi.org/10.1007/978-3-030-65310-1\_29},
-  doi          = {10.1007/978-3-030-65310-1\_29},
-  timestamp    = {Fri, 09 Apr 2021 18:46:48 +0200},
-  biburl       = {https://dblp.org/rec/conf/icsoc/PalmaGMZ20.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-
-@inproceedings{de2023custom,
-  title={Custom Serverless Function Scheduling Policies: An APP Tutorial},
-  author={De Palma, Giuseppe and Giallorenzo, Saverio and Mauro, Jacopo and Trentin, Matteo and Zavattaro, Gianluigi},
-  booktitle={Joint Post-proceedings of the Third and Fourth International Conference on Microservices (Microservices 2020/2022)},
-  year={2023},
-  organization={Schloss Dagstuhl--Leibniz-Zentrum f{\"u}r Informatik}
-}
-
-@book{bhatt2022study,
-  title={A Study on the Temporal Predictability of Serverless Functions},
-  author={Bhatt, Ishan Vasishta},
-  year={2022},
-  publisher={North Carolina State University}
-}
-
-@inproceedings{flores2014resource,
-  author       = {Antonio Flores{-}Montoya and
-                  Reiner H{\"{a}}hnle},
-  editor       = {Jacques Garrigue},
-  title        = {Resource Analysis of Complex Programs with Cost Equations},
-  booktitle    = {Programming Languages and Systems - 12th Asian Symposium, {APLAS}
-                  2014, Singapore, November 17-19, 2014, Proceedings},
-  series       = {Lecture Notes in Computer Science},
-  volume       = {8858},
-  pages        = {275--295},
-  publisher    = {Springer},
-  year         = {2014},
-  url          = {https://doi.org/10.1007/978-3-319-12736-1\_15},
-  doi          = {10.1007/978-3-319-12736-1\_15},
-  timestamp    = {Tue, 14 May 2019 10:00:41 +0200},
-  biburl       = {https://dblp.org/rec/conf/aplas/Flores-MontoyaH14.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-
-
-@thesis{amslaurea24930,
-          author = {Matteo Trentin},
-           title = {Topology-based Scheduling in Serverless Computing Platforms},
-        keywords = {serverless,FaaS,OpenWhisk,OpenFaaS,Fission,scheduling,cloud computing},
-             url = {http://amslaurea.unibo.it/24930/},
-        abstract = {In the past few years, Function as a Service (FaaS) solutions, and Serverless computing in general, have become a significant topic both in terms of general interest and research effort. Allowing users to run stateless code in the cloud without worrying about the underlying infrastructure for scheduling, management and scaling, the ease of use of these approaches still comes with various trade-offs and challenges. In this thesis, the issue of data locality is observed, using an extension of the Apache OpenWhisk framework to provide users the ability to select the node they wish to use to schedule some of their functions, allowing the code to be run closer to the data it manipulates. Additionally, a topology-based scheduling approach is implemented for the framework, where load balancers are instructed to prioritize nodes in their same topological zone; this way, users can specify a preferred load balancer for different functions, with no need to know the position and name of all other nodes in the cluster. This modified version of the OpenWhisk framework is then compared with the standard OpenWhisk implementation, along with two other serverless frameworks, Fission and OpenFaaS, using a test suite composed of different use cases, using both existing projects from the Wonderless dataset and custom-built functions targeting different aspects of the paradigm. The role of data locality considerations and topology-based policies is analyzed, showing their importance in a multi-zone cluster with nodes in various geographical locations, where latency between them and the remote data used by the functions can be significant.}
-}
-
-@inproceedings{deserverless,
-  author       = {Giuseppe De Palma and
-                  Saverio Giallorenzo and
-                  Cosimo Laneve and
-                  Jacopo Mauro and
-                  Matteo Trentin and
-                  Gianluigi Zavattaro},
-  editor       = {Maurice H. ter Beek and
-                  Clemens Dubslaff},
-  title        = {Serverless Scheduling Policies based on Cost Analysis},
-  booktitle    = {Proceedings of the First Workshop on Trends in Configurable Systems
-                  Analysis, TiCSA@ETAPS 2023, Paris, France, 23rd April 2023},
-  series       = {{EPTCS}},
-  volume       = {392},
-  pages        = {40--52},
-  year         = {2023},
-  url          = {https://doi.org/10.4204/EPTCS.392.3},
-  doi          = {10.4204/EPTCS.392.3},
-  timestamp    = {Mon, 06 Nov 2023 15:17:28 +0100},
-  biburl       = {https://dblp.org/rec/journals/corr/abs-2310-20391.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-
-@book{DBLP:books/aw/AhoSU86,
-  author       = {Alfred V. Aho and
-                  Ravi Sethi and
-                  Jeffrey D. Ullman},
-  title        = {Compilers: Principles, Techniques, and Tools},
-  series       = {Addison-Wesley series in computer science / World student series edition},
-  publisher    = {Addison-Wesley},
-  year         = {1986},
-  url          = {https://www.worldcat.org/oclc/12285707},
-  isbn         = {0-201-10088-6},
-  timestamp    = {Fri, 17 Jul 2020 16:12:45 +0200},
-  biburl       = {https://dblp.org/rec/books/aw/AhoSU86.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-
-@book{mogensen2010basics,
-  title={Basics of compiler design},
-  author={Mogensen, Torben {\AE}gidius},
-  year={2010}
-}
-
-@phdthesis{amslaurea3135,
-           title = {Strumenti per l'analisi del tempo di esecuzione},
-          author = {Sara Bergonzoni},
-             url = {http://amslaurea.unibo.it/3135/}
-}
-
-@phdthesis{amslaurea2372,
-          author = {Stefano Pascali},
-           title = {Definizione di una grammatica per il linguaggio Jolie},
-             url = {http://amslaurea.unibo.it/2372/},
-        keywords = {JOLIE ANTLR}
-}
-
-@article{antlrllkparser,
-  author       = {Terence John Parr and
-                  Russell W. Quong},
-  title        = {{ANTLR:} {A} Predicated- \emph{ LL(k) } Parser Generator},
-  journal      = {Softw. Pract. Exp.},
-  volume       = {25},
-  number       = {7},
-  pages        = {789--810},
-  year         = {1995},
-  url          = {https://doi.org/10.1002/spe.4380250705},
-  doi          = {10.1002/SPE.4380250705},
-  timestamp    = {Thu, 09 Apr 2020 17:14:33 +0200},
-  biburl       = {https://dblp.org/rec/journals/spe/ParrQ95.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-
 @inproceedings{albert2008automatic,
-  author       = {Elvira Albert and
-                  Puri Arenas and
-                  Samir Genaim and
-                  German Puebla},
-  editor       = {Maria Alpuente and
-                  German Vidal},
-  title        = {Automatic Inference of Upper Bounds for Recurrence Relations in Cost
-                  Analysis},
-  booktitle    = {Static Analysis, 15th International Symposium, {SAS} 2008, Valencia,
-                  Spain, July 16-18, 2008. Proceedings},
-  series       = {Lecture Notes in Computer Science},
-  volume       = {5079},
-  pages        = {221--237},
-  publisher    = {Springer},
-  year         = {2008},
-  url          = {https://doi.org/10.1007/978-3-540-69166-2\_15},
-  doi          = {10.1007/978-3-540-69166-2\_15},
-  timestamp    = {Mon, 03 Jan 2022 22:21:24 +0100},
-  biburl       = {https://dblp.org/rec/conf/sas/AlbertAGP08.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
+  author    = {Elvira Albert and
+               Puri Arenas and
+               Samir Genaim and
+               German Puebla},
+  editor    = {Maria Alpuente and
+               German Vidal},
+  title     = {Automatic Inference of Upper Bounds for Recurrence Relations in Cost
+               Analysis},
+  booktitle = {Static Analysis, 15th International Symposium, {SAS} 2008, Valencia,
+               Spain, July 16-18, 2008. Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {5079},
+  pages     = {221--237},
+  publisher = {Springer},
+  year      = {2008},
+  url       = {https://doi.org/10.1007/978-3-540-69166-2\_15},
+  doi       = {10.1007/978-3-540-69166-2\_15},
+  timestamp = {Mon, 03 Jan 2022 22:21:24 +0100},
+  biburl    = {https://dblp.org/rec/conf/sas/AlbertAGP08.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
 @article{albert2011closed,
-  title={Closed-form upper bounds in static cost analysis},
-  author={Albert, Elvira and Arenas, Puri and Genaim, Samir and Puebla, Germ{\'a}n},
-  journal={Journal of automated reasoning},
-  volume={46},
-  pages={161--203},
-  year={2011},
-  publisher={Springer}
-}
-
-@site{WebAssemblyDoc,
-  title={WebAssembly Doc},
-  url={https://developer.mozilla.org/en-US/docs/WebAssembly}
-}
-
-@article{jain2022webassembly,
-  title={WebAssembly Text Toolkit and Other Utilities},
-  author={Jain, Shashank Mohan and Jain, Shashank Mohan},
-  journal={WebAssembly for Cloud: A Basic Guide for Wasm-Based Cloud Apps},
-  pages={33--55},
-  year={2022},
-  publisher={Springer}
-}
-
-@article{DBLP:journals/corr/abs-2205-01183,
-  author       = {Ben L. Titzer},
-  title        = {A fast in-place interpreter for WebAssembly},
-  journal      = {CoRR},
-  volume       = {abs/2205.01183},
-  year         = {2022},
-  url          = {https://doi.org/10.48550/arXiv.2205.01183},
-  doi          = {10.48550/ARXIV.2205.01183},
-  eprinttype    = {arXiv},
-  eprint       = {2205.01183},
-  timestamp    = {Thu, 05 May 2022 15:47:51 +0200},
-  biburl       = {https://dblp.org/rec/journals/corr/abs-2205-01183.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-
-@article{niemela2021webassembly,
-  title={WebAssembly, Fourth Language in the Web},
-  author={Niemel{\"a}, Vili-Petteri},
-  year={2021}
+  title     = {Closed-form upper bounds in static cost analysis},
+  author    = {Albert, Elvira and Arenas, Puri and Genaim, Samir and Puebla, Germ{\'a}n},
+  journal   = {Journal of automated reasoning},
+  volume    = {46},
+  pages     = {161--203},
+  year      = {2011},
+  publisher = {Springer}
 }
 
 @phdthesis{amslaurea20464,
-          author = {Marco Aspromonte},
-           title = {Studio del WebAssembly e sperimentazioni con Emscripten},
-        abstract = {L'elaborato {\`e} volto allo studio dello standard WebAssembly, delle sue specifiche di implementazione e applicazione nel mondo delle Tecnologie Web moderne. Grazie alla sua architettura e alla portabilit{\`a} che offre in termini di esecuzione multi-piattaforma, il WebAssembly pu{\`o} acquisire enormi potenzialit{\`a} dal punto di vista dello sviluppo delle applicazioni web, poich{\`e} consente una riscrittura del codice nativo (C e C++) in linguaggi eseguibili e interpretabili dal browser, quali Javascript e Html. In questo modo, qualsiasi software o applicazione scritta in codice nativo pu{\`o} essere integrata in una web app  ed eseguita da un browser. Ovviamente per le applicazioni pi{\`u} complesse il lavoro {\`e} molto pi{\`u} complesso che per semplici script di stampa o piccoli input dall'utente, ma lo standard ha vita da soli 5 anni, lasciando una prospettiva di ampio sviluppo nel futuro.},
-        keywords = {WebAssembly,Emscripten,compilatori,portabilit{\`a},tecnologie web,linguaggi di programmazione,formato,stack machine},
-             url = {http://amslaurea.unibo.it/20464/}
+  author   = {Marco Aspromonte},
+  title    = {Studio del WebAssembly e sperimentazioni con Emscripten},
+  abstract = {L'elaborato {\`e} volto allo studio dello standard WebAssembly, delle sue specifiche di implementazione e applicazione nel mondo delle Tecnologie Web moderne. Grazie alla sua architettura e alla portabilit{\`a} che offre in termini di esecuzione multi-piattaforma, il WebAssembly pu{\`o} acquisire enormi potenzialit{\`a} dal punto di vista dello sviluppo delle applicazioni web, poich{\`e} consente una riscrittura del codice nativo (C e C++) in linguaggi eseguibili e interpretabili dal browser, quali Javascript e Html. In questo modo, qualsiasi software o applicazione scritta in codice nativo pu{\`o} essere integrata in una web app  ed eseguita da un browser. Ovviamente per le applicazioni pi{\`u} complesse il lavoro {\`e} molto pi{\`u} complesso che per semplici script di stampa o piccoli input dall'utente, ma lo standard ha vita da soli 5 anni, lasciando una prospettiva di ampio sviluppo nel futuro.},
+  keywords = {WebAssembly,Emscripten,compilatori,portabilit{\`a},tecnologie web,linguaggi di programmazione,formato,stack machine},
+  url      = {http://amslaurea.unibo.it/20464/}
+}
+
+@phdthesis{amslaurea2372,
+  author   = {Stefano Pascali},
+  title    = {Definizione di una grammatica per il linguaggio Jolie},
+  url      = {http://amslaurea.unibo.it/2372/},
+  keywords = {JOLIE ANTLR}
+}
+
+@thesis{amslaurea24930,
+  author   = {Matteo Trentin},
+  title    = {Topology-based Scheduling in Serverless Computing Platforms},
+  keywords = {serverless,FaaS,OpenWhisk,OpenFaaS,Fission,scheduling,cloud computing},
+  url      = {http://amslaurea.unibo.it/24930/},
+  abstract = {In the past few years, Function as a Service (FaaS) solutions, and Serverless computing in general, have become a significant topic both in terms of general interest and research effort. Allowing users to run stateless code in the cloud without worrying about the underlying infrastructure for scheduling, management and scaling, the ease of use of these approaches still comes with various trade-offs and challenges. In this thesis, the issue of data locality is observed, using an extension of the Apache OpenWhisk framework to provide users the ability to select the node they wish to use to schedule some of their functions, allowing the code to be run closer to the data it manipulates. Additionally, a topology-based scheduling approach is implemented for the framework, where load balancers are instructed to prioritize nodes in their same topological zone; this way, users can specify a preferred load balancer for different functions, with no need to know the position and name of all other nodes in the cluster. This modified version of the OpenWhisk framework is then compared with the standard OpenWhisk implementation, along with two other serverless frameworks, Fission and OpenFaaS, using a test suite composed of different use cases, using both existing projects from the Wonderless dataset and custom-built functions targeting different aspects of the paradigm. The role of data locality considerations and topology-based policies is analyzed, showing their importance in a multi-zone cluster with nodes in various geographical locations, where latency between them and the remote data used by the functions can be significant.}
+}
+
+@phdthesis{amslaurea3135,
+  title  = {Strumenti per l'analisi del tempo di esecuzione},
+  author = {Sara Bergonzoni},
+  url    = {http://amslaurea.unibo.it/3135/}
+}
+
+
+@article{antlrllkparser,
+  author    = {Terence John Parr and
+               Russell W. Quong},
+  title     = {{ANTLR:} {A} Predicated- \emph{ LL(k) } Parser Generator},
+  journal   = {Softw. Pract. Exp.},
+  volume    = {25},
+  number    = {7},
+  pages     = {789--810},
+  year      = {1995},
+  url       = {https://doi.org/10.1002/spe.4380250705},
+  doi       = {10.1002/SPE.4380250705},
+  timestamp = {Thu, 09 Apr 2020 17:14:33 +0200},
+  biburl    = {https://dblp.org/rec/journals/spe/ParrQ95.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@book{bhatt2022study,
+  title     = {A Study on the Temporal Predictability of Serverless Functions},
+  author    = {Bhatt, Ishan Vasishta},
+  year      = {2022},
+  publisher = {North Carolina State University}
+}
+
+@book{DBLP:books/aw/AhoSU86,
+  author    = {Alfred V. Aho and
+               Ravi Sethi and
+               Jeffrey D. Ullman},
+  title     = {Compilers: Principles, Techniques, and Tools},
+  series    = {Addison-Wesley series in computer science / World student series edition},
+  publisher = {Addison-Wesley},
+  year      = {1986},
+  url       = {https://www.worldcat.org/oclc/12285707},
+  isbn      = {0-201-10088-6},
+  timestamp = {Fri, 17 Jul 2020 16:12:45 +0200},
+  biburl    = {https://dblp.org/rec/books/aw/AhoSU86.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{DBLP:journals/corr/abs-1902-03383,
+  author     = {Eric Jonas and
+                Johann Schleier{-}Smith and
+                Vikram Sreekanti and
+                Chia{-}che Tsai and
+                Anurag Khandelwal and
+                Qifan Pu and
+                Vaishaal Shankar and
+                Jo{\~{a}}o Carreira and
+                Karl Krauth and
+                Neeraja Jayant Yadwadkar and
+                Joseph E. Gonzalez and
+                Raluca Ada Popa and
+                Ion Stoica and
+                David A. Patterson},
+  title      = {Cloud Programming Simplified: {A} Berkeley View on Serverless Computing},
+  journal    = {CoRR},
+  volume     = {abs/1902.03383},
+  year       = {2019},
+  url        = {http://arxiv.org/abs/1902.03383},
+  eprinttype = {arXiv},
+  eprint     = {1902.03383},
+  timestamp  = {Thu, 13 Apr 2023 19:55:40 +0200},
+  biburl     = {https://dblp.org/rec/journals/corr/abs-1902-03383.bib},
+  bibsource  = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{DBLP:journals/corr/abs-2205-01183,
+  author     = {Ben L. Titzer},
+  title      = {A fast in-place interpreter for WebAssembly},
+  journal    = {CoRR},
+  volume     = {abs/2205.01183},
+  year       = {2022},
+  url        = {https://doi.org/10.48550/arXiv.2205.01183},
+  doi        = {10.48550/ARXIV.2205.01183},
+  eprinttype = {arXiv},
+  eprint     = {2205.01183},
+  timestamp  = {Thu, 05 May 2022 15:47:51 +0200},
+  biburl     = {https://dblp.org/rec/journals/corr/abs-2205-01183.bib},
+  bibsource  = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{DBLP:journals/corr/Haase14,
+  author     = {Christoph Haase},
+  title      = {Subclasses of Presburger Arithmetic and the Weak {EXP} Hierarchy},
+  journal    = {CoRR},
+  volume     = {abs/1401.5266},
+  year       = {2014},
+  url        = {http://arxiv.org/abs/1401.5266},
+  eprinttype = {arXiv},
+  eprint     = {1401.5266},
+  timestamp  = {Mon, 13 Aug 2018 16:47:07 +0200},
+  biburl     = {https://dblp.org/rec/journals/corr/Haase14.bib},
+  bibsource  = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{de2020allocation,
+  author    = {Giuseppe De Palma and
+               Saverio Giallorenzo and
+               Jacopo Mauro and
+               Gianluigi Zavattaro},
+  editor    = {Eleanna Kafeza and
+               Boualem Benatallah and
+               Fabio Martinelli and
+               Hakim Hacid and
+               Athman Bouguettaya and
+               Hamid Motahari},
+  title     = {Allocation Priority Policies for Serverless Function-Execution Scheduling
+               Optimisation},
+  booktitle = {Service-Oriented Computing - 18th International Conference, {ICSOC}
+               2020, Dubai, United Arab Emirates, December 14-17, 2020, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {12571},
+  pages     = {416--430},
+  publisher = {Springer},
+  year      = {2020},
+  url       = {https://doi.org/10.1007/978-3-030-65310-1\_29},
+  doi       = {10.1007/978-3-030-65310-1\_29},
+  timestamp = {Fri, 09 Apr 2021 18:46:48 +0200},
+  biburl    = {https://dblp.org/rec/conf/icsoc/PalmaGMZ20.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{de2023custom,
+  title        = {Custom Serverless Function Scheduling Policies: An APP Tutorial},
+  author       = {De Palma, Giuseppe and Giallorenzo, Saverio and Mauro, Jacopo and Trentin, Matteo and Zavattaro, Gianluigi},
+  booktitle    = {Joint Post-proceedings of the Third and Fourth International Conference on Microservices (Microservices 2020/2022)},
+  year         = {2023},
+  organization = {Schloss Dagstuhl--Leibniz-Zentrum f{\"u}r Informatik}
+}
+
+@inproceedings{deserverless,
+  author    = {Giuseppe De Palma and
+               Saverio Giallorenzo and
+               Cosimo Laneve and
+               Jacopo Mauro and
+               Matteo Trentin and
+               Gianluigi Zavattaro},
+  editor    = {Maurice H. ter Beek and
+               Clemens Dubslaff},
+  title     = {Serverless Scheduling Policies based on Cost Analysis},
+  booktitle = {Proceedings of the First Workshop on Trends in Configurable Systems
+               Analysis, TiCSA@ETAPS 2023, Paris, France, 23rd April 2023},
+  series    = {{EPTCS}},
+  volume    = {392},
+  pages     = {40--52},
+  year      = {2023},
+  url       = {https://doi.org/10.4204/EPTCS.392.3},
+  doi       = {10.4204/EPTCS.392.3},
+  timestamp = {Mon, 06 Nov 2023 15:17:28 +0100},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2310-20391.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{flores2014resource,
+  author    = {Antonio Flores{-}Montoya and
+               Reiner H{\"{a}}hnle},
+  editor    = {Jacques Garrigue},
+  title     = {Resource Analysis of Complex Programs with Cost Equations},
+  booktitle = {Programming Languages and Systems - 12th Asian Symposium, {APLAS}
+               2014, Singapore, November 17-19, 2014, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {8858},
+  pages     = {275--295},
+  publisher = {Springer},
+  year      = {2014},
+  url       = {https://doi.org/10.1007/978-3-319-12736-1\_15},
+  doi       = {10.1007/978-3-319-12736-1\_15},
+  timestamp = {Tue, 14 May 2019 10:00:41 +0200},
+  biburl    = {https://dblp.org/rec/conf/aplas/Flores-MontoyaH14.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{jain2022webassembly,
+  title     = {WebAssembly Text Toolkit and Other Utilities},
+  author    = {Jain, Shashank Mohan and Jain, Shashank Mohan},
+  journal   = {WebAssembly for Cloud: A Basic Guide for Wasm-Based Cloud Apps},
+  pages     = {33--55},
+  year      = {2022},
+  publisher = {Springer}
+}
+
+@book{mogensen2010basics,
+  title  = {Basics of compiler design},
+  author = {Mogensen, Torben {\AE}gidius},
+  year   = {2010}
+}
+
+@article{niemela2021webassembly,
+  title  = {WebAssembly, Fourth Language in the Web},
+  author = {Niemel{\"a}, Vili-Petteri},
+  year   = {2021}
+}
+@site{WebAssemblyDoc,
+  title = {WebAssembly Doc},
+  url   = {https://developer.mozilla.org/en-US/docs/WebAssembly}
+}
+
+@site{WebAssemblyInterfaceTypes,
+  title = {WebAssembly Interface Types: Interoperate with All the Things!},
+  url   = {https://hacks.mozilla.org/2019/08/webassembly-interface-types/}
 }

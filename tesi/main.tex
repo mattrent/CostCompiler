@@ -131,6 +131,10 @@
 
 \clearpage
 
+\chapter*{Abstract}
+La presente tesi si concentra sull'analisi delle funzioni scritte in un linguaggio specifico per la generazione di equazioni di costo essenziali per ottimizzare l'esecuzione delle funzioni serverless. Questo obiettivo viene perseguito attraverso un percorso di ricerca articolato in diverse fasi. In primo luogo, si definisce una grammatica specifica per il linguaggio HLCostLan, fornendo le basi per l'analisi semantica delle funzioni. Successivamente, si sviluppa un interprete in grado di analizzare programmi scritti in HLCostLan e di restituire le equazioni di costo associate a ciascuna funzione. Inoltre, si procede con la generazione del corrispondente codice WebAssembly, che costituisce l'ambiente di esecuzione per le funzioni analizzate.\\
+Il WebAssembly svolge un ruolo cruciale nell'implementazione delle soluzioni proposte, garantendo portabilità e interoperabilità tra diversi ambienti di runtime. Una volta ottenute le equazioni di costo, si utilizzano strumenti specifici come PUBS (Practical Upper Bounds Solver) e CoFloCo (Cost Flow Complexity Analysis) per condurre un'analisi dettagliata delle prestazioni delle funzioni.\\
+Il nostro progetto verrà poi integrato con un codice dichiarativo cAPP(Cost-Allocation Priority Policies) che ci permette di definire politiche di schedulazione in base ai costi associati alle funzioni, al fine di ottimizzare l'allocazione delle risorse e lo scheduling delle esecuzioni delle funzioni, consentendo una maggiore efficienza e scalabilità nell'ambito delle applicazioni basate su architetture serverless.\\
 \tableofcontents
 
 \listoffigures
@@ -153,6 +157,6 @@
 
 \addcontentsline{toc}{chapter}{Bibliografia}
 
-\printbibliography[title={Bibliografia}]
+\printbibliography[title={Bibliografia}, sorting=none]
 
 \end{document}  
