@@ -1,3 +1,41 @@
+@book{bhatt2022study,
+  title     = {A Study on the Temporal Predictability of Serverless Functions},
+  author    = {Bhatt, Ishan Vasishta},
+  year      = {2022},
+  publisher = {North Carolina State University}
+}
+
+@thesis{amslaurea24930,
+  author   = {Matteo Trentin},
+  title    = {Topology-based Scheduling in Serverless Computing Platforms},
+  keywords = {serverless,FaaS,OpenWhisk,OpenFaaS,Fission,scheduling,cloud computing},
+  url      = {http://amslaurea.unibo.it/24930/},
+  abstract = {In the past few years, Function as a Service (FaaS) solutions, and Serverless computing in general, have become a significant topic both in terms of general interest and research effort. Allowing users to run stateless code in the cloud without worrying about the underlying infrastructure for scheduling, management and scaling, the ease of use of these approaches still comes with various trade-offs and challenges. In this thesis, the issue of data locality is observed, using an extension of the Apache OpenWhisk framework to provide users the ability to select the node they wish to use to schedule some of their functions, allowing the code to be run closer to the data it manipulates. Additionally, a topology-based scheduling approach is implemented for the framework, where load balancers are instructed to prioritize nodes in their same topological zone; this way, users can specify a preferred load balancer for different functions, with no need to know the position and name of all other nodes in the cluster. This modified version of the OpenWhisk framework is then compared with the standard OpenWhisk implementation, along with two other serverless frameworks, Fission and OpenFaaS, using a test suite composed of different use cases, using both existing projects from the Wonderless dataset and custom-built functions targeting different aspects of the paradigm. The role of data locality considerations and topology-based policies is analyzed, showing their importance in a multi-zone cluster with nodes in various geographical locations, where latency between them and the remote data used by the functions can be significant.}
+}
+
+@inproceedings{deserverless,
+  author    = {Giuseppe De Palma and
+               Saverio Giallorenzo and
+               Cosimo Laneve and
+               Jacopo Mauro and
+               Matteo Trentin and
+               Gianluigi Zavattaro},
+  editor    = {Maurice H. ter Beek and
+               Clemens Dubslaff},
+  title     = {Serverless Scheduling Policies based on Cost Analysis},
+  booktitle = {Proceedings of the First Workshop on Trends in Configurable Systems
+               Analysis, TiCSA@ETAPS 2023, Paris, France, 23rd April 2023},
+  series    = {{EPTCS}},
+  volume    = {392},
+  pages     = {40--52},
+  year      = {2023},
+  url       = {https://doi.org/10.4204/EPTCS.392.3},
+  doi       = {10.4204/EPTCS.392.3},
+  timestamp = {Mon, 06 Nov 2023 15:17:28 +0100},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2310-20391.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
 @inproceedings{albert2008automatic,
   author    = {Elvira Albert and
                Puri Arenas and
@@ -46,14 +84,6 @@
   keywords = {JOLIE ANTLR}
 }
 
-@thesis{amslaurea24930,
-  author   = {Matteo Trentin},
-  title    = {Topology-based Scheduling in Serverless Computing Platforms},
-  keywords = {serverless,FaaS,OpenWhisk,OpenFaaS,Fission,scheduling,cloud computing},
-  url      = {http://amslaurea.unibo.it/24930/},
-  abstract = {In the past few years, Function as a Service (FaaS) solutions, and Serverless computing in general, have become a significant topic both in terms of general interest and research effort. Allowing users to run stateless code in the cloud without worrying about the underlying infrastructure for scheduling, management and scaling, the ease of use of these approaches still comes with various trade-offs and challenges. In this thesis, the issue of data locality is observed, using an extension of the Apache OpenWhisk framework to provide users the ability to select the node they wish to use to schedule some of their functions, allowing the code to be run closer to the data it manipulates. Additionally, a topology-based scheduling approach is implemented for the framework, where load balancers are instructed to prioritize nodes in their same topological zone; this way, users can specify a preferred load balancer for different functions, with no need to know the position and name of all other nodes in the cluster. This modified version of the OpenWhisk framework is then compared with the standard OpenWhisk implementation, along with two other serverless frameworks, Fission and OpenFaaS, using a test suite composed of different use cases, using both existing projects from the Wonderless dataset and custom-built functions targeting different aspects of the paradigm. The role of data locality considerations and topology-based policies is analyzed, showing their importance in a multi-zone cluster with nodes in various geographical locations, where latency between them and the remote data used by the functions can be significant.}
-}
-
 @phdthesis{amslaurea3135,
   title  = {Strumenti per l'analisi del tempo di esecuzione},
   author = {Sara Bergonzoni},
@@ -77,12 +107,6 @@
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-@book{bhatt2022study,
-  title     = {A Study on the Temporal Predictability of Serverless Functions},
-  author    = {Bhatt, Ishan Vasishta},
-  year      = {2022},
-  publisher = {North Carolina State University}
-}
 
 @book{DBLP:books/aw/AhoSU86,
   author    = {Alfred V. Aho and
@@ -188,29 +212,6 @@
   booktitle    = {Joint Post-proceedings of the Third and Fourth International Conference on Microservices (Microservices 2020/2022)},
   year         = {2023},
   organization = {Schloss Dagstuhl--Leibniz-Zentrum f{\"u}r Informatik}
-}
-
-@inproceedings{deserverless,
-  author    = {Giuseppe De Palma and
-               Saverio Giallorenzo and
-               Cosimo Laneve and
-               Jacopo Mauro and
-               Matteo Trentin and
-               Gianluigi Zavattaro},
-  editor    = {Maurice H. ter Beek and
-               Clemens Dubslaff},
-  title     = {Serverless Scheduling Policies based on Cost Analysis},
-  booktitle = {Proceedings of the First Workshop on Trends in Configurable Systems
-               Analysis, TiCSA@ETAPS 2023, Paris, France, 23rd April 2023},
-  series    = {{EPTCS}},
-  volume    = {392},
-  pages     = {40--52},
-  year      = {2023},
-  url       = {https://doi.org/10.4204/EPTCS.392.3},
-  doi       = {10.4204/EPTCS.392.3},
-  timestamp = {Mon, 06 Nov 2023 15:17:28 +0100},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-2310-20391.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
 @inproceedings{flores2014resource,

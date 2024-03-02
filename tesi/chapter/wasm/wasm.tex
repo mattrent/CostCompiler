@@ -17,9 +17,9 @@ In sintesi, WebAssembly rappresenta una tecnologia versatile e potente che offre
 \label{wat}
 Il formato di testo WebAssembly (WAT) \autocite{WebAssemblyTextFormat} è un formato di testo leggibile dall'uomo per la rappresentazione di moduli WebAssembly. Il formato è stato progettato per essere utilizzato come rappresentazione intermedia durante il processo di compilazione, fornendo un'astrazione leggibile dall'uomo per il codice Wasm.
 Consiste in un insieme di istruzioni mnemoniche e direttive che corrispondono direttamente alle istruzioni binarie di WebAssembly.
-Il compilatore che abbiamo sviluppato generiamo un file .wat ed in seguito il tool wat2wasm \autocite{jain2022webassembly} genera il file .wasm, che a sua volta potrà essere eseguito da un motore di runtime.
+Il compilatore che abbiamo sviluppato genera un file di testo .wat ed in seguito il tool wat2wasm \autocite{jain2022webassembly} genera il file binario .wasm, che a sua volta potrà essere eseguito da un motore di runtime.
 
-I tipi di dati che troviamo in wat sono:
+I tipi di dati principali che troviamo in wat sono:
 \begin{itemize}
     \item \textbf{i32} 32-bit integer
     \item \textbf{i64} 64-bit integer
@@ -48,7 +48,7 @@ Possiamo usare anche l'operatore \$ per accedere ai parametri locali, in maniera
 Come vediamo in questo esempio la funzione \$fun prende in input due parametri di tipo intero e ritorna un valore di tipo float. Inoltre all'interno della funzione vengono dichiarati tre parametri locali, due di tipo intero e uno di tipo float.
 
 \subsubsection{Stack Machine}
-L'esecuzione del WebAssembly è definita in termini di Stack-Machine, dove l'idea generale è che ogni tipo di istruzione esegue operazioni di tipo \textit{push/pop} dallo stack.
+L'esecuzione del WebAssembly è definita in termini di Stack-Machine, dove l'idea generale è che ogni tipo di istruzione esegue operazioni di tipo \textit{push/pop} dallo stack.\\
 Quando viene chiamata una funzione, inizia con uno stack vuoto che viene gradualmente riempito e svuotato man mano che le istruzioni del corpo vengono eseguite. Quindi, ad esempio, dopo aver eseguito la seguente funzione:
 \begin{lstlisting}[language=WebAssembly, label={lst:funzioneSomma}]
     (func $somma(param $p1 i32)(param $p2 i32)
@@ -117,12 +117,13 @@ Le istruzioni di manipolazione dello stack sono istruzioni che manipolano lo sta
 In Wasm le traps sono errori che si verificano durante l'esecuzione di un modulo Wasm, come ad esempio un'overflow aritmetico o un accesso fuori dai limiti della memoria. Le traps possono essere gestite da un motore di runtime, consentendo al modulo Wasm di continuare l'esecuzione in caso di errore.
 
 \subsubsection{Embedder}
-Un embedder è un'applicazione o un ambiente che incorpora un motore di runtime WebAssembly.Un'implementazione di webassembly viene in genere incorporata in un ambiente host.
+Un embedder è un'applicazione o un ambiente che incorpora un motore di runtime WebAssembly. Un'implementazione di webassembly viene in genere incorporata in un ambiente host.
 Un embedder implementa la connessione tra tale ambiente host e la semantica di webassembly e fornisce un'interfaccia per l'accesso a funzionalità come la memoria, le tabelle e le funzioni esportate da un modulo Wasm.\autocite{amslaurea20464}\autocite{DBLP:journals/corr/abs-2205-01183}
 
 \section{CostCompiler to WAT}
-L'interprete che abbiamo sviluppato genera un file .wat,questo file .wat andrà poi convertito in un file .wasm, che a sua volta potrà essere eseguito da un motore di runtime.
-Questa conversione viene fatta tramite il tool wat2wasm presente nella toolchain \href{https://github.com/WebAssembly/wabt}{WebAssembly Binary Toolchain}{WABT} \autocite{jain2022webassembly}.
+\label{sec:codeGeneration}
+L'interprete che abbiamo sviluppato genera un file .wat, questo file .wat andrà poi convertito in un file .wasm, che a sua volta potrà essere eseguito da un motore di runtime.
+Questa conversione viene fatta tramite il tool wat2wasm presente nella toolchain \href{https://github.com/WebAssembly/wabt}{WebAssembly Binary Toolchain}. \autocite{jain2022webassembly}\\
 Attraverso il comando:
 \begin{lstlisting}[language=bash]
     wat2wasm file.wat -o file.wasm
@@ -194,11 +195,9 @@ La terza istruzione \textit{exp.codeGeneration()} richiama la funzione codeGener
 Questo valore appena valutato, verrà salvato nella variabile locale \$id\_max, con la quarta istruzione \textit{(local.set \$id\_max)}.
 La quinta istruzione \textit{(local.get \$id\_max)} prende il valore della variabile locale \$id\_max e lo inserisce nello stack, e lo ritorna.
 Successivamente viene eseguito un loop, che viene eseguito finchè il valore della variabile locale \$id\_max è minore del valore della variabile locale \$id.
-Questo è reso possibile attraverso la definizione della label \textit{(loop \$for+line)} che ci permette di definire l'inizio del loop.
-
+Questo è reso possibile attraverso la definizione della label \textit{(loop \$for+line)} che ci permette di definire l'inizio del loop.\\
 L'istruzione \textit{if (i32.lt\_u (local.get \$id\_max) (local.get \$id))} prende i due valori \$id\_max e \$id e li confronta, se il secondo è minore del primo allora esegue il ramo then,eseguendo il corpo del ciclo, altrimenti esce dal loop e passa al nodo successivo.
 Dentro il ramo then viene eseguito il corpo del ciclo, richiamando la funzione codeGeneration() del corpo del ciclo, che ritorna una stringa che contiene il codice wat per il corpo del ciclo.Inoltre verra preso il contatore \$id, verrà incrementato di 1, e verrà salvato nella variabile locale \$id, con l'istruzione \textit{(local.set \$id)} e salta alla label definita in precedenza\textit{(br \$for+line)}.
-
 Come ultima operazione verrà preso il valore della variabile locale \$res e lo inserisce nello stack, e lo ritorna.
 
 \section{Esecuzione del modulo WebAssembly}
