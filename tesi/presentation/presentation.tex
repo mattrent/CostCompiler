@@ -1,0 +1,93 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+\usepackage{graphicx} 
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{booktabs} 
+\mode<presentation>{
+    
+\definecolor{MSUgreen}{RGB}{0,100,11} 
+\usetheme{Boadilla}
+\usecolortheme{spruce}
+\setbeamercolor{block title}{bg=MSUgreen!10, fg=MSUgreen!60!black}
+\setbeamercolor{navigation symbols dimmed}{fg=MSUgreen!40!white}
+\setbeamercolor{navigation symbols}{fg=MSUgreen!40!white}
+\setbeamertemplate{itemize item}{\color{MSUgreen}\textbullet}
+\setbeamercolor{section in toc}{fg=MSUgreen}
+\setbeamercolor{section number projected}{bg=MSUgreen,fg=white}
+\setbeamercolor{subsection in toc}{fg=MSUgreen}
+\setbeamercolor{subsection number projected}{bg=MSUgreen,fg=white}
+}
+
+\graphicspath{ {.././image/} }
+
+\title[CostCompiler]{Un Prototipo per lo scheduling di funzioni basato su analisi di costo in piattaforme serverless}
+\subtitle{Sviluppo di un interprete per l'analisi di costo di funzioni serverless}
+\author{Simone Boldrini}
+\date{14 Marzo 2024}
+\institute[]{Alma Mater Studiorum - Università di Bologna \\ Facoltà di Scienze}
+
+\begin{document}
+
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}
+    \frametitle{Introduzione}
+    \alert{Obiettivo}: Sviluppare un prototipo di compilatore per piattaforme serverless che sfrutti tecniche di analisi di costo per ottimizzare l'esecuzione di funzioni.
+    \begin{itemize}
+        \item<1-> Definizione grammatica specifica 
+        \item<2-> Analisi del programma
+        \item<3-> Generazione equazioni di costo 
+        \item<4-> Generazione del codice WASM
+    \end{itemize}
+\end{frame}
+\begin{frame}
+    \frametitle{Definizione della grammatica}
+    Abbiamo definito una grammatica specifica $HLCostLan$ per la defizione di un linguaggio di alto livello per la definizione di funzioni serverless.
+\end{frame}
+\begin{frame}
+    \frametitle{Analisi del programma}
+    Una volta definito il linguaggio, abbiamo sviluppato un interprete per l'analisi del programma.
+    Quest'analisi prevede:
+    \begin{itemize}
+        \item<1-> Analisi lessicale e sintattica(Riconosciuta da ANTLR)
+        \item<2-> Analisi semantica 
+    \end{itemize}
+\end{frame}
+\begin{frame}
+    \frametitle{Generazione equazioni di costo}
+    Una volta analizzato il programma, abbiamo sviluppato un interprete per la generazione delle equazioni di costo.
+\end{frame}
+\begin{frame}
+    \frametitle{Analisi di costo}
+    
+    \newtheorem{Analisi di costo}{Analisi di costo}
+
+    \begin{Analisi di costo}
+        Come \alert{analisi statica dei costi} miriamo ad ottenere risultati analitici per un dato programma $P$, i quali consentono di vinciolare il costo dell'esecuzione di $P$ su qualsiasi input $x$, senza dover effettivamente eseguire $P(x)$.
+    \end{Analisi di costo}
+   
+    PUBS ha l'obiettivo di ottenere automaticamente un upper bound in forma chiusa per i sistemi di equazioni di costo, calcolando i limiti superiri per la relazione di costo indicata come ``entry'', oltre che per tutte le altre relazioni da cui tale ``entry'' dipende.
+\end{frame}
+\begin{frame}
+    \frametitle{Analisi di costo}
+    Un'analisi di costo è fortemente dipendente dal modello di costo preso in considerazione:
+    \begin{itemize}
+        \item \alert{Costo di esecuzione}: il costo di esecuzione di una funzione
+        \item \alert{Costo di allocazione}: il costo di allocazione di una variabile nell'heap
+    \end{itemize}
+    I vantaggi delle equazioni di costo:
+    \begin{itemize}
+        \item Sono \alert{indipendenti} dal linguaggio di programmazione
+        \item Possono rappresentare diverse classi di \alert{complessità}
+        \item Possono catturare una varietà di nozioni non banali di risorse.
+    \end{itemize}
+\end{frame}
+\begin{frame}
+    \frametitle{Generazione del codice WASM}
+    Una volta ottenute le equazioni di costo, abbiamo sviluppato un interprete per la generazione del codice WASM.
+\end{frame}
+
+\end{document}

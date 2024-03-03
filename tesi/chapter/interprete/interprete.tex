@@ -9,7 +9,7 @@ Una volta effettuata la verifica semantica, CostCompiler procede con la generazi
 Ogni nodo figlio invocato attraverso la funzione \textit{toEquation()} ritorna una stringa, rappresentante l'equazione di costo del nodo figlio, e il padre va a concatenare le stringhe dei figli(anche in base al tipo di figlio da cui ricevere l'equazione), ad esempio la \textit{return $<$EXP$>$ } sarà diverso dal \textit{return }$<$function$(Par)>$.\\
 Il risultato finale di questo processo di concatenazione attraverso determinati nodi dell'AST è la generazione delle equazioni di costo. 
 Una volta generate le equazioni di costo, CostCompiler le stampa in un file \textit{equation.ces}, inoltre lancia il risolutore PUBS \ref{sec:pubs} che va a calcolare gli upper bound del programma da stampare a video.
-Riportiamo un esempio di equazione di costo generata da CostCompiler dato un programma scritto in HLCostLang:
+Riportiamo un esempio di equazione di costo generata da CostCompiler dato un programma scritto in HLCostLan:
     \begin{lstlisting}[language=Java, caption={Listing8}]
     struct Params {
         address: array[int],
@@ -62,10 +62,10 @@ Andando a descrivere i metodi dell'interfaccia Node:
 \end{itemize}
 Ogni nodo dell'AST estende l'interfaccia \textit{Node} e implementa i metodi definiti in essa. 
 Dopo aver definito l'interfaccia \textit{Node}, andiamo a definire le fasi di sviluppo del nostro AST.
-In prima fase grazie al plugin ANTLR, dopo aver definito il file \textit{HLCostLang.g4} che rappresenta la grammatica del nostro linguaggio, ANTLR ci genera i file \textit{HLCostLangLexer.java} e \textit{HLCostLangParser.java} che rappresentano rispettivamente il Lexer e il Parser del nostro linguaggio. 
-L'interfaccia \textit{HLCostLangVisitor.java} e \textit{HLCostLanListener.java} vengono generate da ANTLR e rappresentano rispettivamente le interfacce per la generazione di un albero di parsing. 
+In prima fase grazie al plugin ANTLR, dopo aver definito il file \textit{HLCostLan.g4} che rappresenta la grammatica del nostro linguaggio, ANTLR ci genera i file \textit{HLCostLanLexer.java} e \textit{HLCostLanParser.java} che rappresentano rispettivamente il Lexer e il Parser del nostro linguaggio. 
+L'interfaccia \textit{HLCostLanVisitor.java} e \textit{HLCostLanListener.java} vengono generate da ANTLR e rappresentano rispettivamente le interfacce per la generazione di un albero di parsing. 
 Tutti i file generati automaticamente da ANTLR li troviamo nella cartella \textit{src/gen}.
-All'interno di questa cartella troviamo anche il file \textit{HLCostLangBaseVisitor.java} che rappresenta la classe base per la generazione dell'AST, che andiamo a implementare per generare il nostro albero di parsing nel file \textit{HLCostLangBaseVisitorImpl.java}.\\
+All'interno di questa cartella troviamo anche il file \textit{HLCostLanBaseVisitor.java} che rappresenta la classe base per la generazione dell'AST, che andiamo a implementare per generare il nostro albero di parsing nel file \textit{HLCostLanBaseVisitorImpl.java}.\\
 \begin{lstlisting}[language=Java, caption={Implementazione del Visitor AST}] 
 public class HLCostLanBaseVisitorImpl extends          HLCostLanBaseVisitor<Node> {
 @Override
@@ -103,7 +103,8 @@ Il controllo semantico viene effettuato in modo ricorsivo, partendo dal nodo pri
 Il controllo semantico viene specificato nel \textit{main.java} presente all'interno della cartella \textit{src/com/company} e rappresenta il punto di partenza del nostro programma.
 \newpage
 \begin{lstlisting}[language=Java, caption={Inizio Controllo semantico }]
-    HLCostLanBaseVisitorImpl visitor = new HLCostLanBaseVisitorImpl();
+    HLCostLanBaseVisitorImpl visitor = 
+                        new HLCostLanBaseVisitorImpl();
     Node ast = visitor.visit(parser.prg());
     Environment env = new Environment();
     ArrayList<String> errorSemantics = ast.checkSemantics(env);
@@ -140,21 +141,21 @@ Il controllo dei tipi viene effettuato attraverso il metodo \textit{typeCheck(En
 Osserviamo un esempio di controllo di tipo:
 \begin{lstlisting}[language=Java, caption={Controllo di tipo di CallNode}]
 public Node typeCheck(Environment e) throws TypeErrorException {
-    try {
-        FunDeclarationNode fun = (FunDeclarationNode) e.getDeclaration(id.getId());
-        FormalParams fp = fun.getFormalParams();
-        if (fp.size() != listCount.size()) {
-            throw new TypeErrorException("Wrong number of parameters in call " + id.getId());
-        }
-        for (int i = 0; i < listCount.size(); i++) {
-            if (!Utils.isSubtype(fp.get(i).b.typeCheck(e), listCount.get(i).typeCheck(e))) {
-                throw new TypeErrorException("Incompatible type in call node");
-            }
-        }
-        return fun.getReturnNode().typeCheck(e);
-    }catch (ClassCastException ex){
-        throw new TypeErrorException("Error in call node");
+try {
+    FunDeclarationNode fun = (FunDeclarationNode) e.getDeclaration(id.getId());
+    FormalParams fp = fun.getFormalParams();
+    if (fp.size() != listCount.size()) {
+        throw new TypeErrorException("Wrong number of parameters in call " + id.getId());
     }
+    for (int i = 0; i < listCount.size(); i++) {
+        if (!Utils.isSubtype(fp.get(i).b.typeCheck(e), listCount.get(i).typeCheck(e))) {
+            throw new TypeErrorException("Incompatible type in call node");
+        }
+    }
+    return fun.getReturnNode().typeCheck(e);
+}catch (ClassCastException ex){
+    throw new TypeErrorException("Error in call node");
+}
 }
 \end{lstlisting}
 Come vediamo, il metodo \textit{typeCheck(Environment e)} prende in input un oggetto di tipo \textit{Environment}, da li controlla che la funzione chiamata (sappiamo che è gia definita perché prima effettuiamo il controllo semantico) abbia lo stesso numero di parametri che stiamo passando, e che i tipi dei parametri siano compatibili con i tipi dei parametri della funzione chiamata.
@@ -177,14 +178,14 @@ Andiamo ad illustrare ora come abbiamo strutturato il codice, all'interno di \te
     \item \textit{com/company}: Contiene il file \textit{main.java} che rappresenta il punto di partenza del nostro programma, e contiene la logica principale del nostro programma.
     \item \textit{gen}: Contiene i file generati automaticamente da ANTLR, che rappresentano il Lexer e il Parser del nostro linguaggio, e le interfacce per la generazione dell'AST.
     \item \textit{utilities}: Contiene i file di utilità, come \textit{Environment.java}, \textit{TypeErrorException.java} che rappresenta l'eccezione lanciata in caso di errore di tipo, \textit{Utils.java} che contiene metodi di utilità generica.
-    \item \textit{test}: Contiene i file di test, che descrivono i test del nostro programma, su un sottoinsieme di programmi scritti in HLCostLang.
+    \item \textit{test}: Contiene i file di test, che descrivono i test del nostro programma, su un sottoinsieme di programmi scritti in HLCostLan.
 \end{itemize}
 All'interno di \textit{ast} troviamo tutti nodi che compongono l'ast suddivisi in base al tipo di nodo, ad esempio \textit{CallNode.java} che rappresenta il nodo di una chiamata a funzione, \textit{IfNode.java} che rappresenta il nodo di un costrutto \textit{if-then-else} si trovano all'interno della cartella \textit{ast/stm}.
 Nodi come \textit{BinExpNode.java} che rappresenta il nodo di un'espressione binaria, \textit{DerExpNode.java} che rappresenta un identificativo, si trovano all'interno della cartella \textit{ast/exp}.
 Nodi che servono per il controllo dei tipi come \textit{IntType.java} che rappresenta il tipo intero, \textit{BoolType.java} che rappresenta il tipo booleano, si trovano all'interno della cartella \textit{ast/typeNode}.
 La cartella \textit{utilities} contiene i file di utilità, come \textit{Environment.java} che rappresenta l'ambiente in cui si trova il nostro programma, \textit{TypeErrorException.java} che rappresenta l'eccezione lanciata in caso di errore di tipo, \textit{Utils.java} che contiene metodi di utilità come \textit{isSubtype}.\\
-La cartella \textit{test} contiene i file di test, che rappresentano i test del nostro programma, su un sottoinsieme di programmi scritti in HLCostLang.\\
-I test sono stati scritti in modo da testare il corretto funzionamento del nostro programma, e sono stati scritti in modo da testare il corretto funzionamento del controllo semantico, del controllo dei tipi, della generazione delle equazioni di costo e del codice WASM corrispondente.\\
+La cartella \textit{test} contiene i file di test, che rappresentano i test del nostro programma, su un sottoinsieme di programmi scritti in HLCostLan.\\
+I test sono stati scritti in modo da testare il corretto funzionamento del nostro programma, nello specifico, la correttezza del controllo semantico, del controllo dei tipi, della generazione delle equazioni di costo e del codice WASM corrispondente.\\
 Il test ritorna un enumerato con il codice di errore specificato, in caso di errore, altrimenti ritorna \textit{Results.PASS}.
 Alla fine di ogni sviluppo di una nuova funzionalità, andiamo a testare il corretto funzionamento del nostro programma, andando a eseguire i test, e verificando che il programma sia corretto rispetto alle regole del linguaggio.\\
 \begin{lstlisting}[language=Java, caption={Esempio Testing}]
@@ -197,7 +198,7 @@ public class TestCostCompiler {
         }
     ...
 \end{lstlisting} 
-Il test è molto semplice, prende in input un programma in HLCostLang e verifica che la compilazione termini correttamente, in caso contrario stampa un errore a video, questo è un esempio banale di testing, ma ci permette di verificare che il programma sia corretto rispetto alle regole del linguaggio.\\
+Il test è molto semplice, prende in input un programma in HLCostLan e verifica che la compilazione termini correttamente, in caso contrario stampa un errore a video, questo è un esempio banale di testing, ma ci permette di verificare che il programma sia corretto rispetto alle regole del linguaggio.\\
 Inoltre ci sono altri test che verificano che il programmi ritorni degli errori specifici, definiti in base al tipo di errore, ad esempio se il programma non termina correttamente, se il programma ritorna un errore semantico, se il programma ritorna un errore di tipo, oppure se il programma ritorna un errore di compilazione, e cosí via.\\
 
 \section{Regole di Inferenza}

@@ -95,8 +95,7 @@ Per ogni i, ci sono j sottotask.
 In questo caso ci aspettiamo che la latenza dell'intera funzione è data dalla somma di m volte la latenza di \textit{Map} e m $\times $ r volte la latenza di \textit{Reduce}.\autocite{de2023custom}\\
 \subsection{cAPP}
 \label{cApp}
-cAPP è un estensione di APP, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili.
-\autocite {deserverless}
+cAPP è un estensione di APP, dove le politiche di schedulazioni delle funzioni dipendono dai costi associati alle possibili esecuzioni delle funzioni sui worker disponibili\autocite {deserverless}.
 cAPP è stato modificato al fine di implementare nuovi costrutti quali \textit{min\_latency} e \textit{max\_latency} che ci permettono di definire un upper bound e un lower bound per la latenza di una funzione.
 \begin{multicols}{2}
     \begin{lstlisting}[caption={cAPP for Listing \ref{lst:1} e \ref{lst:2}},label={lst:4}]
