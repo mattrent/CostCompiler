@@ -3,6 +3,16 @@
 \usepackage{tabularx}
 \usepackage{array}
 \usepackage{booktabs} 
+\usepackage{listings}
+\usepackage{bera}
+\usepackage{amsmath}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
 \mode<presentation>{
     
 \definecolor{MSUgreen}{RGB}{0,100,11} 
@@ -18,7 +28,26 @@
 \setbeamercolor{subsection number projected}{bg=MSUgreen,fg=white}
 }
 
-\graphicspath{ {.././image/} }
+\lstdefinestyle{custombeamer}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\graphicspath{ {../img/} }
 
 \title[CostCompiler]{Un Prototipo per lo scheduling di funzioni basato su analisi di costo in piattaforme serverless}
 \subtitle{Sviluppo di un interprete per l'analisi di costo di funzioni serverless}
@@ -28,6 +57,7 @@
 
 \begin{document}
 
+\lstset{style=custombeamer}
 
 \begin{frame}
     \titlepage
@@ -43,10 +73,36 @@
         \item<4-> Generazione del codice WASM
     \end{itemize}
 \end{frame}
+
 \begin{frame}
+    \frametitle{cAPP Scheme}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{app_schema.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
     \frametitle{Definizione della grammatica}
     Abbiamo definito una grammatica specifica $HLCostLan$ per la defizione di un linguaggio di alto livello per la definizione di funzioni serverless.
+    \begin{lstlisting}[language=Java, caption={Listing8}]
+    struct Params {
+        address: array[int],
+        payload: any,
+        sender: string
+    }
+    service PremiumService : (string) -> void;
+    service BasicService : (any) -> void;
+    (isPremiumUser: bool, par: any) => {
+        if ( isPremiumUser ) {
+            call PremiumService("test");
+        } else {
+            call BasicService( par);
+        }
+    }
+    \end{lstlisting}
 \end{frame}
+
 \begin{frame}
     \frametitle{Analisi del programma}
     Una volta definito il linguaggio, abbiamo sviluppato un interprete per l'analisi del programma.
@@ -56,10 +112,12 @@
         \item<2-> Analisi semantica 
     \end{itemize}
 \end{frame}
+
 \begin{frame}
     \frametitle{Generazione equazioni di costo}
     Una volta analizzato il programma, abbiamo sviluppato un interprete per la generazione delle equazioni di costo.
 \end{frame}
+
 \begin{frame}
     \frametitle{Analisi di costo}
     
@@ -71,6 +129,7 @@
    
     PUBS ha l'obiettivo di ottenere automaticamente un upper bound in forma chiusa per i sistemi di equazioni di costo, calcolando i limiti superiri per la relazione di costo indicata come ``entry'', oltre che per tutte le altre relazioni da cui tale ``entry'' dipende.
 \end{frame}
+
 \begin{frame}
     \frametitle{Analisi di costo}
     Un'analisi di costo è fortemente dipendente dal modello di costo preso in considerazione:
@@ -84,6 +143,14 @@
         \item Possono rappresentare diverse classi di \alert{complessità}
         \item Possono catturare una varietà di nozioni non banali di risorse.
     \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Analisi di costo}
+\begin{lstlisting}[language=Java, caption={Equazioni di costo per Listing 8}]
+eq(main(P,ISPREMIUMUSER0,B),0,[if9(ISPREMIUMUSER0,P,B)],[]).
+eq(if9(ISPREMIUMUSER0,P,B),nat(P),[],[ISPREMIUMUSER0=1]).
+eq(if9(ISPREMIUMUSER0,P,B),nat(B),[],[ISPREMIUMUSER0=0]).
+\end{lstlisting}
 \end{frame}
 \begin{frame}
     \frametitle{Generazione del codice WASM}
