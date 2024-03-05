@@ -27,7 +27,14 @@
 \setbeamercolor{subsection in toc}{fg=MSUgreen}
 \setbeamercolor{subsection number projected}{bg=MSUgreen,fg=white}
 }
-
+\lstdefinelanguage{WebAssembly}{
+    keywords={func, param, result},
+    keywordstyle=\color{blue}\bfseries,
+    morecomment=[l]{;},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]",
+    sensitive=true
+}
 \lstdefinestyle{custombeamer}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
@@ -124,7 +131,7 @@
     \newtheorem{Analisi di costo}{Analisi di costo}
 
     \begin{Analisi di costo}
-        Come \alert{analisi statica dei costi} miriamo ad ottenere risultati analitici per un dato programma $P$, i quali consentono di vinciolare il costo dell'esecuzione di $P$ su qualsiasi input $x$, senza dover effettivamente eseguire $P(x)$.
+        Come \alert{analisi statica dei costi} miriamo ad ottenere risultati analitici per un dato programma $P$, i quali consentono di vincolare il costo dell'esecuzione di $P$ su qualsiasi input $x$, senza dover effettivamente eseguire $P(x)$.
     \end{Analisi di costo}
    
     PUBS ha l'obiettivo di ottenere automaticamente un upper bound in forma chiusa per i sistemi di equazioni di costo, calcolando i limiti superiri per la relazione di costo indicata come ``entry'', oltre che per tutte le altre relazioni da cui tale ``entry'' dipende.
@@ -136,6 +143,7 @@
     \begin{itemize}
         \item \alert{Costo di esecuzione}: il costo di esecuzione di una funzione
         \item \alert{Costo di allocazione}: il costo di allocazione di una variabile nell'heap
+        \item \alert{Costo di latenza}: il costo di latenza nell'invocazione di una funzione
     \end{itemize}
     I vantaggi delle equazioni di costo:
     \begin{itemize}
@@ -156,5 +164,66 @@ eq(if9(ISPREMIUMUSER0,P,B),nat(B),[],[ISPREMIUMUSER0=0]).
     \frametitle{Generazione del codice WASM}
     Una volta ottenute le equazioni di costo, abbiamo sviluppato un interprete per la generazione del codice WASM.
 \end{frame}
+\begin{frame}
+    \frametitle{WebAssembly}
+    \alert{WebAssembly} rappresenta una tecnologia versatile e potente che offre un'alternativa efficace alle tradizionali soluzioni di esecuzione di codice.\\
+    Le istruzioni \alert{Wasm} si distinguono dalle istruzioni di un processore reale in quanto sono progettate per l'esecuzione in un ambiente virtuale.
 
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Esempio HLCostLan}
+    \begin{lstlisting}[language=Java, caption={Esempio di funzione HLCostLan, Listing15}]
+        fn svc(i: int, n:int) -> any{
+            return n * i
+     }
+     (len : int) => {
+         return svc(len,4)
+     }
+    \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Equivalente WAT}
+    \thispagestyle{empty}
+        \begin{lstlisting}[language=WebAssembly]
+    (func $svc (param $i i32) (param $n i32) (result i32)
+    (local $res i32)
+    (if(i32.eq
+    (local.get $i)
+    (local.get $n))
+    (then
+    (i32.const 1)
+    (local.set $res))
+    (else
+    (i32.const 0)
+    (local.set $res))
+    )(local.get $res))
+
+    (func $main (export "main")(param $a i32)(param $b i32) (result i32)
+    (local.get $a)
+    (local.get $b)
+    (call $svc)
+    )
+        \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Conclusioni}
+    \begin{itemize}
+        \item É stato sviluppato un \alert{interprete prototipale} attraverso il quale è possibile eseguire programmi scritti in HLCostLan, un linguaggio di programmazione appositamente progettato per l'analisi e l'ottimizzazione dei costi computazionali.
+        \item L'interprete offre anche la possibilità di derivare \alert{l'equazione di costo} associata a tali programmi, che viene poi calcolata attraverso il tool PUBS, per descrivere in modo formale il carico computazionale generato dal programma.
+        \item CostCompiler, infine, offre inoltre la capacità di generare automaticamente il corrispondente codice \alert{WebAssembly}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sviluppi Futuri}
+    Alcuni possibili sviluppi futuri che potrebbero arricchire ulteriormente il nostro lavoro includono:
+    \begin{itemize}
+        \item Integrazione con Kubernetes
+        \item Estendere il linguaggio HLCostLan
+        \item Condurre studi sperimentali e valutazioni empiriche per testare l'efficacia del sistema in scenari realistici di utilizzo
+    \end{itemize}
+    
+
+\end{frame}
 \end{document}

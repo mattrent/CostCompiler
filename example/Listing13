@@ -5,6 +5,6 @@ fn svc(i: int, n:int) -> any{
             return 0
     }
 }
-() => {
-	return svc(9,10)
+(a: int , b: int) => {
+	return svc(a,b)
 }
