@@ -85,7 +85,14 @@
         \item<4-> Generazione del codice WASM
     \end{itemize}
 \end{frame}
-
+\begin{frame}
+    \frametitle{APP Schema}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{app_schema.png}
+    \end{figure}
+    
+\end{frame}
 \begin{frame}
     \frametitle{Esempio cAPP + CostCompiler}
     \begin{figure}
@@ -101,7 +108,13 @@
         \includegraphics[width=0.9\textwidth]{capp_schema_worker_sel.png}
     \end{figure}
 \end{frame}
-
+\begin{frame}
+    \frametitle{CostCompiler Schema}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{cost_compiler_schema.png}
+    \end{figure}
+\end{frame}
 \begin{frame}[fragile]
     \frametitle{Esempio di funzioni in HLCostLan}
     \begin{lstlisting}[language=HLCostLan, caption={Listing8}]
@@ -126,7 +139,6 @@
     \frametitle{Analisi di costo}
     \begin{itemize}
         \item Il compilatore ritorna un insieme di equazioni di costo, che sono adeguate per un Cost-Analyzer.
-        \item Il Cost-Analyzer calcola il costo di esecuzione di un programma in base alle equazioni di costo.
         \item Il Cost Analyzer scelto è PUBS
         \item I risultati vengono presi dal sistema cAPP permettendo l'allocazione degli scheduling ottimali per le piattaforme serverless.
     \end{itemize}
@@ -207,36 +219,34 @@ $pubs\_aux\_entry$(A,B,C) -- THE MAIN ENTRY
     )
         \end{lstlisting}
 \end{frame}
-\begin{frame}
-    \frametitle{Vantaggi e Svantaggi di WASM}
-    \begin{multicols}{2}
-         \alert{Vantaggi}:
-        \begin{itemize}
-            \item \alert{Velocità}: progettato per essere eseguito in modo efficiente su hardware moderno.
-            \item \alert{Sicurezza}: progettato per essere eseguito in un ambiente sandbox.
-            \item \alert{Portabilità}: progettato per essere eseguito su qualsiasi piattaforma.
-        \end{itemize}
-        \columnbreak
-        \alert{Svantaggi}:
-        \begin{itemize}
-            \item \alert{Complessità}:linguaggio a basso livello, quindi è più difficile da scrivere e leggere rispetto ad altri linguaggi.
-            \item \alert{Mancanza di supporto}:  è relativamente nuovo, quindi non tutti i browser e le piattaforme lo supportano.
-        \end{itemize}
-        
-    \end{multicols}
-\end{frame}
+%\begin{frame}
+%    \frametitle{Vantaggi e Svantaggi di WASM}
+%    \begin{multicols}{2}
+%         \alert{Vantaggi}:
+%        \begin{itemize}
+%            \item \alert{Velocità}: progettato per essere eseguito in modo efficiente su hardware moderno.
+%            \item \alert{Sicurezza}: progettato per essere eseguito in un ambiente sandbox.
+%            \item \alert{Portabilità}: progettato per essere eseguito su qualsiasi piattaforma.
+%        \end{itemize}
+%        \columnbreak
+%        \alert{Svantaggi}:
+%        \begin{itemize}
+%            \item \alert{Complessità}:linguaggio a basso livello, quindi è più difficile da scrivere e leggere rispetto ad altri linguaggi.
+%            \item \alert{Mancanza di supporto}:  è relativamente nuovo, quindi non tutti i browser e le piattaforme lo supportano.
+%        \end{itemize}
+%          \end{multicols}
+%\end{frame}
 \begin{frame}
     \frametitle{Conclusioni}
     \begin{itemize}
-        \item É stato sviluppato un \alert{interprete prototipale} attraverso il quale è possibile eseguire programmi scritti in HLCostLan, un linguaggio di programmazione appositamente progettato per l'analisi e l'ottimizzazione dei costi computazionali.
-        \item L'interprete offre anche la possibilità di derivare \alert{l'equazione di costo} associata a tali programmi, che viene poi calcolata attraverso il tool PUBS, per descrivere in modo formale il carico computazionale generato dal programma.
-        \item CostCompiler, infine, offre inoltre la capacità di generare automaticamente il corrispondente codice \alert{WebAssembly}.
+        \item É stato sviluppato un \alert{interprete prototipale} attraverso il quale è possibile eseguire programmi scritti in HLCostLan.
+        \item L'interprete offre la possibilità di derivare \alert{l'equazione di costo} associata a tali programmi
+        \item CostCompiler genera automaticamente il corrispondente codice \alert{WebAssembly}.
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Sviluppi Futuri}
-    Alcuni possibili sviluppi futuri che potrebbero arricchire ulteriormente il nostro lavoro includono:
     \begin{itemize}
         \item Integrazione con Kubernetes
         \item Estendere il linguaggio HLCostLan
