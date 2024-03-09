@@ -1,5 +1,3 @@
 
-eq(main(N1,S,K,I0,B),1,[svc(N,K,I)],[]).
-eq(svc(N,K,I),0,[if2(K,S,B)],[]).
-eq(if2(K,S,B),1,[],[K=1]).
-eq(if2(K,S,B),0,[],[K=0]).
+eq(main(I,X,N),1,[svc(I,X,N)],[]).
+eq(svc(I,X,N),nat(N)*nat(I),[],[]).

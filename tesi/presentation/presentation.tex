@@ -27,6 +27,7 @@
 \setbeamercolor{subsection in toc}{fg=MSUgreen}
 \setbeamercolor{subsection number projected}{bg=MSUgreen,fg=white}
 }
+
 \lstdefinelanguage{WebAssembly}{
     keywords={func, param, result},
     keywordstyle=\color{blue}\bfseries,
@@ -69,14 +70,18 @@
 
 \begin{document}
 
-\lstset{style=custombeamer}
+
+\lstset{
+    style=custombeamer
+}
+
 
 \begin{frame}
     \titlepage
 \end{frame}
 
 \begin{frame}
-    \frametitle{Introduzione}
+    \frametitle{Obiettivo della tesi}
     \alert{Obiettivo}: Sviluppare un compilatore per funzioni serverless che sfrutti tecniche di analisi di costo per ottimizzare l'esecuzione.
     \begin{itemize}
         \item<1-> Definizione di HLCostLan
@@ -116,8 +121,8 @@
     \end{figure}
 \end{frame}
 \begin{frame}[fragile]
-    \frametitle{Esempio di funzioni in HLCostLan}
-    \begin{lstlisting}[language=HLCostLan, caption={Listing8}]
+    \frametitle{Esempio HLCostLan}
+    \begin{lstlisting}[language=HLCostLan, caption={Esempio di funzione in HLCostLan}]
     struct Params {
         address: array[int],
         payload: any,
@@ -140,7 +145,7 @@
     \begin{itemize}
         \item Il compilatore ritorna un insieme di equazioni di costo, che sono adeguate per un Cost-Analyzer.
         \item Il Cost Analyzer scelto è PUBS
-        \item I risultati vengono presi dal sistema cAPP permettendo l'allocazione degli scheduling ottimali per le piattaforme serverless.
+        \item I risultati vengono presi dal sistema cAPP permettendo uno scheduling ottimale per le piattaforme serverless.
     \end{itemize}
     
 \end{frame}
@@ -162,7 +167,7 @@
 \end{frame}
 \begin{frame}[fragile]
     \frametitle{Esempio Cost Equation}
-\begin{lstlisting}[language=Java, caption={Equazioni di costo per Listing 8}]
+\begin{lstlisting}[language=Java, caption={Equazioni di costo per Listing 1}]
 eq(main(P,ISPREMIUMUSER0,B),0,[if9(ISPREMIUMUSER0,P,B)],[]).
 eq(if9(ISPREMIUMUSER0,P,B),nat(P),[],[ISPREMIUMUSER0=1]).
 eq(if9(ISPREMIUMUSER0,P,B),nat(B),[],[ISPREMIUMUSER0=0]).
@@ -186,8 +191,8 @@ $pubs\_aux\_entry$(A,B,C) -- THE MAIN ENTRY
 \end{frame}
 \begin{frame}[fragile]
     \frametitle{Esempio HLCostLan}
-    \begin{lstlisting}[language=HLCostLan, caption={Esempio di funzione HLCostLan, Listing15}]
-    fn svc(i: int, n:int) -> any{
+    \begin{lstlisting}[language=HLCostLan, caption={Esempio di funzione HLCostLan}]
+    fn svc(i: int, n:int) -> int{
             return n * i
      }
      (len : int) => {
@@ -197,24 +202,16 @@ $pubs\_aux\_entry$(A,B,C) -- THE MAIN ENTRY
 \end{frame}
 \begin{frame}[fragile]
     \frametitle{Equivalente WAT}
-    \thispagestyle{empty}
-        \begin{lstlisting}[language=WebAssembly]
+    \begin{lstlisting}[language=WebAssembly, caption={codice WAT Listing 3}]
     (func $svc (param $i i32) (param $n i32) (result i32)
-    (local $res i32)
-    (if(i32.eq
+    (i32.mul
+    (local.get $n)
     (local.get $i)
-    (local.get $n))
-    (then
-    (i32.const 1)
-    (local.set $res))
-    (else
-    (i32.const 0)
-    (local.set $res))
-    )(local.get $res))
-
-    (func $main (export "main")(param $a i32)(param $b i32) (result i32)
-    (local.get $a)
-    (local.get $b)
+    )
+    )
+    (func $main (export "main") (param $len i32) (result i32)
+    (local.get $len)
+    (i32.const 4)
     (call $svc)
     )
         \end{lstlisting}
@@ -239,8 +236,8 @@ $pubs\_aux\_entry$(A,B,C) -- THE MAIN ENTRY
 \begin{frame}
     \frametitle{Conclusioni}
     \begin{itemize}
-        \item É stato sviluppato un \alert{interprete prototipale} attraverso il quale è possibile eseguire programmi scritti in HLCostLan.
-        \item L'interprete offre la possibilità di derivare \alert{l'equazione di costo} associata a tali programmi
+        \item É stato sviluppato un \alert{compilatore} attraverso il quale è possibile eseguire programmi scritti in HLCostLan.
+        \item CostCompiler offre la possibilità di derivare \alert{l'equazione di costo} associata a tali programmi
         \item CostCompiler genera automaticamente il corrispondente codice \alert{WebAssembly}.
     \end{itemize}
 \end{frame}

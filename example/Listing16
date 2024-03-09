@@ -1,5 +1,4 @@
-arr :int[5]
-fn svc(i: int, n:int) -> any{
+fn svc(i: int, n:int) -> int{
        return n * i
 }
 (len : int) => {
