@@ -4,6 +4,7 @@ import ast.Node;
 import utilities.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StringType  extends CharType{
 
@@ -20,6 +21,11 @@ public class StringType  extends CharType{
     @Override
     public ArrayList<String> checkSemantics(Environment env) {
         return null;
+    }
+
+    @Override
+    public String codeGeneration(HashMap<Node, Integer> offset_idx) {
+        return "i32,i32";
     }
 
 }

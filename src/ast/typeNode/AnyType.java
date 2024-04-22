@@ -30,7 +30,8 @@ public class AnyType implements TypeNode{
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return null;
+        // NOTE: "any" is treated like a string, so we have a pointer + length
+        return "i32,i32";
     }
 
     @Override

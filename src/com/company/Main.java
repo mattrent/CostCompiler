@@ -69,7 +69,7 @@ public class Main {
                 String wasmCode = ast.codeGeneration(new HashMap<>());
                 //System.out.println(wasmCode);
 
-                BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter("program.wat"));
+                BufferedWriter writerWasm = new BufferedWriter(new java.io.FileWriter(file + ".wat"));
                 writerWasm.write(wasmCode);
                 writerWasm.close();
 

@@ -3,7 +3,6 @@ package ast;
 import ast.typeNode.ArrayType;
 import ast.typeNode.StructType;
 import ast.typeNode.VoidType;
-import javafx.util.Pair;
 import utilities.EnvVar;
 import utilities.Environment;
 import utilities.TypeErrorException;
@@ -108,7 +107,11 @@ public class ProgramNode implements Node {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
+        // TODO: import http function only if a service is ever called
         StringBuilder codeGen = new StringBuilder();
+        codeGen.append("\n(import \"fl_imps\" \"__get_input_data\" (func $__get_input_data (param i32)))\n");
+        codeGen.append("\n(import \"fl_imps\" \"__insert_response\" (func $__insert_response (param i32 i32)))\n");
+        codeGen.append("\n(import \"fl_imps\" \"__http_request\" (func $__http_request (param i32 i32 i32 i32 i32 i32 i32 i32 i32 i32)))\n");
         codeGen.append("\n(memory 1)\n(data (i32.const 0)\n");
         for (Node n : complexType){
             n.codeGeneration(offset_idx);

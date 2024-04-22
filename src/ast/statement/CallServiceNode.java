@@ -16,7 +16,7 @@ public class CallServiceNode implements Node {
     String idCall;
     ArrayList<Node> exp;
     Node stm;
-    public CallServiceNode(String idCall, ArrayList<Node> exp,Node stm) {
+    public CallServiceNode(String idCall, ArrayList<Node> exp, Node stm) {
         this.idCall = idCall;
         this.exp = exp;
         this.stm = stm;
@@ -24,7 +24,7 @@ public class CallServiceNode implements Node {
     public CallServiceNode(String idCall, ArrayList<Node> exp) {
         this.idCall = idCall;
         this.exp = exp;
-        this.stm = stm;
+        this.stm = null;
     }
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
@@ -79,7 +79,8 @@ public class CallServiceNode implements Node {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return null;
+        //TODO: add code to push parameters on stack
+        return String.format("(call $%s)\n", idCall);
     }
 
     public String getId() {

@@ -2,6 +2,7 @@ package ast.statement;
 
 import ast.IdNode;
 import ast.Node;
+import ast.typeNode.VoidType;
 import org.antlr.v4.runtime.misc.Pair;
 import ast.typeNode.TypeNode;
 import utilities.EnvVar;
@@ -53,7 +54,32 @@ public class DecService implements Node {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return null;
+        String serviceComment = String.format(";; service %s (%s) -> %s\n",
+                        id.getId(),
+                        params.stream()
+                                .map(pair -> pair.b.getClass().getSimpleName())
+                                .reduce(String::concat),
+                        returnType.type.getClass().getSimpleName());
+        /*
+           TODO: handle call here; the service is defined as a function, calling __http_request with a specific string as URL;
+           in FunLess, we receive the string and see if it exists as a key in the function's metadata (and is exported by the module);
+           if it does, we parse the input as described by the export
+        */
+        String paramsCode = "";
+        String returnCode = !(returnType.type instanceof VoidType) ?
+                String.format("(result %s)", returnType.type.codeGeneration(offset_idx).replace(",", " ")) :
+                "";
+        String innerCode = "";
+        String serviceDefinition = String.format("(func $%s %s %s %s)\n",
+                id.getId(),
+                paramsCode,
+                returnCode,
+                innerCode
+                );
+        String serviceExport = String.format("(export \"%s\" (func $%s))\n",
+                id.getId(),
+                id.getId());
+        return serviceComment + serviceDefinition + serviceExport;
     }
 
     public ArrayList<Pair<IdNode, TypeNode>> getParams() {
