@@ -79,8 +79,13 @@ public class CallServiceNode implements Node {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        //TODO: add code to push parameters on stack
-        return String.format("(call $%s)\n", idCall);
+        StringBuilder code = new StringBuilder();
+        //code.append("global.get $__first_available_ptr\n");
+        for (Node param: exp) {
+            code.append(String.format("%s\n", param.codeGeneration(offset_idx)));
+        }
+        code.append(String.format("call $%s\n", idCall));
+        return code.toString();
     }
 
     public String getId() {

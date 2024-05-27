@@ -115,15 +115,87 @@ public class FunDeclarationNode implements Node {
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
         StringBuilder code = new StringBuilder("(func $" + id.getId());
+        // main also receives the first available memory address as first input
+        if (id.getId().equals("main")) {
+            code.append(" (param $__first_available_FL_ptr i32)");
+        }
         if (formalParams != null) {
             for (Pair<String, TypeNode> n : formalParams.getFormalParams()) {
-                code.append(" (param $").append(n.a).append(" i32)");
+                String[] wasmType = n.b.codeGeneration(offset_idx).split(",");
+                if (wasmType.length == 1) {
+                    code.append(String.format(" (param $%s %s)", n.a, wasmType[0]));
+                } else {
+                    code.append(String.format(" (param $%s %s) (param $%s %s)", n.a + "_ptr", wasmType[0], n.a + "_len", wasmType[1]));
+                }
             }
         }
-        code.append(" (result i32)\n");
+        if (this.type == null) {
+            code.append(" (result i32)\n");
+        } else {
+            String wasmReturnType = this.type.codeGeneration(offset_idx).replace(",", " ");
+            code.append(String.format(" (result %s)\n", wasmReturnType));
+        }
+
+        //TODO: very inefficient, should be done organically in the codeGeneration process and inserted here after
+        ArrayList<String> forDeclarations = checkForStms(stm, new ArrayList<String>());
+        if (!forDeclarations.isEmpty()) {
+            for(String forId: forDeclarations) {
+                code.append(String.format("(local $%s i32)\n", forId));
+                code.append(String.format("(local $%s_max i32)\n", forId));
+            }
+            code.append("(local $res i32)\n");
+        } else if (checkIfStms(stm)) {
+            code.append("(local $res i32)\n");
+        }
+
+        if (id.getId().equals("main")) {
+            code.append("(local.get $__first_available_FL_ptr)\n");
+            code.append("(global.set $__first_available_ptr)\n");
+        }
         code.append(stm.codeGeneration(offset_idx));
+        if (id.getId().equals("main")) {
+            code.append("(global.get $__first_available_ptr)\n"); //write the character "0" to memory
+            code.append("(i32.const 48)\n");
+            code.append("(i32.store)\n");
+            code.append("(global.get $__first_available_ptr)\n");
+            code.append("(i32.const 1)\n");
+            code.append("(call $__insert_response)\n");
+            code.append("(i32.const 0)\n");
+            code.append("return\n");
+        }
         code.append(")\n");
         return code.toString();
+    }
+
+    // NOTE: only if/for/serviceCall are handled, no instant returns or let-in expressions
+    private boolean checkIfStms(Node stm) {
+        if (stm instanceof ForNode) {
+            ForNode forStm = (ForNode)stm;
+            return checkIfStms(forStm.stm);
+        } else if (stm instanceof IfNode) {
+            return true;
+        } else if (stm instanceof CallServiceNode) {
+            CallServiceNode callStm = (CallServiceNode) stm;
+            return checkIfStms(callStm.stm);
+        } else {
+            return false;
+        }
+    }
+
+    private ArrayList<String> checkForStms(Node stm, ArrayList<String> acc) {
+        if (stm instanceof ForNode) {
+            ForNode forStm = (ForNode)stm;
+            acc.add(forStm.id);
+            return checkForStms(forStm.stm, acc);
+        } else if (stm instanceof IfNode) {
+            IfNode ifStm = (IfNode)stm;
+            return checkForStms(ifStm.stmT, checkForStms(ifStm.stmF, acc));
+        } else if (stm instanceof CallServiceNode) {
+            CallServiceNode callStm = (CallServiceNode) stm;
+            return checkForStms(callStm.stm, acc);
+        } else {
+            return acc;
+        }
     }
 
     public int getLine() {

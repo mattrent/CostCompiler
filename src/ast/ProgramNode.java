@@ -1,5 +1,6 @@
 package ast;
 
+import ast.statement.DecService;
 import ast.typeNode.ArrayType;
 import ast.typeNode.StructType;
 import ast.typeNode.VoidType;
@@ -107,12 +108,11 @@ public class ProgramNode implements Node {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        // TODO: import http function only if a service is ever called
         StringBuilder codeGen = new StringBuilder();
         codeGen.append("\n(import \"fl_imps\" \"__get_input_data\" (func $__get_input_data (param i32)))\n");
         codeGen.append("\n(import \"fl_imps\" \"__insert_response\" (func $__insert_response (param i32 i32)))\n");
         codeGen.append("\n(import \"fl_imps\" \"__http_request\" (func $__http_request (param i32 i32 i32 i32 i32 i32 i32 i32 i32 i32)))\n");
-        codeGen.append("\n(memory 1)\n(data (i32.const 0)\n");
+        codeGen.append("\n(memory 2)\n(data (i32.const 0)\n");
         for (Node n : complexType){
             n.codeGeneration(offset_idx);
         }
@@ -126,15 +126,21 @@ public class ProgramNode implements Node {
         }
         codeGen.append(")\n");
 
+        codeGen.append("\n(global $__first_available_ptr (mut i32) (i32.const 0))\n");
+
         for(Node n : funDec){
             codeGen.append(n.codeGeneration(offset_idx));
         }
         StringBuilder mainFun = new StringBuilder(main.codeGeneration(offset_idx));
-        mainFun.insert(11, " (export \"main\")");
-        for (Node n : decServices){
-            codeGen.append(n.codeGeneration(offset_idx));
+        mainFun.insert(11, " (export \"__invoke_miniSL\")");
+        for (int i = 0; i < decServices.size(); i++) {
+            DecService n = (DecService) decServices.get(i);
+            codeGen.append(n.codeGeneration(offset_idx, i));
         }
-        return "(module\n"+codeGen + mainFun+")";
+
+        String exportMemory = "\n(export \"memory\" (memory 0))\n";
+
+        return "(module\n"+codeGen + mainFun + exportMemory + ")";
     }
 
 }

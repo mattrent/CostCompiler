@@ -25,6 +25,6 @@ public class VoidType  extends AnyType implements TypeNode{
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return null;
+        return "i32";
     }
 }

@@ -110,14 +110,13 @@ public class IfNode implements Node {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return "(local $res i32)\n" +
-                exp.codeGeneration(offset_idx)+
+        return exp.codeGeneration(offset_idx)+
                 "(if"+
                 "(then\n"+stmT.codeGeneration(offset_idx)+
-                "(local.set $res)" +
+                "local.set $res" +
                 "\n)" +
                 "(else\n"+stmF.codeGeneration(offset_idx)+
-                "(local.set $res)" +
+                "local.set $res" +
                 "\n)" +
                 "\n)" +
                 "(local.get $res)\n";

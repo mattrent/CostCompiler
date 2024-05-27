@@ -1,5 +1,6 @@
 package ast.exp;
 
+import ast.typeNode.*;
 import utilities.EnvVar;
 import ast.IdNode;
 import ast.Node;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 
 public class DerExpNode implements Node {
     private IdNode id;
+    private Node typeNode;
 
     public DerExpNode(String id) {
         this.id = new IdNode(id) ;
@@ -24,7 +26,8 @@ public class DerExpNode implements Node {
 
     @Override
     public Node typeCheck(Environment e) throws TypeErrorException {
-        return e.getDeclaration(id.getId()).typeCheck(e);
+        this.typeNode = e.getDeclaration(id.getId()).typeCheck(e);
+        return this.typeNode;
     }
 
     @Override
@@ -45,7 +48,13 @@ public class DerExpNode implements Node {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return "(local.get $"+id.getId()+")\n";
+        if ((this.typeNode instanceof BoolType) || (this.typeNode instanceof CharType) || (this.typeNode instanceof FloatType) || (this.typeNode instanceof NullType)) {
+            return String.format("(local.get $%s)\n", id.getId());
+        } else {
+            return String.format("(local.get $%s_ptr)\n", id.getId()) +
+                   String.format("(local.get $%s_len)\n", id.getId());
+
+        }
     }
 
     public String getId() {

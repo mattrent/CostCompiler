@@ -26,6 +26,6 @@ public class FloatType  extends IntType {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return "f32";
+        return "f64";
     }
 }

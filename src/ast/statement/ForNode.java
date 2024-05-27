@@ -104,10 +104,7 @@ public class ForNode implements Node {
 
     @Override
     public String codeGeneration(HashMap<Node, Integer> offset_idx) {
-        return  "(local $"+id+" i32)\n" +
-                "(local $"+id+"_max i32)\n" +
-                "(local $res i32)\n" +
-                exp.codeGeneration(offset_idx) +  //         Inizializza il contatore del ciclo (variabile locale)
+        return exp.codeGeneration(offset_idx) +  //         Inizializza il contatore del ciclo (variabile locale)
                 "(local.set $"+id+"_max)\n" +      //Inizializza il valore di partenza del contatore
                 "(loop $for"+line+"\n" +       //Inizio del ciclo
                 "(if (i32.lt_u (local.get $"+id+")(local.get $"+id+"_max) )\n"+ //Controlla se il contatore è minore del valore di fine

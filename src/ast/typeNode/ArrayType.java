@@ -63,7 +63,7 @@ public class ArrayType extends AnyType {
         int offset_actual = getMax(map.values());
         map.put(this, offset_actual+len);
 
-        return "";
+        return "i32,i32";
 
     }
     public int getlen(){
