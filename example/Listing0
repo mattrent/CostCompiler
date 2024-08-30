@@ -1,0 +1,23 @@
+service BasicService : (void) -> void;
+service PremiumService : (void) -> void;
+service VipService : (void) -> void;
+
+(b: bool, x: bool) => {
+    if (b) {
+        if (x) {
+            call BasicService();
+        } else {
+            call PremiumService();
+        }
+    } else {
+        call VipService();
+    }
+}
+
+/*
+eq(main(B,P,V,B1,X),0,[if6(B1,X,B,P,V)],[]).
+eq(if6(B1,X,B,P,V),nat(V),[],[B1=0]).
+eq(if6(B1,X,B,P,V),0,[if7(X,B,P)],[B1=1]).
+eq(if7(X,B,P),nat(B),[],[X=1]).
+eq(if7(X,B,P),nat(P),[],[X=0]).
+*/

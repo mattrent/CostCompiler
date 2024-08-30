@@ -8,6 +8,7 @@ import ast.Node;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Set;
 
 import static utilities.Utils.*;
@@ -19,7 +20,7 @@ public class EnvVar {
     int counter;
 
     public EnvVar(){
-        map = new HashMap<>();
+        map = new LinkedHashMap<>();
         counter = 0;
     }
 

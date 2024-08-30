@@ -28,6 +28,7 @@ public class CallServiceNode implements Node {
     }
     @Override
     public EnvVar checkVarEQ(EnvVar e) {
+        //e.add(this, String.format("%s_Service", idCall));
         e.add(this, String.valueOf(idCall.charAt(0)));
         if(stm != null){
             e = stm.checkVarEQ(e);

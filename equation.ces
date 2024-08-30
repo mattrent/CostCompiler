@@ -1,4 +1,4 @@
 
-eq(main(B,I,P),nat(I),[if5(I,P,B)],[]).
-eq(if5(I,P,B),nat(P),[],[I=1]).
-eq(if5(I,P,B),nat(B),[],[I=0]).
+eq(main(A,P,R,I,S,E),nat(A),[if14(A,P,E)],[]).
+eq(if14(A,P,E),nat(P)+nat(R)+nat(I)+nat(S),[],[A=1]).
+eq(if14(A,P,E),nat(E),[],[A=0]).

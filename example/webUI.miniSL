@@ -1,0 +1,22 @@
+// send username, get boolean
+service Auth: (string) -> bool;
+// send product name, get product item
+service Persistence: (string) -> any;
+// send product name, get array of items
+service Recommender: (string) -> any;
+// send product name, get array of images
+service Image: (string) -> any;
+// send Success/Error at the end
+service Success: (string, string) -> void;
+service Error: (string) -> void;
+
+(username:string, productName:string) => {
+    if ( call Auth(username) ) {
+        call Persistence(productName);
+        call Recommender(productName);
+        call Image(productName);
+        call Success(username, productName)
+    } else {
+        call Error(username);
+    }
+}
